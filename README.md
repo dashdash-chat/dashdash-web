@@ -19,5 +19,5 @@ For Vagrantfile
 To Run
 ------
 cd /vagrant/web-env/
-cd web && python myapp.py && cd ..
-cd web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..
+cd /vagrant/web-env/web && ../bin/python myapp.py && cd ..
+cd /vagrant/web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..

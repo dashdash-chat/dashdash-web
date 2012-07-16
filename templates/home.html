@@ -1,4 +1,15 @@
 {% extends "base.html" %}
 {% block body %}
-    this is the home.html template
+    {% if user %}
+        Hello, {{ user }}!
+        {% if tweets %}
+            <ul>
+                {% for tweet in tweets %}
+                    <li><strong>{{ tweet.user.screen_name }}</strong>: {{ tweet.text }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <a href="{{ url_for('login') }}">Sign in with Twitter</a>
+    {% endif %}
 {% endblock %}
