@@ -1,7 +1,10 @@
-def app(environ, start_response):
-    data = "Hello, World!\n"
-    start_response("200 OK", [
-        ("Content-Type", "text/plain"),
-        ("Content-Length", str(len(data)))
-    ])
-    return iter([data])
+from flask import Flask, render_template
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return render_template('home.html')
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run(host='0.0.0.0', port=8000)
