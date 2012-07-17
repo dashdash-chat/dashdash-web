@@ -2,6 +2,7 @@
 {% block body %}
     {% if user %}
         Hello, {{ user }}!
+        <a href="{{ url_for('logout') }}">Log out</a>
         {% if tweets %}
             <ul>
                 {% for tweet in tweets %}
