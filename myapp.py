@@ -1,7 +1,7 @@
 import datetime
 from flask import Flask, render_template, session, redirect, url_for, request, flash
 from flask.ext.oauth import OAuth
-from flask.ext.wtf import Form, TextField, Required
+from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 app = Flask(__name__)
 
@@ -30,14 +30,20 @@ twitter = oauth.remote_app('twitter',
 class InviteCodeForm(Form):
     code = TextField('code', validators=[Required()])
 
+
+class CreateAccountForm(Form):
+    email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
+    password = PasswordField('New Password', [Required(), EqualTo('confirm', message='Passwords must match')])
+    confirm  = PasswordField('Repeat Password')
+
 @app.route("/")
 def index():
-    user = session.get('twitter_user')
+    user = session.get('vine_user')
     unused_invites = None
     used_invites = None
     tweets = None
     if user:
-        user_id = conn.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()['id']
+        user_id = conn.execute(select([users.c.id], users.c.name == session.get('vine_user'))).fetchone()['id']
         s = select([invites.c.code, invites.c.recipient],
                     and_(invites.c.sender == user_id, invites.c.recipient == None))
         unused_invites = conn.execute(s).fetchall()
@@ -54,7 +60,7 @@ def index():
 
 @twitter.tokengetter
 def get_twitter_token():
-    s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('twitter_user'))
+    s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
     return conn.execute(s).fetchone()
 
 @app.route('/login')
@@ -64,48 +70,81 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('twitter_user', None)
+    session.pop('vine_user', None)
     flash('You were signed out', 'error')
     return redirect(request.referrer or url_for('index'))
 
 @app.route('/twitter/oauth_callback')
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    next_url = url_for('index') # request.args.get('next') or url_for('index')
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'error')
-        return redirect(next_url)
-    s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == resp['screen_name'])
+        return redirect(url_for('index'))
+    s = select([users.c.email, users.c.twitter_token, users.c.twitter_secret],
+            and_(users.c.name == resp['screen_name']))
     found_user = conn.execute(s).fetchone()
     if found_user:
         if not found_user.twitter_token == resp['oauth_token'] or not found_user.twitter_secret == resp['oauth_token_secret']:
             conn.execute(users.update().\
-                      where(users.c.name == resp['screen_name']).\
-                      values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
-        session['twitter_user'] = resp['screen_name']
+                         where(users.c.name == resp['screen_name']).\
+                         values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
+    else:
+        conn.execute(users.insert().\
+                           values(name=resp['screen_name'],
+                                  twitter_token=resp['oauth_token'],
+                                  twitter_secret=resp['oauth_token_secret']))
+    if found_user and found_user.email:  # if we have a user that's finished the process
+        session['vine_user'] = resp['screen_name']
         flash('You were signed in as %s' % resp['screen_name'], 'error')
     else:
         if session.get('invite_code'):
             s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
             if conn.execute(s).fetchone():
-                user_id = conn.execute(users.insert().\
-                                             values(name=resp['screen_name'],
-                                             twitter_token=resp['oauth_token'],
-                                             twitter_secret=resp['oauth_token_secret'])).lastrowid
-                conn.execute(invites.update().\
-                                     where(invites.c.code == session['invite_code']).\
-                                     values(recipient=user_id, used=datetime.datetime.now()))
                 session['twitter_user'] = resp['screen_name']
-                flash('You signed up as %s' % resp['screen_name'], 'error')
+                return redirect(url_for('create_account'))
             else:
                 flash('Sorry, that invite code is not valid.', 'error')
         else:
             flash('Sorry, but you need an invite code to sign up.', 'error')
-    return redirect(next_url)
+    return redirect(url_for('index'))
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    print request.method
+    if request.method == 'GET':
+        user = session.get('twitter_user')
+        form = CreateAccountForm()
+        return render_template('create_account.html', user=user, form=form)
+    else:       
+        if session.get('invite_code'):
+            s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
+            if conn.execute(s).fetchone():
+                form = CreateAccountForm(request.form)
+                if form.validate():
+                    conn.execute(users.update().\
+                                       where(users.c.name == session.get('twitter_user')).\
+                                       values(email=form.email.data))
+                    user_id = conn.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
+                    conn.execute(invites.update().\
+                                         where(invites.c.code == session['invite_code']).\
+                                         values(recipient=user_id, used=datetime.datetime.now()))
+                    session['vine_user'] = session.get('twitter_user')
+                    session.pop('twitter_user')
+                    session.pop('invite_code')
+                    flash('You signed up as %s' % session.get('vine_user'), 'error')
+                else:
+                    #flash('There was an error in the form.', 'error')
+                    return redirect(url_for('create_account'))
+            else:
+                flash('Sorry, that invite code is not valid.', 'error')
+        else:
+            flash('Sorry, but you need an invite code to sign up.', 'error')
+        return redirect(url_for('index'))
+
 
 @app.route('/invite/<code>')
 def invite(code):
-    user = session.get('twitter_user')
+    user = session.get('vine_user')
     form = InviteCodeForm()
     if user:
         return redirect(url_for('index'))
