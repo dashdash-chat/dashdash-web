@@ -3,8 +3,12 @@ from flask import Flask, render_template, session, redirect, url_for, request, f
 from flask.ext.oauth import OAuth
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 from sqlalchemy import create_engine, select, and_, MetaData, Table
+import xmlrpclib
 app = Flask(__name__)
 
+server = 'dev.vine.im'
+web_xmlrpc_password = 'ev5birc6yoj5cem5lalg'
+xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (server, 4560))
 dbhost = 'localhost'
 dbuser = 'flask1'
 dbpass = 'ish9gen8ob8hap7ac9hy'
@@ -80,27 +84,28 @@ def oauth_authorized(resp):
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'error')
         return redirect(url_for('index'))
+    twitter_user = resp['screen_name'].lower()
     s = select([users.c.email, users.c.twitter_token, users.c.twitter_secret],
-            and_(users.c.name == resp['screen_name']))
+            and_(users.c.name == twitter_user))
     found_user = conn.execute(s).fetchone()
     if found_user:
         if not found_user.twitter_token == resp['oauth_token'] or not found_user.twitter_secret == resp['oauth_token_secret']:
             conn.execute(users.update().\
-                         where(users.c.name == resp['screen_name']).\
+                         where(users.c.name == twitter_user).\
                          values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
     else:
         conn.execute(users.insert().\
-                           values(name=resp['screen_name'],
+                           values(name=twitter_user,
                                   twitter_token=resp['oauth_token'],
                                   twitter_secret=resp['oauth_token_secret']))
     if found_user and found_user.email:  # if we have a user that's finished the process
-        session['vine_user'] = resp['screen_name']
-        flash('You were signed in as %s' % resp['screen_name'], 'error')
+        session['vine_user'] = twitter_user
+        flash('You were signed in as %s' % twitter_user, 'error')
     else:
         if session.get('invite_code'):
             s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
             if conn.execute(s).fetchone():
-                session['twitter_user'] = resp['screen_name']
+                session['twitter_user'] = twitter_user
                 return redirect(url_for('create_account'))
             else:
                 flash('Sorry, that invite code is not valid.', 'error')
@@ -121,17 +126,22 @@ def create_account():
             if conn.execute(s).fetchone():
                 form = CreateAccountForm(request.form)
                 if form.validate():
-                    conn.execute(users.update().\
+                    try:
+                        _register(session.get('twitter_user'), form.password.data)
+                        conn.execute(users.update().\
                                        where(users.c.name == session.get('twitter_user')).\
                                        values(email=form.email.data))
-                    user_id = conn.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
-                    conn.execute(invites.update().\
+                        user_id = conn.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
+                        conn.execute(invites.update().\
                                          where(invites.c.code == session['invite_code']).\
                                          values(recipient=user_id, used=datetime.datetime.now()))
-                    session['vine_user'] = session.get('twitter_user')
-                    session.pop('twitter_user')
-                    session.pop('invite_code')
-                    flash('You signed up as %s' % session.get('vine_user'), 'error')
+                        session['vine_user'] = session.get('twitter_user')
+                        session.pop('twitter_user')
+                        session.pop('invite_code')
+                        flash('You signed up as %s' % session.get('vine_user'), 'error')
+                    except xmlrpclib.ProtocolError, e:
+                        flash('There was an error creating your XMPP account.', 'error')
+                        return redirect(url_for('create_account'))
                 else:
                     #flash('There was an error in the form.', 'error')
                     return redirect(url_for('create_account'))
@@ -141,7 +151,21 @@ def create_account():
             flash('Sorry, but you need an invite code to sign up.', 'error')
         return redirect(url_for('index'))
 
+def _register(user, password):
+    _xmlrpc_command('register', {
+        'user': user,
+        'host': server,
+        'password': password
+    })
 
+def _xmlrpc_command(command, data):
+    fn = getattr(xmlrpc_server, command)
+    return fn({
+        'user': '_web0',
+        'server': server,
+        'password': web_xmlrpc_password
+    }, data)
+    
 @app.route('/invite/<code>')
 def invite(code):
     user = session.get('vine_user')
