@@ -8,8 +8,9 @@ source bin/activate
 ./bin/easy_install gunicorn
 ./bin/easy_install flask
 ./bin/easy_install Flask-OAuth
-./bin/pip mysql-python
-./bin/pip sqlalchemy
+./bin/pip install Flask-WTF
+./bin/pip install mysql-python
+./bin/pip install sqlalchemy
 git clone https://github.com/lehrblogger/vine-web.git web
 cd web
 ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000

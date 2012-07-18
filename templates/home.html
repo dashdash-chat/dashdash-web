@@ -1,8 +1,26 @@
 {% extends "base.html" %}
 {% block body %}
     {% if user %}
-        Hello, {{ user }}!
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <p>Hello, {{ user }}! <a href="{{ url_for('logout') }}">Log out</a></p>
+        {% if unused_invites %}
+            <p>Unused invite codes:</p>
+            <ul>
+                {% for invite in unused_invites %}
+                    <li>{{ url_for('invite', code=invite.code) }}</li>
+                {% endfor %}
+            </ul>
+            <p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
+        {% else %}
+            You don't have any invitations to send out right now.
+        {% endif %}
+        {% if used_invites %}
+            <p>Used invite codes:</p>
+            <ul>
+                {% for invite in used_invites %}
+                    <li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% if tweets %}
             <ul>
                 {% for tweet in tweets %}
@@ -11,6 +29,8 @@
             </ul>
         {% endif %}
     {% else %}
-        <a href="{{ url_for('login') }}">Sign in with Twitter</a>
+        <p>Vine is in private alpha.</p>
+        <p>Want to know when we launch? [TODO Enter email address with JS submission to google form or mailchimp]</p>
+        <p>Have an account? <a href="{{ url_for('login') }}">Sign in with Twitter</a></p>
     {% endif %}
 {% endblock %}
