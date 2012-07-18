@@ -34,12 +34,19 @@ twitter = oauth.remote_app('twitter',
 class InviteCodeForm(Form):
     code = TextField('code', validators=[Required()])
 
-
 class CreateAccountForm(Form):
     email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
     password = PasswordField('New Password', [Required(), EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
 
+class ChangeEmailForm(Form):
+    email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
+
+class ChangePasswordForm(Form):
+    password = PasswordField('New Password', [Required(), EqualTo('confirm', message='Passwords must match')])
+    confirm  = PasswordField('Repeat Password')
+    
+    
 @app.route("/")
 def index():
     user = session.get('vine_user')
@@ -62,6 +69,40 @@ def index():
                   'API calls or Twitter is overloaded.', 'error')
     return render_template('home.html', user=user, unused_invites=unused_invites, used_invites=used_invites, tweets=tweets)
 
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    user = session.get('vine_user')
+    if not user:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        user_email = conn.execute(select([users.c.email], users.c.name == user)).fetchone()
+        form = ChangeEmailForm()
+        form.email.data = user_email.email
+    else:
+        form = ChangeEmailForm(request.form)
+        if form.validate():
+            conn.execute(users.update().where(users.c.name == user).values(email=form.email.data))
+            flash('Your email address has been changed.', 'error')
+    return render_template('settings.html', form=form)
+
+@app.route('/settings/change_password', methods=['GET', 'POST'])
+def change_password():
+    user = session.get('vine_user')
+    if not user:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        form = ChangePasswordForm()
+    else:
+        form = ChangePasswordForm(request.form)
+        if form.validate():
+            try:
+                _change_password(user, form.password.data)
+                flash('Your password has been changed.', 'error')
+            except xmlrpclib.ProtocolError, e:
+                flash('There was an error changing your XMPP password.', 'error')
+                return redirect(url_for('change_password'))
+    return render_template('change_password.html', form=form)
+    
 @twitter.tokengetter
 def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
@@ -115,7 +156,6 @@ def oauth_authorized(resp):
 
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
-    print request.method
     if request.method == 'GET':
         user = session.get('twitter_user')
         form = CreateAccountForm()
@@ -157,7 +197,12 @@ def _register(user, password):
         'host': server,
         'password': password
     })
-
+def _change_password(user, password):
+    _xmlrpc_command('change_password', {
+        'user': user,
+        'host': server,
+        'newpass': password
+    })
 def _xmlrpc_command(command, data):
     fn = getattr(xmlrpc_server, command)
     return fn({
