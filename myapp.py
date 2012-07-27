@@ -54,7 +54,7 @@ def index():
     used_invites = None
     tweets = None
     if user:
-        user_id = conn.execute(select([users.c.id], users.c.name == session.get('vine_user'))).fetchone()['id']
+        user_id = conn.execute(select([users.c.id], users.c.name == user)).fetchone()['id'] # TODO fix indexing
         s = select([invites.c.code, invites.c.recipient],
                     and_(invites.c.sender == user_id, invites.c.recipient == None))
         unused_invites = conn.execute(s).fetchall()
@@ -107,6 +107,9 @@ def change_password():
 def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
     return conn.execute(s).fetchone()
+
+
+#TODO unique invite codes
 
 @app.route('/login')
 def login():
