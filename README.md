@@ -1,6 +1,26 @@
-To Install
+To Install on a clean Mac
 ----------
-sudo easy_install virtualenv
+1. Make sure the Mac is running OS X 10.8
+2. Install Xcode 4.4 from the App Store
+3. Install Xcode Command Line Tools
+  * Launch Xcode
+  * Go to the Downloads tab of Preferences
+  * Click Install
+4. Install wget
+  * curl -O http://ftp.gnu.org/gnu/wget/wget-1.13.4.tar.gz
+  * tar -xzvf wget-1.13.4.tar.gz
+  * cd wget-1.13.4
+  * ./configure --with-ssl=openssl
+  * make
+  * sudo make install
+5. Install pip (Pip Installs Python)
+  * wget http://pypi.python.org/packages/source/p/pip/pip-0.7.2.tar.gz
+  * tar xzf pip-0.7.2.tar.gz
+  * cd pip-0.7.2
+  * sudo python setup.py install
+6. sudo pip install virtualenv
+
+
 cd /vagrant/
 sudo virtualenv /vagrant/web/
 cd web-env/
