@@ -18,11 +18,12 @@ Development Setup
   * `cd web`
   * `../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000`
   * Visit http://127.0.0.1:8000/ in a browser
+  * Control-c to stop the web server
   * `cd ..`
   * `deactivate`
   * `cd ..`
 
 To Run
 ------
-cd /vagrant/web-env/web && ../bin/python myapp.py && cd ..  
-cd /vagrant/web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..
+  * `cd /vagrant/web-env/web && ../bin/python myapp.py && cd ..`
+  * `cd /vagrant/web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
