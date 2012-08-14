@@ -7,7 +7,7 @@ Note: shell commands start with a lowercase letter, instructions start with an u
   * Launch Xcode
   * Go to the Downloads tab of Preferences
   * Click Install
-0. Install VirtualBox and Vagrant
+0. Install VirtualBox and Vagrant on your local machine
   * Download the latest version from https://www.virtualbox.org/wiki/Downloads
   * Download the latest version from http://vagrantup.com/
   * Follow the instructions in both the standard OS X installer packages
@@ -17,7 +17,7 @@ Note: shell commands start with a lowercase letter, instructions start with an u
   * touch Vagrantfile # with no extension
   * Add the contents of https://github.com/lehrblogger/vine-shared/blob/master/Vagrantfile to the VagrantFile
   * vagrant up
-0. Prepare the VM and create a virtualenv
+0. Prepare the VM and create a virtualenv in the VM
   * vagrant ssh
   * sudo apt-get install build-essential #not sure if necessary
   * sudo apt-get install python-dev
@@ -40,7 +40,7 @@ Note: shell commands start with a lowercase letter, instructions start with an u
   * bin/pip install mysql-python
   * bin/pip install sqlalchemy
   * cd ..
-0. Download the vine-web code and run the web server
+0. Download the vine-web code (easier from your local machine) and run the web server (from the VM)
   * cd web-env
   * git git@github.com:lehrblogger/vine-web.git web
   * cd web
