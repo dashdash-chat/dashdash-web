@@ -18,22 +18,25 @@ To Install on a clean Mac
   * tar xzf pip-0.7.2.tar.gz
   * cd pip-0.7.2
   * sudo python setup.py install
-6. sudo pip install virtualenv
-
-
-cd /vagrant/
-sudo virtualenv /vagrant/web/
-cd web-env/
-source bin/activate
-./bin/easy_install gunicorn
-./bin/easy_install flask
-./bin/easy_install Flask-OAuth
-./bin/pip install Flask-WTF
-./bin/pip install mysql-python
-./bin/pip install sqlalchemy
-git clone https://github.com/lehrblogger/vine-web.git web
-cd web
-../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000
+6. Create the virtualenv
+  * sudo pip install virtualenv
+  * mkdir vagrant
+  * cd vagrant
+  * mkdir web-env
+  * virtualenv web-env/
+  * cd web-env/
+7. Set up the virtualenv
+  * source bin/activate
+  * ./bin/easy_install gunicorn
+  * ./bin/easy_install flask
+  * ./bin/easy_install Flask-OAuth
+  * ./bin/pip install Flask-WTF
+  * ./bin/pip install mysql-python
+  * ./bin/pip install sqlalchemy
+10. Grab and run the code
+  * git clone https://github.com/lehrblogger/vine-web.git web
+  * cd web
+  * ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000
 
 For Vagrantfile
 ---------------
