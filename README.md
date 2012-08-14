@@ -19,28 +19,26 @@ Note: shell commands start with a lowercase letter, instructions start with an u
   * vagrant up
 0. Prepare the VM and create a virtualenv in the VM
   * vagrant ssh
-  * sudo apt-get install mysql-server
-  * sudo apt-get install libmysqlclient-dev
+  * sudo apt-get install python-dev
+  * sudo apt-get install mysql-server libmysqlclient-dev
   * mysql -u root -p
   * Paste the contents of https://github.com/lehrblogger/vine-shared/blob/master/init_tables.sql into the mysql prompt
   * Control-d out of mysql
   * sudo apt-get install python-pip
   * sudo pip install virtualenv
   * cd /vagrant
-  * virtualenv web-env
+  * sudo virtualenv web-env  # this will fail the first time, but work the second time. TODO fix this
+  * sudo virtualenv web-env  # sudoing because python-dev changed python permissions
 0. Set up the virtualenv
   * cd web-env
   * source bin/activate
-  * bin/easy_install gunicorn
-  * bin/easy_install flask
-  * bin/easy_install Flask-OAuth
-  * bin/pip install Flask-WTF
-  * bin/pip install mysql-python
-  * bin/pip install sqlalchemy
+  * bin/pip install gunicorn
+  * bin/pip install flask Flask-OAuth Flask-WTF
+  * bin/pip install mysql-python sqlalchemy
   * cd ..
 0. Download the vine-web code (easier from your local machine) and run the web server (from the VM)
   * cd web-env
-  * git git@github.com:lehrblogger/vine-web.git web
+  * git clone git@github.com:lehrblogger/vine-web.git web
   * cd web
   * ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000
   * Visit http://127.0.0.1:8000/ in a browser
