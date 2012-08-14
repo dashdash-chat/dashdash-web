@@ -19,16 +19,14 @@ Note: shell commands start with a lowercase letter, instructions start with an u
   * vagrant up
 0. Prepare the VM and create a virtualenv in the VM
   * vagrant ssh
-  * sudo apt-get install build-essential #not sure if necessary
-  * sudo apt-get install python-dev
   * sudo apt-get install mysql-server
   * sudo apt-get install libmysqlclient-dev
   * mysql -u root -p
   * Paste the contents of https://github.com/lehrblogger/vine-shared/blob/master/init_tables.sql into the mysql prompt
+  * Control-d out of mysql
   * sudo apt-get install python-pip
   * sudo pip install virtualenv
   * cd /vagrant
-  * mkdir web-env
   * virtualenv web-env
 0. Set up the virtualenv
   * cd web-env
