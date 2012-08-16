@@ -29,8 +29,29 @@
             </ul>
         {% endif %}
     {% else %}
-        <p>Vine is in private alpha.</p>
-        <p>Want to know when we launch? [TODO Enter email address with JS submission to google form or mailchimp]</p>
-        <p>Have an account? <a href="{{ url_for('login') }}">Sign in with Twitter</a></p>
+
+
+		<div class="wide-band">
+			<div class='container'>
+
+				<div class='row'>
+					<div class='span6'>
+						<p>Vine is in private alpha.</p>
+				        <p>Want to know when we launch? [TODO Enter email address with JS submission to google form or mailchimp]</p>
+				        <p>
+							Direct trade american apparel id, nostrud sartorial cred skateboard fap ut laboris thundercats godard locavore next level mumblecore. Qui yr next level, hoodie fanny pack vinyl retro cillum mixtape high life fixie tofu vice vegan. 3 wolf moon typewriter bicycle rights, art party small batch retro sartorial photo booth pickled sustainable vinyl tofu ex occupy. Tattooed kogi laborum id, nisi sunt fanny pack vice aliquip high life anim forage lomo semiotics. Hella farm-to-table tempor, you probably haven't heard of them banksy nostrud godard four loko vegan biodiesel. Yr typewriter et odio etsy. Whatever banh mi nihil, shoreditch echo park forage seitan pour-over occaecat vice fanny pack thundercats cillum.
+						</p>
+					</div>
+					<div class='span6'>
+						<a class='btn btn-warning sign-in' href="{{ url_for('login') }}">Sign In With Twitter</a>
+						<p>
+							use your twitter account to log in
+						</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
     {% endif %}
 {% endblock %}

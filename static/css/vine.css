@@ -18,9 +18,6 @@ h5,
 h6 {
   font-family: 'Rosario', sans-serif;
 }
-.navbar .nav > li > a {
-  text-shadow: none;
-}
 .navbar-inner {
   box-shadow: none;
 }
@@ -36,31 +33,38 @@ h6 {
   padding-left: 0px;
   padding-right: 0px;
 }
-header {
-  height: 50px;
+.navbar {
+  margin-bottom: 0;
 }
-header .nav li {
+.navbar .nav > li {
   display: inline-block;
-  padding: 10px;
+  padding: 10px 0;
 }
-header .nav li:first-child {
+.navbar .nav > li:first-child {
   padding-left: 0;
+  padding-top: 0;
+}
+.navbar .nav > li > a {
+  text-shadow: none;
+  padding-top: 10px;
 }
 .wide-band {
   background-color: #cf9;
   padding: 40px 0;
   box-shadow: 0px 6px 12px #ddd;
 }
-.wide-band button {
+.wide-band .sign-in {
   font-family: 'Rosario', sans-serif;
   width: 300px;
-  height: 150px;
+  padding: 75px 30px;
   border-radius: 0;
   font-size: 2.25em;
   margin-left: 70px;
   margin-bottom: 20px;
 }
 .wide-band p {
+  text-align: justify;
+  text-justify: newspaper;
   color: #777777;
 }
 .user-page .head {

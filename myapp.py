@@ -69,6 +69,13 @@ def index():
                   'API calls or Twitter is overloaded.', 'error')
     return render_template('home.html', user=user, unused_invites=unused_invites, used_invites=used_invites, tweets=tweets)
 
+@app.route("/about")
+def about():
+    user = session.get('vine_user')
+    return render_template('about.html', user=user)
+
+
+
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     user = session.get('vine_user')
