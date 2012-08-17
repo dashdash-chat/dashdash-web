@@ -33,6 +33,11 @@ h6 {
   padding-left: 0px;
   padding-right: 0px;
 }
+.dropdown-menu li > a:hover,
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
+  background-color: #f15b40;
+}
 .navbar {
   margin-bottom: 0;
 }
@@ -48,8 +53,11 @@ h6 {
   text-shadow: none;
   padding-top: 10px;
 }
+.wide-band + .wide-band {
+  margin-top: 20px;
+}
 .wide-band {
-  background-color: #cf9;
+  background-color: #cee6bf;
   padding: 40px 0;
   box-shadow: 0px 6px 12px #ddd;
 }
@@ -62,10 +70,19 @@ h6 {
   margin-left: 70px;
   margin-bottom: 20px;
 }
+.wide-band h1 {
+  font-size: 2em;
+  color: #f15b40;
+  margin-bottom: 10px;
+}
 .wide-band p {
   text-align: justify;
   text-justify: newspaper;
   color: #777777;
+}
+.settings-form > div {
+  font-weight: bold;
+  margin-top: 10px;
 }
 .user-page .head {
   margin-bottom: 20px;

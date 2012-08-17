@@ -1,3 +1,6 @@
+@brandPrimaryColor : rgba(241,91,64,1);
+@brandSecondaryColor : rgba(206,230,191,1);
+
 @font-face {
   font-family: 'Rosario';
   font-style: normal;
@@ -26,6 +29,8 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 	padding-left: 0px;
 	padding-right: 0px;
 }
+.dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover
+{background-color: @brandPrimaryColor}
 
 
 .navbar
@@ -52,9 +57,11 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 }
 
 
+.wide-band+.wide-band{margin-top:20px}
+
 .wide-band
 {
-	background-color : #cf9;
+	background-color : @brandSecondaryColor;
 	padding:40px 0;
 	box-shadow : 0px 6px 12px #ddd;
 	
@@ -69,6 +76,12 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 		margin-bottom:20px
 	}
 	
+	h1
+	{
+		font-size:2em;
+		color: @brandPrimaryColor;
+		margin-bottom:10px;
+	}
 	p
 	{
 		text-align: justify;
@@ -76,6 +89,15 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 		color: #777
 	}
 	
+}
+
+.settings-form
+{
+	>div
+	{
+		font-weight:bold;
+		margin-top:10px;
+	}
 }
 
 .user-page
