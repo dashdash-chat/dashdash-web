@@ -19,3 +19,6 @@ Development Setup
   * `deactivate`
   * `cd ..`
 
+Social Graph Description
+----------
+See [Data Models for Vine](https://docs.google.com/document/d/1MVF3_4WhT9_3okjllc4f9tfV9scTDVJ2bn8ilk1cJkU/edit) for more information.
