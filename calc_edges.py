@@ -18,6 +18,10 @@ class Recipients(object):
         
     def has_edge(self, recipient, message_threshold):
         return self._recipients[recipient] > message_threshold
+    
+    def delete_edge(self, recipient):
+        if recipient in self._recipients:
+            del self._recipients[recipient]
 
 
 class Senders(object):
@@ -28,7 +32,78 @@ class Senders(object):
         self._senders[sender].increment(recipient)
         
     def has_edge(self, sender, recipient, message_threshold=THRESHOLD):
-        self._senders[sender].has_edge(recipient, message_threshold)
+        return self._senders[sender].has_edge(recipient, message_threshold)
+    
+    def delete_edge(self, sender, recipient):
+        if sender in self._senders:
+               self._senders[sender].delete_edge(recipient)
+        
+
+class EdgeCalculator(object):
+    def __init__(self):
+        self.db = None
+        self.cursor = None
+        self.senders
+        self.db_connect()
+
+    def process_messages(self):
+        self.senders = Senders()
+        messages = # select messages from database from last three months, going PAGESIZE at a time
+        for message in messages:
+            recipients = # select recipients for a given message
+            for recipient in recipients:
+                self.senders.increment(message.sender, recipients)
+
+    def update_edges(self):
+        old_edges = # select all edges from database
+        for old_edge in old_edges:
+            if self.senders.has_edge(old_edge.frm, old_edge.to):
+                self.senders.delete_edge(old_edge.frm, old_edge.to)
+            else:
+                # delete edge from database, kill idle vinebots
+        for remaining edges in self.senders:
+            # create edge in database, create vinebots
+    
+    def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
+        self.db_execute(query, data)
+        fetched = self.cursor.fetchall()
+        if fetched and len(fetched) > 0:
+            if strip_pairs:
+                return [result[0] for result in fetched]
+            else:
+                return fetched
+        return []
+    
+    def db_execute(self, query, data={}):
+        if not self.db or not self.cursor:
+            logging.info("Database connection missing, attempting to reconnect and retry query")
+            if self.db:
+                self.db.close()
+            self.db_connect()
+        try:
+            self.cursor.execute(query, data)
+        except MySQLdb.OperationalError, e:
+            logging.info('Database OperationalError %s for query, will retry: %s' % (e, query % data))
+            self.db_connect()  # Try again, but only once
+            self.cursor.execute(query, data)
+        return self.db.insert_id()
+    
+    def db_connect(self):
+        try:
+            self.db = MySQLdb.connect(constants.db_host,
+                                      constants.graph_mysql_user,
+                                      constants.graph_mysql_password,
+                                      constants.db_name)
+            self.db.autocommit(True)
+            self.cursor = self.db.cursor()
+            logging.info("Database connection created")
+        except MySQLdb.Error, e:
+            logging.error('Database connection and/orcursor creation failed with %d: %s' % (e.args[0], e.args[1]))
+            self.cleanup()
+    
+    def cleanup(self):
+        if self.db:
+            self.db.close()
 
 
 if __name__ == '__main__':
@@ -44,24 +119,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=opts.loglevel,
                         format='%%(asctime)-15s leaf%(leaf_id)-3s %%(levelname)-8s %%(message)s' % {'leaf_id': opts.leaf_id})
 
-    #TODO put in functions for garbage collection
     logging.info('starting')
-    senders = Senders()
-    messages = # select messages from database from last three months, going PAGESIZE at a time
-    for message in messages:
-        recipients = # select recipients for a given message
-        for recipient in recipients:
-            senders.increment(message.sender, recipients)
-            
-    old_edges = # select all edges from database
-    new_edges = []
-    for old_edge in old_edges:
-        if senders.has_edge(old_edge.frm, old_edge.to):
-            senders.delete_edge(old_edge.frm, old_edge.to)
-        else:
-            # delete edge from database, kill idle vinebots
-    for remaining edges in senders:
-        # create edge in database, create vinebots
-    
+    calculator = EdgeCalculator()
+    calculator.process_messages()
+    calculator.update_edges()
+    calculator.cleanup()
     logging.info("Done")
-
