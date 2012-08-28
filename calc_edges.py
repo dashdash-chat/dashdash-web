@@ -45,40 +45,101 @@ class Senders(object):
 class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self):
         sleekxmpp.ClientXMPP.__init__(self, '%s@%s' % (constants.graph_xmpp_user, constants.server), constants.graph_xmpp_password)
+        self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         self.db = None
         self.cursor = None
         self.senders = None
         self.db_connect()
-        self.process_messages()
-        self.update_edges()
+        self.old_edge_offset = 0
+        self.in_delete_phase = True
 
-    def process_messages(self):
+    def start(self, event):
+        self.process_logs()
+        self.update_next_old_edge()
+        
+    # override disconnect to make sure we finished and log errors if not
+    # think through failure cases
+
+    def process_logs(self):
         self.senders = Senders()
-        msg = self.Message()
-        msg['to'] = 'leaf1.dev.vine.im'
-        msg['body'] = '/new_friendship oh hai'
-        msg.send()
-        logging.info('ok')
-        # messages = # select messages from database from last three months, going PAGESIZE at a time
-        # for message in messages:
-        #     recipients = # select recipients for a given message
-        #     for recipient in recipients:
-        #         self.senders.increment(message.sender, recipients)
-
-    def message(self, msg):
-        logging.info(msg)
-
-    def update_edges(self):
+        offset = 0
+        logs = True
+        while logs:
+            logging.info('next')
+            logs = self.db_fetch_logs(offset)
+            offset += PAGESIZE
+            for log in logs:
+                logging.info(log)
+                self.senders.increment(log[0], log[1])
+    
+    def update_next_old_edge(self):
         pass
-        # old_edges = # select all edges from database
-        # for old_edge in old_edges:
+        # old_edge = # fetch next edge with offset = self.old_edge_offset, limit = 1
+        # if old_edge:
         #     if self.senders.has_edge(old_edge.frm, old_edge.to):
         #         self.senders.delete_edge(old_edge.frm, old_edge.to)
+        #         self.update_next_old_edge()
         #     else:
-        #         # delete edge from database, kill idle vinebots
-        # for remaining edges in self.senders:
-        #     # create edge in database, create vinebots
+        #         self.send_message_to_leaf('/del_friendship %s %s' % (user1, user2))
+        # else:
+        #     self.in_delete_phase = False
+        #     self.update_next_new_edge()
+    
+    def update_next_new_edge(self):
+        new_edge = []# pop one from  self.senders:
+        if new_edge:
+            self.send_message_to_leaf('/new_friendship %s %s' % (user1, user2))
+    
+    def message(self, msg):
+        logging.info(msg)
+        if True: #got success response and if from leaf use
+            # use Your /new_friendship command was successful. and Your /del_friendship command was successful.
+            # put usernames in response
+            if self.in_delete_phase:
+                # delete edge from database
+                self.update_next_old_edge()
+                
+            else: # was /new_friendship command:
+                # create edge in the database
+                self.update_next_new_edge()
+            
+    def send_message_to_leaf(self, body):
+        msg = self.Message()
+        msg['to'] = 'leaf1.dev.vine.im'
+        msg['body'] = body
+        msg.send()
+    
+    def db_fetch_logs(self, offset):
+        messages = self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, logs.body
+                                                   FROM logs, log_recipients, users AS sender, users AS recipient
+                                                   WHERE logs.id = log_recipients.log_id
+                                                   AND sender.id = logs.author_id
+                                                   AND recipient.id = log_recipients.recipient_id
+                                                   AND logs.sent_on > %(startdate)s
+                                                   LIMIT %(pagesize)s
+                                                   OFFSET %(offset)s""",
+                                                   {'startdate': 0, 'pagesize': PAGESIZE, 'offset': offset})
+        whispers = self.db_execute_and_fetchall("""SELECT logs.id, sender.name, recipient.name, logs.body
+                                                   FROM logs, log_recipients, users AS sender, users AS recipient
+                                                   WHERE logs.id = log_recipients.log_id
+                                                   AND sender.id = logs.author_id
+                                                   AND recipient.id = log_recipients.recipient_id
+                                                   AND logs.sent_on > %(startdate)s
+                                                   LIMIT %(pagesize)s
+                                                   OFFSET %(offset)s """,
+                                                   {'startdate': 0, 'pagesize': PAGESIZE, 'offset': offset})
+        # topics = self.db_execute_and_fetchall("""  SELECT logs.id, sender.name, recipient.name, logs.body
+        #                                            FROM logs, log_recipients, users AS sender, users AS recipient
+        #                                            WHERE logs.id = log_recipients.log_id
+        #                                            AND sender.id = logs.author_id
+        #                                            AND recipient.id = log_recipients.recipient_id
+        #                                            AND logs.sent_on > %(startdate)s
+        #                                            LIMIT %(pagesize)s;
+        #                                            OFFSET %(offset)s """,
+        #                                            {'startdate': 0, 'pagesize': PAGESIZE, 'offset': offset})
+        return messages + whispers# + topics
+        
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
         self.db_execute(query, data)
