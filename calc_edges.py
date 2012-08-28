@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import sys
 import logging
 from optparse import OptionParser
 from collections import defaultdict
 import constants
+import MySQLdb
+from MySQLdb import IntegrityError, OperationalError
+import sleekxmpp
 
 THRESHOLD = 0
 PAGESIZE = 20
@@ -39,30 +42,43 @@ class Senders(object):
                self._senders[sender].delete_edge(recipient)
         
 
-class EdgeCalculator(object):
+class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self):
+        sleekxmpp.ClientXMPP.__init__(self, '%s@%s' % (constants.graph_xmpp_user, constants.server), constants.graph_xmpp_password)
+        self.add_event_handler("message", self.message)
         self.db = None
         self.cursor = None
-        self.senders
+        self.senders = None
         self.db_connect()
+        self.process_messages()
+        self.update_edges()
 
     def process_messages(self):
         self.senders = Senders()
-        messages = # select messages from database from last three months, going PAGESIZE at a time
-        for message in messages:
-            recipients = # select recipients for a given message
-            for recipient in recipients:
-                self.senders.increment(message.sender, recipients)
+        msg = self.Message()
+        msg['to'] = 'leaf1.dev.vine.im'
+        msg['body'] = '/new_friendship oh hai'
+        msg.send()
+        logging.info('ok')
+        # messages = # select messages from database from last three months, going PAGESIZE at a time
+        # for message in messages:
+        #     recipients = # select recipients for a given message
+        #     for recipient in recipients:
+        #         self.senders.increment(message.sender, recipients)
+
+    def message(self, msg):
+        logging.info(msg)
 
     def update_edges(self):
-        old_edges = # select all edges from database
-        for old_edge in old_edges:
-            if self.senders.has_edge(old_edge.frm, old_edge.to):
-                self.senders.delete_edge(old_edge.frm, old_edge.to)
-            else:
-                # delete edge from database, kill idle vinebots
-        for remaining edges in self.senders:
-            # create edge in database, create vinebots
+        pass
+        # old_edges = # select all edges from database
+        # for old_edge in old_edges:
+        #     if self.senders.has_edge(old_edge.frm, old_edge.to):
+        #         self.senders.delete_edge(old_edge.frm, old_edge.to)
+        #     else:
+        #         # delete edge from database, kill idle vinebots
+        # for remaining edges in self.senders:
+        #     # create edge in database, create vinebots
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
         self.db_execute(query, data)
@@ -98,13 +114,14 @@ class EdgeCalculator(object):
             self.cursor = self.db.cursor()
             logging.info("Database connection created")
         except MySQLdb.Error, e:
-            logging.error('Database connection and/orcursor creation failed with %d: %s' % (e.args[0], e.args[1]))
+            logging.error('Database connection and/or cursor creation failed with %d: %s' % (e.args[0], e.args[1]))
             self.cleanup()
     
     def cleanup(self):
         if self.db:
-            self.db.close()
-
+            self.db.close()  
+        sys.exit(1)
+    
 
 if __name__ == '__main__':
     optp = OptionParser()
@@ -117,11 +134,16 @@ if __name__ == '__main__':
     opts, args = optp.parse_args()
 
     logging.basicConfig(level=opts.loglevel,
-                        format='%%(asctime)-15s leaf%(leaf_id)-3s %%(levelname)-8s %%(message)s' % {'leaf_id': opts.leaf_id})
+                        format='%(asctime)-15s graph %(levelname)-8s %(message)s')
 
-    logging.info('starting')
     calculator = EdgeCalculator()
-    calculator.process_messages()
-    calculator.update_edges()
-    calculator.cleanup()
-    logging.info("Done")
+    calculator.register_plugin('xep_0030') # Service Discovery
+    calculator.register_plugin('xep_0004') # Data Forms
+    calculator.register_plugin('xep_0060') # PubSub
+    calculator.register_plugin('xep_0199') # XMPP Ping
+
+    if calculator.connect((constants.server_ip, constants.client_port)):# caused a weird _der_cert error
+        calculator.process(block=True)
+        logging.info("Done")
+    else:
+        logging.info("Unable to connect.")
