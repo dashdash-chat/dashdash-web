@@ -2,7 +2,7 @@ Development Setup
 ----------
 0. Set up the base VM
   * Follow the instructions in https://github.com/lehrblogger/vine-shared/#development-setup
-0. Create the web-env virtualenv
+0. Create the web-env virtualenv on the VM
   * `cd /vagrant`
   * `sudo virtualenv web-env`  # this will fail the first time, but work the second time. TODO fix this
   * `sudo virtualenv web-env`  # sudoing because python-dev changed python permissions
