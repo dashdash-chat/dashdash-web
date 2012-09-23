@@ -74,6 +74,28 @@ def about():
     user = session.get('vine_user')
     return render_template('about.html', user=user)
 
+@app.route("/legal")
+def legal():
+    user = session.get('vine_user')
+    return render_template('legal.html', user=user)
+
+@app.route("/setup")
+def setup():
+    user = session.get('vine_user')
+    return render_template('setup.html', user=user)
+
+@app.route("/contacts")
+def contacts():
+    user = session.get('vine_user')
+    return render_template('contacts.html', user=user)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'), 500
 
 
 @app.route('/settings', methods=['GET', 'POST'])

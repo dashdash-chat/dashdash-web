@@ -31,25 +31,54 @@
     {% else %}
 
 
-		<div class="wide-band">
-			<div class='container'>
+		<div class='vine-container container'>
+            <div class='row'>
+                <div class='vine-intro-convo span8'>
+                    <div class="vine-chat-bubble vine-chat-bubble-left hide"><h1>Hello!</h1></div>
+                    <div class="vine-chat-bubble vine-chat-bubble-right hide"><h1>Vine is a cocktail party on the Internet</h1></div>
+                    <div class="vine-chat-bubble vine-chat-bubble-left hide"><h1>You can see that your friends are chatting, but not what they're saying, unless you join their conversation... just like you could at a party in real life.</h1></div>
+                    <!--
+                    <div class="vine-chat-bubble vine-chat-bubble-right hide"><h1>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h1></div>
+                    -->
+                    &nbsp;
+                </div>
+                <div class='vine-intro-invite span4'>
 
-				<div class='row'>
-					<div class='span6'>
-						<h1>We're in private alpha!</h1>
-						<p>This should be more graphic. Slideshow or maybe an animation?</p>
-				        <p>
-							Direct trade american apparel id, nostrud sartorial cred skateboard fap ut laboris thundercats godard locavore next level mumblecore. Qui yr next level, hoodie fanny pack vinyl retro cillum mixtape high life fixie tofu vice vegan. 3 wolf moon typewriter bicycle rights, art party small batch retro sartorial photo booth pickled sustainable vinyl tofu ex occupy. Tattooed kogi laborum id, nisi sunt fanny pack vice aliquip high life anim forage lomo semiotics. Hella farm-to-table tempor, you probably haven't heard of them banksy nostrud godard four loko vegan biodiesel. Yr typewriter et odio etsy. Whatever banh mi nihil, shoreditch echo park forage seitan pour-over occaecat vice fanny pack thundercats cillum.
-						</p>
-					</div>
-					<div class='span6'>
-						<a class='btn btn-warning sign-in' href="{{ url_for('login') }}">Sign In With Twitter</a>
-						<div style='text-align:right; font-size:0.9em'><a href='#'>Want to know when we launch?</a></div>
-					</div>
-				</div>
+                    <div class="vine-chat-bubble vine-chat-bubble-right vine-chat-bubble-compact"><h3>Vine is in private alpha</h3></div>
 
-			</div>
-		</div>
+          
+
+                    <div class='right-col-section vine-chat-bubble vine-chat-bubble-left vine-chat-bubble-compact'>
+                        <a href='#'><b><i class="icon-envelope icon-white"></i> Want to know when we launch?</b></a>
+                    </div>
+                    <div class='right-col-section'>
+                       <b><i class="icon-thumbs-up"></i> Have an invite code? <input id='vine-invite-code-input' type='text' placeholder='enter it here'/></b>
+                    </div>
+                    <div class='right-col-section'>
+                        Have an account?
+                        <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='{{ url_for('static', filename='img/sign-in-with-twitter-d.png') }}' /></a>
+                    </div>
+                    <div class='right-col-section clearfix'>
+                        <ul class='client-logo-list'>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
+                        </ul>
+                    </div>
+                    <div class='right-col-section'>
+                        <h4>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
+                    </div>
+                    <!--
+                    <div class='right-col-section'>
+                        <p>&copy; 2012 vine.im</p>
+                    </div>
+                -->
+                </div>
+            </div>
+        </div>
 
     {% endif %}
 {% endblock %}
