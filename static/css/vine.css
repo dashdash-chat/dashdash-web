@@ -89,7 +89,6 @@ footer {
   text-shadow: 0px -1px 0px #666;
   margin-bottom: 25px;
   z-index: 1;
-
 }
 
 .vine-chat-bubble-left
@@ -252,4 +251,9 @@ footer {
 {
   text-align:justify;
   text-justify:inter-word;
+}
+
+.tweet-row
+{
+  margin-bottom:10px;
 }

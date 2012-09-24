@@ -1,33 +1,85 @@
 {% extends "base.html" %}
 {% block body %}
     {% if user %}
-        <p>Hello, {{ user }}! <a href="{{ url_for('logout') }}">Log out</a></p>
-        {% if unused_invites %}
-            <p>Unused invite codes:</p>
-            <ul>
-                {% for invite in unused_invites %}
-                    <li>{{ url_for('invite', code=invite.code) }}</li>
-                {% endfor %}
-            </ul>
-            <p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
-        {% else %}
-            You don't have any invitations to send out right now.
-        {% endif %}
-        {% if used_invites %}
-            <p>Used invite codes:</p>
-            <ul>
-                {% for invite in used_invites %}
-                    <li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% if tweets %}
-            <ul>
-                {% for tweet in tweets %}
-                    <li><strong>{{ tweet.user.screen_name }}</strong>: {{ tweet.text }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+
+        <div class='container'>
+
+            <div class='row'>
+                <div class='span8'>
+                    <div class='clearfix'>
+                        <div class="vine-chat-bubble vine-chat-bubble-left" style='clear:both'>
+                            <h1>Hello, {{ user }}!</h1>
+                        </div>
+                    </div>
+                    <a href='/settings'>Settings</a> / 
+                    <a href='{{ url_for('logout') }}'>Logout</a>
+
+                    {% if unused_invites %}
+                        <div class='well'>
+                            <b>Unused invite codes:</b>
+                            <ul class='unstyled'>
+                                {% for invite in unused_invites %}
+                                    <li>{{ url_for('invite', code=invite.code) }}</li>
+                                {% endfor %}
+                            </ul>
+                            <p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
+                        </div>
+                    {% else %}
+                        <div class="alert">
+                            <strong>You don't have any invitations to send out right now.</strong>
+                        </div>
+                    {% endif %}
+
+                    {% if used_invites %}
+                        <p>Used invite codes:</p>
+                        <ul class='unstyled'>
+                            {% for invite in used_invites %}
+                                <li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if tweets %}
+                        <div class='clearfix'>
+                            <div class="vine-chat-bubble vine-chat-bubble-right">
+                                <h2>Check out what your twitter friends are saying!</h2>
+                            </div>
+                        </div>
+
+                        {% for tweet in tweets %}
+                            <div class='row tweet-row'>
+                                <div class='span2'><strong>{{ tweet.user.screen_name }}</strong></div>
+                                <div class='span6'>{{ tweet.text }}</div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+
+                </div>
+                <div class='span4'>
+                    <div class='right-col-section'>
+                        <h4>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
+                    </div>
+
+                    <div class='right-col-section clearfix'>
+                        <ul class='client-logo-list'>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
+                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            
+            
+            
+            </div> <!-- contianer -->
     {% else %}
 
 
