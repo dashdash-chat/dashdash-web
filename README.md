@@ -23,6 +23,7 @@ Development Setup
 Known Bugs
 ----------
   * Topics in roster are not removed when cleared.
+  * Fix ampersands being displayed as &amp; in chat window title bars.
 
 Google Form HTML (for lack of a better place to put it)
 ----------
