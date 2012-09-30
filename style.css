@@ -1,0 +1,78 @@
+@import "bootstrap.css";
+
+body
+{
+	background:white;
+}
+
+
+/* copied from index.html */
+
+body {
+color: #2a3847;
+background-color: white;
+}
+
+th {
+font-size: 0.8em;
+text-align: right;
+white-space: nowrap;
+}
+
+a { color: #2a3847; } 
+
+h1 { 
+font-size: 1.4em; 
+margin-top:0px; 
+margin-bottom: 0px; 
+}
+
+h2 { padding-top: 0px; margin-top: 0px; }
+
+h3 {
+border-bottom: 1px solid #2a3847;
+margin-bottom: 0px;
+
+font-style: normal;
+font-variant: small-caps;
+
+text-align: right;
+}
+
+input.input_text {
+border: 1px solid #2a3847;
+}
+
+input:focus, input:hover {
+background-color: #f9fae1;
+}
+
+.toggleOpts { cursor: pointer; }
+
+.desc {
+font-size: 0.65em;
+}
+
+.form_spacer {
+padding-top: 20px;
+}
+
+#td_top {
+padding-top: 20px;
+}
+#td_form {
+padding-top: 20px;
+}
+#td_bottom {
+padding: 4px;
+font-size:8pt; 
+border-top:1px solid #2a3847;
+}
+#lTable {
+padding: 8px;
+
+border: 2px solid #2a3847;
+-moz-border-radius: 8px;
+
+background-color: #81addc;
+}
