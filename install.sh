@@ -4,7 +4,7 @@ then
   exit 1
 fi
 
-#make
+make
 cp src/config.js.example htdocs.en/config.js
 cd htdocs.en
 perl -pi -e 's/var SITENAME = "localhost";/var SITENAME = "'$1'";/g' config.js
