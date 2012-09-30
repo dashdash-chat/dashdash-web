@@ -23,3 +23,10 @@ cd ..
 rm -rf /usr/local/nginx/html/$4
 mkdir /usr/local/nginx/html/$4/
 cp -r htdocs.en /usr/local/nginx/html/$4/demo
+
+if [[ $1 = dev* ]]
+then
+  echo "http://$1:4567/$4/demo/index.html?jid=$2"
+else
+  echo "http://$1/$4/demo/index.html?jid=$2"
+fi
