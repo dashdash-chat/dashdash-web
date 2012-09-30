@@ -5,6 +5,7 @@ Development Setup
 0. Optionally set up the vine.im home page form
   * TODO
 0. Install necessary Perl modules
+  * `sudo yum install cpan`
   * `cpan`
   * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
   * `o conf urllist push http://cpan.strawberryperl.com/`
