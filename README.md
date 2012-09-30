@@ -1,9 +1,13 @@
 Development Setup
 ----------
-0. Install nginx on the same machine as ejabberd
-  * TODO
+0. Install nginx on the same machine as ejabberd (that has the vine.im URL)
+  * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
+  * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
+  * `cd nginx-1.2.0`
+  * `sudo /usr/local/nginx/sbin/nginx `  # to start nginx
+  * Get the favicon from dropbox and put it in `/usr/local/nginx/html/`
 0. Optionally set up the vine.im home page form
-  * TODO
+  * `sudo vim /usr/local/nginx/html/index.html`
 0. Install necessary Perl modules
   * `sudo yum install cpan`
   * `cpan`
@@ -20,4 +24,15 @@ Known Bugs
 ----------
   * Topics in roster are not removed when cleared.
 
-    
+Google Form HTML (for lack of a better place to put it)
+----------
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Vine.IM</title>
+	</head>
+	<body>
+		<iframe src="https://docs.google.com/spreadsheet/embeddedform?formkey=dEduRlNBODVMMjBqZE8xdmZTYWc3aHc6MQ" width="760" height="1541" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+	</body>
+</html>
