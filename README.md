@@ -15,3 +15,9 @@ Development Setup
 0. Fetch, configure, and install JWChat
   * `git clone git@github.com:lehrblogger/vine-jwchat.git jwchat`
   * `sudo sh install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
+
+Known Bugs
+----------
+  * Topics in roster are not removed when cleared.
+
+    
