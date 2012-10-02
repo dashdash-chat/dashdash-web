@@ -23,7 +23,7 @@ Development Setup
   * `sudo cpan Locale::Maketext::Fuzzy`  # And repeat for any other necessary modules, noting that error messages like "Can't locate Locale/Maketext/Fuzzy.pm in @INC" mean you should try commands like the one mentioned
 0. Fetch, configure, and install JWChat
   * `git clone git@github.com:lehrblogger/vine-jwchat.git jwchat`
-  * `sudo sh install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
+  * `sudo bash install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
 
 Known Bugs
 ----------
