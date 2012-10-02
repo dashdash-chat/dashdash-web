@@ -62,7 +62,6 @@ function getUserName() {
 	* auto-login the user with preconfigured password.
 	*/
 function tryAutoLogin() {
-
 	var user_name = getUserName();
 
 	if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
@@ -216,11 +215,19 @@ onload = init;
 
 			<div class='row'>
 				<div class='span4'>
+					<!-- 
 					<div class="vine-chat-bubble vine-chat-bubble-left">
 						<h1>Vine Demo</h1>
 					</div>
+ -->
 
-
+ 					<div>
+ 						<p>
+ 							Take Vine.im for a test drive. Click the 'launch demo' button below to open a simple in browser jabber client
+ 						</p>
+ 					</div>
+					<a id='login_button' class='btn btn-warning' onClick='tryAutoLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
+<!-- 
 					<form name="login" onSubmit="return loginCheck(this);">
 						<legend>login</legend>
 						<label>username</label>
@@ -230,6 +237,7 @@ onload = init;
 						</br>
 						<button type="submit" id='login_button' class='btn' tabindex=5 disabled>Login</button>
 					</form>	
+					 -->
 				</div>
 
 				<div class='span8'>
