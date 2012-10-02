@@ -4,7 +4,8 @@ Development Setup
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
-  * `cd nginx-1.2.0`
+  * `cd nginx-1.2.0/`
+  * `./configure --without-http_rewrite_module`
   * `make`
   * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
