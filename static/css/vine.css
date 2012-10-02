@@ -212,3 +212,20 @@ footer .footer-content-list li {
 .vine-chat-bubble.chat-orange:after {
   border-color: #F89406 transparent;
 }
+.tip-box {
+  background: #CCC;
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 6px 6px 10px #DDD;
+  margin-bottom: 10px;
+  background-color: #aaaaaa;
+  background-image: -moz-linear-gradient(top, #cccccc, #aaaaaa);
+  background-image: -ms-linear-gradient(top, #cccccc, #aaaaaa);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), to(#aaaaaa));
+  background-image: -webkit-linear-gradient(top, #cccccc, #aaaaaa);
+  background-image: -o-linear-gradient(top, #cccccc, #aaaaaa);
+  background-image: linear-gradient(top, #cccccc, #aaaaaa);
+}
