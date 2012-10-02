@@ -1,10 +1,11 @@
 Development Setup
 ----------
 0. Install nginx on the same machine as ejabberd (that has the vine.im URL)
+  * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
   * `cd nginx-1.2.0`
-  * `sudo /usr/local/nginx/sbin/nginx `  # to start nginx
+  * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
   * Get the favicon from dropbox and put it in `/usr/local/nginx/html/`
   * Try navigating to http://dev.vine.im:4567 in your browser
 0. Optionally set up the vine.im home page form
