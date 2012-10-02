@@ -6,6 +6,7 @@ Development Setup
   * `cd nginx-1.2.0`
   * `sudo /usr/local/nginx/sbin/nginx `  # to start nginx
   * Get the favicon from dropbox and put it in `/usr/local/nginx/html/`
+  * Try navigating to http://dev.vine.im:4567 in your browser
 0. Optionally set up the vine.im home page form
   * `sudo vim /usr/local/nginx/html/index.html`
 0. Install necessary Perl modules
