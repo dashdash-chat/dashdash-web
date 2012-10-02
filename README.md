@@ -5,6 +5,8 @@ Development Setup
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
   * `cd nginx-1.2.0`
+  * `make`
+  * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
   * Get the favicon from dropbox and put it in `/usr/local/nginx/html/`
   * Try navigating to http://dev.vine.im:4567 in your browser
