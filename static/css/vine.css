@@ -221,11 +221,17 @@ footer .footer-content-list li {
   border-radius: 5px;
   box-shadow: 6px 6px 10px #DDD;
   margin-bottom: 10px;
-  background-color: #aaaaaa;
-  background-image: -moz-linear-gradient(top, #cccccc, #aaaaaa);
-  background-image: -ms-linear-gradient(top, #cccccc, #aaaaaa);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), to(#aaaaaa));
-  background-image: -webkit-linear-gradient(top, #cccccc, #aaaaaa);
-  background-image: -o-linear-gradient(top, #cccccc, #aaaaaa);
-  background-image: linear-gradient(top, #cccccc, #aaaaaa);
+  background-color: #f89406;
+  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+  background-image: -ms-linear-gradient(top, #fbb450, #f89406);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+  background-image: linear-gradient(top, #fbb450, #f89406);
+}
+.tip-box a:link,
+.tip-box a:hover,
+.tip-box a:active,
+.tip-box a:visited {
+  color: white;
 }
