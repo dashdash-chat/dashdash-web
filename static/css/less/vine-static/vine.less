@@ -56,70 +56,174 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 	}
 }
 
-
-.wide-band+.wide-band{margin-top:20px}
-
-.wide-band
+footer
 {
-	background-color : @brandSecondaryColor;
-	padding:40px 0;
-	box-shadow : 0px 6px 12px #ddd;
-	
-	.sign-in
+	min-height: 50px;
+	padding: 20px 0;
+	.footer-content-list
 	{
-		font-family:'Rosario', sans-serif;
-		width: 300px;
-		padding: 75px 30px;
-		border-radius: 0;
-		font-size:2.25em;
-		margin-left:70px;
-		margin-bottom:20px
+		list-style: none;
+		margin:0;
 	}
-	
-	h1
-	{
-		font-size:2em;
-		color: @brandPrimaryColor;
-		margin-bottom:10px;
-	}
-	p
-	{
-		text-align: justify;
-		text-justify: newspaper;
-		color: #777
-	}
-	
-}
 
-.settings-form
-{
-	>div
+	.footer-content-list li
 	{
-		font-weight:bold;
-		margin-top:10px;
+		float: left;
+		margin-right:10px;
 	}
 }
 
-.user-page
+
+.client-logo-list
 {
-	.head
+	list-style:none;
+	margin:0;
+	clear:both;
+
+	li
 	{
-		margin-bottom:20px
-	}
-	
-	.user-list
-	{
-		
-		li
+		float:left;
+		padding-right: 10px;
+		img
 		{
-			margin-bottom:10px;
+			max-width:43px;
+			max-height:50px;
 		}
 	}
 }
 
 
-footer
+.legal-mumbo
 {
-	min-height:50px;
-	padding: 20px 0;
+	text-align:justify;
+	text-justify:inter-word;
 }
+
+.tweet-row
+{
+	margin-bottom:10px;
+}
+
+.vine-container
+{
+	min-height:400px;
+}
+
+.vine-sign-in
+{
+	padding:20px 0;
+	width:100%;
+}
+
+.right-col-section
+{
+	margin-bottom:20px;
+}
+
+#vine-invite-code-input
+{
+	width:140px
+}
+
+/*  chat bubbles */
+
+.bubble-gradient ( @bottomColor, @topColor)
+{
+	background-color: @bottomColor;
+	background-image: -moz-linear-gradient(top, @topColor, @bottomColor);
+	background-image: -ms-linear-gradient(top, @topColor, @bottomColor);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from( @topColor),to( @bottomColor));
+	background-image: -webkit-linear-gradient(top, @topColor, @bottomColor);
+	background-image: -o-linear-gradient(top, @topColor, @bottomColor);
+	background-image: linear-gradient(top, @topColor, @bottomColor);
+}
+
+.vine-chat-bubble
+{
+	background: orange;
+	box-shadow: 5px 5px 10px #ddd;
+	clear:both;
+	padding: 20px;
+	position: relative;
+	color: white;
+	min-width: 25%;
+	text-align: center;
+	text-shadow: 0px -1px 0px #666;
+	margin-bottom: 25px;
+	z-index: 1;
+
+	&:after
+	{
+		content:"";
+		position:absolute;
+		bottom:-20px; /* value = - border-top-width - border-bottom-width */
+		border-style:solid;
+		display:block; 
+		width:0;
+		z-index : 0;
+		border-width:20px 20px 0px 0px;
+		border-color:orange transparent;
+	}
+
+	&.vine-chat-bubble-left
+	{
+		border-radius: 10px 10px 10px 0;
+		float:left;
+		margin-right:51px;
+		&:after
+		{
+			left:0px; /* controls horizontal position */
+			border-width:20px 20px 0px 0px; /* vary these values to change the angle of the vertex */
+		}
+	}
+	&.vine-chat-bubble-right
+	{
+		border-radius: 10px 10px 0px 10px;
+		float:right;
+		margin-left:50px;
+		&:after
+		{
+			right:0px; /* controls horizontal position */
+			border-width:20px 0px 0px 20px; /* vary these values to change the angle of the vertex */
+		}
+	}
+
+	&.vine-chat-bubble-compact
+	{
+		padding:10px 25px;
+		margin:0;
+		float:none;
+		margin-bottom:20px;
+	}
+
+	a:link,
+	a:hover,
+	a:active,
+	a:visited
+	{ color:white; }
+
+	&.chat-blue
+	{
+		.bubble-gradient(#00AEEF,#00CCFF);
+		&:after{ border-color:#00AEEF transparent; } 
+	}
+	&.chat-green
+	{
+		.bubble-gradient(#8DC63F,#B6C63F);
+		&:after{ border-color:#8DC63F transparent; } 
+	}
+	&.chat-grey
+	{
+		.bubble-gradient(#AAA,#CCC);
+		&:after{ border-color:#aaa transparent; } 
+	}
+	&.chat-orange
+	{
+		.bubble-gradient(#F89406,#FBB450);
+		&:after{ border-color:#F89406 transparent; } 
+	}
+}
+
+
+
+
