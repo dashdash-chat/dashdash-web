@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<title><l>Welcome to JWChat</l></title>
+		<title>Vine.IM Demo</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<script src="config.js" language="JavaScript1.2"></script>
 		<script src="browsercheck.js" language="JavaScript1.2"></script>
@@ -183,130 +183,21 @@ function backendSelected() {
 		HTTPBASE = BACKENDS[0].httpbase;
 		BACKEND_TYPE = BACKENDS[0].type;
 	}
-	
-	if (!servers_allowed
-			|| servers_allowed.length == 0) 
-		{ // allow any
-			var tr_server = document.getElementById('tr_server');
-			
-			var input = document.createElement('input');
-			input.setAttribute("type","text");
-			input.setAttribute("id","server");
-			input.setAttribute("name","server");
-			input.setAttribute("tabindex","2");
-			input.className = 'input_text';
-			
-			if (default_server)
-	input.setAttribute("value",default_server);
-			
-			var td = tr_server.getElementsByTagName('td').item(0);
-			for (var i=0; i<td.childNodes.length; i++)
-	td.removeChild(td.childNodes.item(i));
-			
-			td.appendChild(input);
-			
-			tr_server.style.display = ''; 
-			
-			document.getElementById('connect_port').disabled = false;
-			document.getElementById('connect_host').disabled = false;
-			document.getElementById('connect_secure').disabled = false;
-		}
-	else if (servers_allowed.length == 1) {
-		document.getElementById('tr_server').style.display = 'none';
-		JABBERSERVER = servers_allowed[0];
-		document.getElementById('connect_port').disabled = true;
-		document.getElementById('connect_host').disabled = true;
-		document.getElementById('connect_secure').disabled = true;
-	} else { // create selectbox
-		var tr_server = document.getElementById('tr_server');
-		
-		var oSelect = document.createElement('select');
-		oSelect.setAttribute('id','server');
-		oSelect.setAttribute('name','server');
-		oSelect.setAttribute('tabindex',"2");
-		oSelect.onchange = serverSelected;
-		
-		var td = tr_server.getElementsByTagName('td').item(0);
-		for (var i=0; i<td.childNodes.length; i++)
-			td.removeChild(td.childNodes.item(i));
-		
-		td.appendChild(oSelect);
-		
-		for (var i=0; i<servers_allowed.length; i++) {
-			if (typeof(servers_allowed[i]) == 'undefined')
-	continue;
-			oSelect.options.add(new Option(servers_allowed[i],servers_allowed[i]));
-		}
-		
-		tr_server.style.display = ''; 
-		document.getElementById('connect_port').disabled = true;
-		document.getElementById('connect_host').disabled = true;
-		document.getElementById('connect_secure').disabled = true;
-	}
+	JABBERSERVER = servers_allowed[0];
 }
 
 function init() {
-	var welcome = loc("Welcome to JWChat at [_1]", SITENAME);
-	document.title = welcome;
-	document.getElementById("welcomeh1").innerHTML = welcome;
-
-	// create backend chooser - if any
-	if (typeof(BACKENDS) == 'undefined' || BACKENDS.length == 0) {
-		// ...
-	} else if (BACKENDS.length == 1) {
-		backendSelected();
-	} else {
-		// create chooser
-		var oSelect = document.createElement('select');
-		oSelect.setAttribute('id','backend_selector');
-		oSelect.setAttribute('name','backend');
-		oSelect.setAttribute('tabindex',"1");
-		oSelect.onchange = backendSelected;
-
-		var tr = document.createElement('tr');
-		var td = tr.appendChild(document.createElement('th'));
-		var label = td.appendChild(document.createElement('label'));
-		label.setAttribute('for','backend_selector');
-		label.appendChild(document.createTextNode(loc("Choose Backend")));
-		
-		tr.appendChild(document.createElement('td')).appendChild(oSelect);
-		
-		var tr_server = document.getElementById('tr_server');
-		tr_server.parentNode.insertBefore(tr,tr_server);
-		
-		tr = document.createElement('tr');
-		td = tr.appendChild(document.createElement('td'));
-		td = document.createElement('td');
-		td.setAttribute('id','backend_description');
-		td.className= 'desc';
-		tr.appendChild(td);
-
-		tr_server.parentNode.insertBefore(tr,tr_server);
-
-		for (var i=0; i<BACKENDS.length; i++) {
-			if (typeof(BACKENDS[i]) == 'undefined')
-	continue;
-			var oOption =  new Option(BACKENDS[i].name,BACKENDS[i].httpbase);
-			oOption.setAttribute('description',BACKENDS[i].description);
-			oSelect.options[i] = oOption;
-		}
-		
-		backendSelected();
-	}
+	backendSelected();  // assumes we want the first backend
 	document.forms[0].jid.focus();
-	document.getElementById('chars_prohibited').innerHTML = prohibited;
-	if (typeof(DEFAULTRESOURCE) != 'undefined' && DEFAULTRESOURCE)
-		document.forms[0].res.value = DEFAULTRESOURCE;
-	
 	if (getUserName().length > 0) {
 		document.getElementById('jid').setAttribute('value', getUserName());
+	    if (GUEST_PWD.length > 0) {
+		    document.getElementById('pass').setAttribute('value', GUEST_PWD);
+	    }
 	}
-
 	document.getElementById('login_button').disabled = false;
-
 	tryAutoLogin();
 }
-
 
 onload = init;
 //-->
