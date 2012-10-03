@@ -37,45 +37,23 @@ var BACKEND_TYPE;
 var GUEST_ACC;
 var GUEST_PWD;
 
-/** Retrieve user name from URL parameters.
-    */
-function getUserName() {
-    var lsearch = location.search;
-    var idx = lsearch.indexOf("jid=");
-    if (idx >= 0) {
-        var query = lsearch.substr(idx);
-        idx = query.indexOf("&");
-        if (idx > 0) {
-            query = query.substring(0, idx);
-        }
-        var tmp_jid = query.substr("jid=".length);
-        return tmp_jid;
-    } else {
-        return '';
-    }
-}
-
 /** On page load if the user name given in jid parameter is a guest
     * auto-login the user with preconfigured password.
     */
 function tryAutoLogin() {
-    var user_name = getUserName();
     if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
         // Ignore
     } else {
-        if (user_name == GUEST_ACC) {
-            jid = user_name + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
-            pass = GUEST_PWD;
-            register = false;
-            prio = DEFAULTPRIORITY;
-            connect_secure = false;
+        jid = GUEST_ACC + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
+        pass = GUEST_PWD;
+        register = false;
+        prio = DEFAULTPRIORITY;
+        connect_secure = false;
 
-            jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=250,resizable=yes');
-            return true;
-        }
+        jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=250,resizable=yes');
+        return true;
     }
     return false;
-
 }
 
 /* check if user want's to register new
@@ -169,6 +147,8 @@ function backendSelected() {
 function init() {
     backendSelected();  // assumes we want the first backend
     //tryAutoLogin();
+    document.getElementById('username').innerHTML = GUEST_ACC;
+    document.getElementById('password').innerHTML = GUEST_PWD;
 }
 
 onload = init;
@@ -181,20 +161,21 @@ onload = init;
             <img src='images/logo.png' style='height:50px; margin-bottom:20px' />
             <div class='row'>
                 <div class='span4'>
-                     <div>
-                         <p>
-                             Take Vine.im for a test drive. Click the 'launch demo' button below to open a simple in browser jabber client
-                         </p>
-                     </div>
-                    <a id='login_button' class='btn btn-warning' onClick='tryAutoLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
+                     <a id='login_button' class='btn btn-warning vine-chat-bubble-compact' onClick='tryAutoLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
+                     <p>
+                         <strong>Make sure popups are enabled, and then send someone a message!</strong>
+                     </p>
+                     <p>
+                         This demo uses an <a href="http://stefan-strigler.de/jwchat/">open-source</a>, web-based chat client that opens your buddy list in a new window. (It's not perfect, but because Vine is built on XMPP, it works out-of-the-box.)</p>
+                     <p>
+                         If prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "<span id='username'>[username]</span>@vine.im" and password "<span id='password'>[password]</span>".
+                     </p>
+                     </p>
+                         If you can't try the demo, this screencast shows some basic features.
+                     <p>
                 </div>
                 <div class='span8'>
                     <iframe width="620" height="360" src="http://www.youtube.com/embed/CayMeza487M" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class='row'>
-                <div class='span12'>
-                    Vine.im demo uses <a href="http://blog.jwchat.org/jwchat/">JWChat</a> for it's web client 
                 </div>
             </div>
         </div>
