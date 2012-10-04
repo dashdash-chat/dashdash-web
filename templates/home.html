@@ -1,134 +1,136 @@
 {% extends "base.html" %}
 {% block body %}
-    {% if user %}
+	{% if user %}
 
-        <div class='container'>
+		<div class='container'>
 
-            <div class='row'>
-                <div class='span8'>
-                    <div class='clearfix'>
-                        <div class="vine-chat-bubble vine-chat-bubble-left" style='clear:both'>
-                            <h1>Hello, {{ user }}!</h1>
-                        </div>
-                    </div>
-                    <a href='/settings'>Settings</a> / 
-                    <a href='{{ url_for('logout') }}'>Logout</a>
+			<div class='row'>
+				<div class='span8'>
+					<div class='clearfix'>
+						<div class="vine-chat-bubble vine-chat-bubble-left chat-green" style='clear:both'>
+							<h1>Hello, {{ user }}!</h1>
+						</div>
+					</div>
 
-                    {% if unused_invites %}
-                        <div class='well'>
-                            <b>Unused invite codes:</b>
-                            <ul class='unstyled'>
-                                {% for invite in unused_invites %}
-                                    <li>{{ url_for('invite', code=invite.code) }}</li>
-                                {% endfor %}
-                            </ul>
-                            <p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
-                        </div>
-                    {% else %}
-                        <div class="alert">
-                            <strong>You don't have any invitations to send out right now.</strong>
-                        </div>
-                    {% endif %}
+					{% if unused_invites %}
+						<div class='well'>
+							<b>Unused invite codes:</b>
+							<ul class='unstyled'>
+								{% for invite in unused_invites %}
+									<li>{{ url_for('invite', code=invite.code) }}</li>
+								{% endfor %}
+							</ul>
+							<p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
+						</div>
+					{% else %}
+						<div class="alert">
+							<strong>You don't have any invitations to send out right now.</strong>
+						</div>
+					{% endif %}
 
-                    {% if used_invites %}
-                        <p>Used invite codes:</p>
-                        <ul class='unstyled'>
-                            {% for invite in used_invites %}
-                                <li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+					<div>
+						<a href='/settings'><b>Settings</b></a>
+					</div>
 
-                    {% if tweets %}
-                        <div class='clearfix'>
-                            <div class="vine-chat-bubble vine-chat-bubble-right">
-                                <h2>Check out what your twitter friends are saying!</h2>
-                            </div>
-                        </div>
+					{% if used_invites %}
+						<p>Used invite codes:</p>
+						<ul class='unstyled'>
+							{% for invite in used_invites %}
+								<li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+<!-- 
+					{% if tweets %}
+						<div class='clearfix'>
+							<div class="vine-chat-bubble vine-chat-bubble-right chat-grey">
+								<h2>Check out what your twitter friends are saying!</h2>
+							</div>
+						</div>
 
-                        {% for tweet in tweets %}
-                            <div class='row tweet-row'>
-                                <div class='span2'><strong>{{ tweet.user.screen_name }}</strong></div>
-                                <div class='span6'>{{ tweet.text }}</div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+						{% for tweet in tweets %}
+							<div class='row tweet-row'>
+								<div class='span2'><strong>{{ tweet.user.screen_name }}</strong></div>
+								<div class='span6'>{{ tweet.text }}</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+ -->
+
+				</div>
+				<div class='span4'>
+					<div class='right-col-section'>
+						<h4>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
+					</div>
+
+					<div class='right-col-section clearfix'>
+						<ul class='client-logo-list'>
+							<li><a href='/setup#adium'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
+							<li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
+							<li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
+							<li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
+							<li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
+							<li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
+						</ul>
+					</div>
+					
+				</div>
+			</div>
 
 
-                </div>
-                <div class='span4'>
-                    <div class='right-col-section'>
-                        <h4>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
-                    </div>
-
-                    <div class='right-col-section clearfix'>
-                        <ul class='client-logo-list'>
-                            <li><a href='/setup#adium'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
-                            <li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
-                            <li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
-                            <li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
-                            <li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
-                            <li><a href='/setup'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
-                        </ul>
-                    </div>
-                    
-                </div>
-            </div>
-
-
-            
-            
-            
-            </div> <!-- contianer -->
-    {% else %}
+			
+			
+			
+			</div> <!-- contianer -->
+	{% else %}
 
 
 		<div class='vine-container container'>
-            <div class='row'>
-                <div class='vine-intro-convo span8'>
-                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>Hello!</h1></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h1>Vine is a cocktail party on the Internet</h1></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>You can see that your friends are chatting, but not what they're saying, unless you join their conversation... just like you could at a party in real life.</h1></div>
-                    <!--
-                    <div class="vine-chat-bubble vine-chat-bubble-right hide"><h1>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h1></div>
-                    -->
-                    &nbsp;
-                </div>
-                <div class='vine-intro-invite span4'>
+			<div class='row'>
+				<div class='vine-intro-convo span8'>
+					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>Hello!</h1></div>
+					<div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h1>Vine is a cocktail party on the Internet</h1></div>
+					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>You can see that your friends are chatting, but not what they're saying, unless you join their conversation... just like you could at a party in real life.</h1></div>
+					<!--
+					<div class="vine-chat-bubble vine-chat-bubble-right hide"><h1>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h1></div>
+					-->
+					&nbsp;
+				</div>
+				<div class='vine-intro-invite span4'>
 
-                    <div class='tip-box'>
-                        <b>Vine is in private alpha</b></br>
-                        <a href='#'><b><i class="icon-envelope icon-white"></i> Want to know when we launch?</b></a>
-                    </div>
-                     
-                    <div class='right-col-section'>
-                       <b><i class="icon-thumbs-up"></i> Have an invite code? <input id='vine-invite-code-input' type='text' placeholder='enter it here'/></b>
-                    </div>
-                    <div class='right-col-section'>
-                        Have an account?
-                        <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='{{ url_for('static', filename='img/sign-in-with-twitter-d.png') }}' /></a>
-                    </div>
-                    <div class='right-col-section clearfix'>
-                        <ul class='client-logo-list'>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
-                            <li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
-                        </ul>
-                    </div>
-                    <div class='right-col-section'>
-                        <h4>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
-                    </div>
-                    <!--
-                    <div class='right-col-section'>
-                        <p>&copy; 2012 vine.im</p>
-                    </div>
-                -->
-                </div>
-            </div>
-        </div>
+					<div class='tip-box'>
+						<b>Vine is in private alpha</b></br>
+						<a href='#'><b><i class="icon-envelope icon-white"></i> Want to know when we launch?</b></a>
+					</div>
+					 
+					<div class='right-col-section'>
+					   <b><i class="icon-thumbs-up"></i> Have an invite code? <input id='vine-invite-code-input' type='text' placeholder='enter it here'/></b>
+					</div>
+					<div class='right-col-section'>
+						Have an account?
+						<a class='vine-sign-in' href="{{ url_for('login') }}"><img src='{{ url_for('static', filename='img/sign-in-with-twitter-d.png') }}' /></a>
+					</div>
+					<div class='right-col-section clearfix'>
+						<ul class='client-logo-list'>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/adium.png') }}' /></a></li>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/pidgin.png') }}' /></a></li>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/messages.png') }}' /></a></li>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/imoim.png') }}' /></a></li>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/xmpp.png') }}' /></a></li>
+							<li><a href='#'><img src='{{ url_for('static', filename='img/client_logos/jabber.png') }}' /></a></li>
+						</ul>
+					</div>
+					<div class='right-col-section'>
+						<h4>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h4>
+					</div>
+					<!--
+					<div class='right-col-section'>
+						<p>&copy; 2012 vine.im</p>
+					</div>
+				-->
+				</div>
+			</div>
+		</div>
 
-    {% endif %}
+	{% endif %}
 {% endblock %}

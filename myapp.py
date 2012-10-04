@@ -89,13 +89,14 @@ def contacts():
     user = session.get('vine_user')
     return render_template('contacts.html', user=user)
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
 
-@app.errorhandler(500)
-def page_not_found(e):
-    return render_template('500.html'), 500
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('404.html'), 404
+
+# @app.errorhandler(500)
+# def page_not_found(e):
+#     return render_template('500.html'), 500
 
 
 @app.route('/settings', methods=['GET', 'POST'])
