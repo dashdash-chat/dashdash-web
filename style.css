@@ -21,6 +21,17 @@ h6 {
   font-family: 'Rosario', sans-serif;
 }
 
+a {
+    color: #2d9c2d;
+}
+a:hover {
+    color: #228b22;
+}
+
+.footer {
+    text-align: right;
+}
+
 .vine-chat-bubble
 {
   background: orange;
