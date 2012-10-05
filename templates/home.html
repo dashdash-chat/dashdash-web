@@ -14,13 +14,13 @@
 
 					{% if unused_invites %}
 						<div class='well'>
-							<b>Unused invite codes:</b>
+							<h3>Unused invite codes:</h3>
+							<p><i>Each invite code only works once, so send them privately to the friends you chat with most on IM.</i></p>
 							<ul class='unstyled'>
 								{% for invite in unused_invites %}
-									<li>{{ url_for('invite', code=invite.code) }}</li>
+									<li><b><a href='http://www.vine.im{{ url_for('invite', code=invite.code) }}'>vine.im{{ url_for('invite', code=invite.code) }}</a></b></li>
 								{% endfor %}
 							</ul>
-							<p>Each invite code only works once, so send them privately to the friends you chat with most on IM.</p>
 						</div>
 					{% else %}
 						<div class="alert">
