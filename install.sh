@@ -26,7 +26,7 @@ cp -r htdocs.en /usr/local/nginx/html/$4/demo
 
 if [[ $1 = dev* ]]
 then
-  echo "http://$1:4567/$4/demo/index.html"
+  echo "http://$1:4567/$4/demo/"
 else
-  echo "http://$1/$4/demo/index.html"
+  echo "http://$1/$4/demo/"
 fi
