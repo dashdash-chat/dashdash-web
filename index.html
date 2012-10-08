@@ -50,7 +50,7 @@ function tryAutoLogin() {
         prio = DEFAULTPRIORITY;
         connect_secure = false;
 
-        jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=250,resizable=yes');
+        jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
         return true;
     }
     return false;
@@ -92,7 +92,7 @@ function loginCheck(form) {
     connect_port = form.connect_port.value;
     connect_host = form.connect_host.value;
     connect_secure = form.connect_secure.checked;
-    jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=250,resizable=yes');
+    jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
     return false;
 }
 
