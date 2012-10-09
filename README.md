@@ -27,6 +27,7 @@ Development Setup
   * `sudo cp nginx.conf /usr/local/nginx/conf/`
   * `sudo /usr/local/nginx/sbin/nginx -s stop`
   * `sudo /usr/local/nginx/sbin/nginx`
+  * `sudo cp html/* /usr/local/nginx/sbin/html`
 
 Known Bugs
 ----------
