@@ -2,10 +2,18 @@ Development Setup
 ----------
 0. Install nginx on the same machine as ejabberd (that has the vine.im URL)
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
+  * `wget http://superb-dca3.dl.sourceforge.net/project/pcre/pcre/8.31/pcre-8.31.tar.gz`
+  * `tar xvzf pcre-8.31.tar.gz `
+  * `cd pcre-8.31/`
+  * `./confugire`
+  * `make`
+  * `sudo make install`
+  * `sudo ldconfig`
+  * `cd ..`
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
   * `cd nginx-1.2.0/`
-  * `./configure --with-http_ssl_module`  # you might need to install the pcre development package first
+  * `./configure --with-http_ssl_module`
   * `make`
   * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
