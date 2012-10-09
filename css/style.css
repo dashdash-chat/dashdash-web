@@ -1,0 +1,33 @@
+@import "bootstrap.css";
+
+@font-face {
+  font-family: 'Rosario-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Rosario Bold'), local('Rosario-Bold'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/C6vOqPM2grRKaQTsxWhqnL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
+}
+@font-face {
+  font-family: 'Rosario';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Rosario Regular'), local('Rosario-Regular'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/1czDsfUw1sIxXBq0PGI58ALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Rosario', sans-serif;
+}
+
+a {
+    color: #2d9c2d;
+}
+a:hover {
+    color: #228b22;
+}
+
+.footer {
+    text-align: right;
+}
