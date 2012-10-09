@@ -5,7 +5,7 @@ Development Setup
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
   * `cd nginx-1.2.0/`
-  * `./configure --without-http_rewrite_module`
+  * `./configure --with-http_ssl_module`  # you might need to install the pcre development package first
   * `make`
   * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
@@ -24,6 +24,9 @@ Development Setup
 0. Fetch, configure, and install JWChat
   * `git clone git@github.com:lehrblogger/vine-jwchat.git jwchat`
   * `sudo bash install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
+  * `sudo cp nginx.conf /usr/local/nginx/conf/`
+  * `sudo /usr/local/nginx/sbin/nginx -s stop`
+  * `sudo /usr/local/nginx/sbin/nginx`
 
 Known Bugs
 ----------
