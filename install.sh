@@ -8,7 +8,7 @@ make
 cp src/config.js.example htdocs.en/config.js
 cd htdocs.en
 perl -pi -e 's/var SITENAME = "localhost";/var SITENAME = "'$1'";/g' config.js
-perl -pi -e 's/httpbase:"\/http-bind\/"/httpbase:"http:\/\/'$1':5280\/http-bind\/"/g' config.js
+perl -pi -e 's/httpbase:"\/http-bind\/"/httpbase:"https:\/\/'$1':5281\/http-bind\/"/g' config.js
 perl -pi -e 's/var GUEST_ACC = "";/var GUEST_ACC = "'$2'";/g' config.js
 perl -pi -e 's/var GUEST_PWD = "";/var GUEST_PWD = "'$3'";/g' config.js
 if [ $5 ]
@@ -20,13 +20,12 @@ then
 fi
 
 cd ..
-rm -rf /usr/local/nginx/html/$4
-mkdir /usr/local/nginx/html/$4/
-cp -r htdocs.en /usr/local/nginx/html/$4/demo
+rm -rf /usr/local/nginx/html/demo/$4
+cp -r htdocs.en /usr/local/nginx/html/demo/$4
 
 if [[ $1 = dev* ]]
 then
-  echo "http://$1:4567/$4/demo/"
+  echo "https://$1:4567/demo/$4/"
 else
-  echo "http://$1/$4/demo/"
+  echo "https://$1/demo/$4/"
 fi
