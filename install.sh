@@ -23,9 +23,4 @@ cd ..
 rm -rf /usr/local/nginx/html/demo/$4
 cp -r htdocs.en /usr/local/nginx/html/demo/$4
 
-if [[ $1 = dev* ]]
-then
-  echo "https://$1:4567/demo/$4/"
-else
-  echo "https://$1/demo/$4/"
-fi
+echo "https://$1/demo/$4/"

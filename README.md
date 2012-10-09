@@ -2,10 +2,11 @@ Development Setup
 ----------
 0. Install nginx on the same machine as ejabberd (that has the vine.im URL)
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
+  * `cd ~`
   * `wget http://superb-dca3.dl.sourceforge.net/project/pcre/pcre/8.31/pcre-8.31.tar.gz`
   * `tar xvzf pcre-8.31.tar.gz `
   * `cd pcre-8.31/`
-  * `./confugire`
+  * `./configure`
   * `make`
   * `sudo make install`
   * `sudo ldconfig`
@@ -17,25 +18,27 @@ Development Setup
   * `make`
   * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
-  * Get the favicon from dropbox and put it in `/usr/local/nginx/html/`
-  * Try navigating to http://dev.vine.im:4567 in your browser
-0. Optionally set up the vine.im home page form
-  * `sudo vim /usr/local/nginx/html/index.html`
+  * Try navigating to http://dev.vine.im in your browser
 0. Install necessary Perl modules
+  * `sudo apt-get install yum`
   * `sudo yum install cpan`
   * `cpan`
   * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
   * `o conf urllist push http://cpan.strawberryperl.com/`
   * `o conf commit`
   * Control-d to leave the cpan prompt
-  * `sudo cpan Locale::Maketext::Fuzzy`  # And repeat for any other necessary modules, noting that error messages like "Can't locate Locale/Maketext/Fuzzy.pm in @INC" mean you should try commands like the one mentioned
+  * `sudo cpan Locale::Maketext::Fuzzy`  # And repeat for any other necessary modules, noting that error messages like "Can't locate Locale/Maketext/Fuzzy.pm in @INC" when running install.sh below mean you should try commands like the one mentioned
 0. Fetch, configure, and install JWChat
+  * `cd /vagrant`
   * `git clone git@github.com:lehrblogger/vine-jwchat.git jwchat`
-  * `sudo bash install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
+  * `cd jwchat`
+  * `sudo mkdir /usr/local/nginx/html/demo/`
+  * `sudo sh install.sh [vine.im or dev.vine.im] [username] [password] [random string for URL] [optional debug flag]`
   * `sudo cp nginx.conf /usr/local/nginx/conf/`
   * `sudo /usr/local/nginx/sbin/nginx -s stop`
   * `sudo /usr/local/nginx/sbin/nginx`
-  * `sudo cp -r html/* /usr/local/nginx/sbin/html`
+  * `sudo cp -r html/* /usr/local/nginx/html`
+  * Note that nginx.conf expects the SSL files in `/vagrant/xmpp-env/xmpp/shared/`. If you've followed the [vine-xmpp instructions](https://github.com/lehrblogger/vine-xmpp/blob/leaves-edges/README.md) it should just work, but if not, check out a copy of [vine-shared](https://github.com/lehrblogger/vine-shared/).
 
 Known Bugs
 ----------
