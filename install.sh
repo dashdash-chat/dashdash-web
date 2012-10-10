@@ -21,6 +21,7 @@ fi
 
 cd ..
 rm -rf /usr/local/nginx/html/demo/$4
-cp -r htdocs.en /usr/local/nginx/html/demo/$4
+mv htdocs.en /usr/local/nginx/html/demo/$4
+rm -rf htdocs
 
 echo "https://$1/demo/$4/"
