@@ -150,3 +150,8 @@ a:hover {
 {
   min-height: 300px;
 }
+
+.invite-content input.email-address
+{
+  margin-bottom: 15px;
+}
