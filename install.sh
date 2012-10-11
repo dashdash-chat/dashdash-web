@@ -1,4 +1,4 @@
-if [ $# -le 1 ]
+if [ $# -le 3 ]
 then
   echo "$0 : You must supply the following 4 or 5 arguments: domain, username, password, URL hash, debug_flag"
   exit 1
