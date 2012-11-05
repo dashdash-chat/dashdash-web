@@ -8,8 +8,8 @@ make
 cp src/config.js.example htdocs.en/config.js
 cd htdocs.en
 perl -pi -e 's/var SITENAME = "localhost";/var SITENAME = "'$1'";/g' config.js
-perl -pi -e 's/httpbase:"\/http-bind\/"/httpbase:"https:\/\/'$1':5281\/http-bind\/"/g' config.js
-perl -pi -e 's/httpbase:"\/http-poll\/"/httpbase:"https:\/\/'$1':5281\/http-poll\/"/g' config.js
+perl -pi -e 's/httpbase:"\/http-bind\/"/httpbase:"https:\/\/xmpp\.'$1':5281\/http-bind\/"/g' config.js
+perl -pi -e 's/httpbase:"\/http-poll\/"/httpbase:"https:\/\/xmpp\.'$1':5281\/http-poll\/"/g' config.js
 perl -pi -e 's/var GUEST_ACC = "";/var GUEST_ACC = "'$2'";/g' config.js
 perl -pi -e 's/var GUEST_PWD = "";/var GUEST_PWD = "'$3'";/g' config.js
 if [ $5 ]
