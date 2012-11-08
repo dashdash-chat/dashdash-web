@@ -41,6 +41,7 @@ Development Setup
   * `cd ..`
   * `deactivate`
   * `cd ..`
+  * `sudo cp /vagrant/web-env/web/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
 
 To Run the Web Server
 ---------------------
