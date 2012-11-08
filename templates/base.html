@@ -1,75 +1,64 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>{% block title %}Vine.IM{% endblock %}</title>
-
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vine.css') }}" />
-
-	</head>
-	<body>
-		
-		<div class="navbar">
-		  <div class="navbar-inner">
-		    <div class="container">
-				<ul class="nav">
-				  <li class="logo"><a href="/"><img src='{{ url_for('static', filename='img/logo.png') }}' width='175px'/></a></li>
-				  <li><a href="about">About</a></li>
-				 <!--  <li><a href="signup">Sign Up</a></li> -->
-				</ul>
-				<ul class="nav pull-right">
-
-
-				{% if user %}
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							{{ user }}
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href='/settings'>settings</a></li>
-							<li><a href='{{ url_for('logout') }}'>logout</a></li>
-						</ul>
-					</li>
-				{% else %}
-					<li><a href="login">sign in</a></li>
-				{% endif %}
-
-
-				</ul>
-		    </div>
-		  </div>
-		</div>
-		
-        {% with errors = get_flashed_messages(category_filter=['error']) %}
-            {% if errors %}
-                <div class='container'>
-
-				{% for msg in errors %}
-                	<div class="vine-chat-bubble vine-chat-bubble-left">
-							<h1>{{ msg }}</h1>
-					</div>
-				{% endfor -%}
-                
-                </div><!-- container -->
-            {% endif %}
-            {% block body scoped %}{% endblock %}
-        {% endwith %}
-
-		<footer>
-			<div class='container'>
-				<ul class='footer-content-list'>
-					<li>&copy; 2012 vine.im</li>
-					<li><a href='/legal'>legal</a></li>
-				</ul>
-			</div>
-		</footer>
-		
-		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}" ></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/home.js') }}" ></script>
-		
-	</body>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <script type="text/javascript">
+            var _sf_startpt=(new Date()).getTime()
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-35419245-1']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        <title>{% block title %}Vine.IM{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vine.css') }}" />
+    </head>
+    <body>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li class="logo"><a href="/"><img src='{{ url_for('static', filename='img/logo.png') }}' width='175px'/></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>  
+        {% block body scoped %}{% endblock %}
+        <footer>
+            <div class='container'>
+                <ul class='footer-content-list'>
+                    <li><a href="http://twitter.com/VineIM">@VineIM</a></li>
+                    <li><a href="mailto:info@vine-inc.im">info@vine-inc.im</a></li>
+                    <li>built by <a href="http://twitter.com/lehrblogger">Steven Lehrburger</a> and <a href="http://twitter.com/jbergen">Joseph Bergen</a></li>
+                    <li>&copy; 2012 Vine</li>
+                </ul>
+            </div>
+        </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}" ></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
+        {% block script scoped %}{% endblock %}
+        <script type="text/javascript">
+            var _sf_async_config = { uid: 2156, domain: 'vine.im' };
+            (function() {
+                function loadChartbeat() {
+                    window._sf_endpt = (new Date()).getTime();
+                    var e = document.createElement('script');
+                    e.setAttribute('language', 'javascript');
+                    e.setAttribute('type', 'text/javascript');
+                    e.setAttribute('src',
+                        (("https:" == document.location.protocol) ? "https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/" : "http://static.chartbeat.com/") +
+                        "js/chartbeat.js");
+                    document.body.appendChild(e);
+                };
+                var oldonload = window.onload;
+                window.onload = (typeof window.onload != 'function') ?
+                    loadChartbeat : function() { oldonload(); loadChartbeat(); };
+            })();
+        </script>
+    </body>
 </html>
