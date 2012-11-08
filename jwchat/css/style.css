@@ -1,0 +1,171 @@
+@import "bootstrap.css";
+
+@font-face {
+  font-family: 'Rosario-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Rosario Bold'), local('Rosario-Bold'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/C6vOqPM2grRKaQTsxWhqnL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
+}
+@font-face {
+  font-family: 'Rosario';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Rosario Regular'), local('Rosario-Regular'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/1czDsfUw1sIxXBq0PGI58ALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Rosario', sans-serif;
+}
+
+a {
+    color: #2d9c2d;
+}
+a:hover {
+    color: #228b22;
+}
+
+.footer {
+    text-align: right;
+}
+
+.vine-chat-bubble
+{
+  background: orange;
+  box-shadow: 5px 5px 10px #ddd;
+  clear:both;
+  padding: 20px;
+  position: relative;
+  color: white;
+  min-width: 25%;
+  text-align: center;
+  text-shadow: 0px -1px 0px #666;
+  margin-bottom: 25px;
+  z-index: 1;
+}
+
+.vine-chat-bubble-left
+{
+  border-radius: 10px 10px 10px 0;
+}
+
+.vine-chat-bubble-right
+{
+  border-radius: 10px 10px 0px 10px;
+}
+
+.vine-chat-bubble a:link,
+.vine-chat-bubble a:hover,
+.vine-chat-bubble a:active,
+.vine-chat-bubble a:visited
+{
+  color:white;
+}
+
+.vine-chat-bubble-left
+{
+  float:left;
+  margin-right:50px;
+
+  background-color: #8DC63F;
+  background-image: -moz-linear-gradient(top, #B6C63F, #8DC63F);
+  background-image: -ms-linear-gradient(top, #B6C63F, #8DC63F);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from( #B6C63F),to( #8DC63F));
+  background-image: -webkit-linear-gradient(top, #B6C63F, #8DC63F);
+  background-image: -o-linear-gradient(top, #B6C63F, #8DC63F);
+  background-image: linear-gradient(top, #B6C63F, #8DC63F);
+
+
+}
+.vine-chat-bubble-right
+{
+  float:right;
+  margin-left:50px;
+
+  background-color: #00AEEF;
+  background-image: -moz-linear-gradient(top, #00CCFF, #00AEEF);
+  background-image: -ms-linear-gradient(top, #00CCFF, #00AEEF);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from( #00CCFF),to( #00AEEF));
+  background-image: -webkit-linear-gradient(top, #00CCFF, #00AEEF);
+  background-image: -o-linear-gradient(top, #00CCFF, #00AEEF);
+  background-image: linear-gradient(top, #00CCFF, #00AEEF);
+}
+
+.vine-chat-bubble-compact
+{
+  padding:10px 25px;
+  margin:0;
+  float:none;
+}
+
+.vine-chat-bubble-compact
+{
+  padding:10px 25px;
+  margin:0;
+  float:none;
+}
+
+.vine-chat-bubble-compact.vine-chat-bubble-right
+{
+  background-color: #AAA;
+  background-image: -moz-linear-gradient(top, #CCC, #AAA);
+  background-image: -ms-linear-gradient(top, #CCC, #AAA);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from( #CCC),to( #AAA));
+  background-image: -webkit-linear-gradient(top, #CCC, #AAA);
+  background-image: -o-linear-gradient(top, #CCC, #AAA);
+  background-image: linear-gradient(top, #CCC, #AAA);
+}
+.vine-chat-bubble-compact.vine-chat-bubble-left
+{
+  background-color: #F89406;
+  background-image: -moz-linear-gradient(top, #FBB450, #F89406);
+  background-image: -ms-linear-gradient(top, #FBB450, #F89406);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from( #FBB450),to( #F89406));
+  background-image: -webkit-linear-gradient(top, #FBB450, #F89406);
+  background-image: -o-linear-gradient(top, #FBB450, #F89406);
+  background-image: linear-gradient(top, #FBB450, #F89406);
+}
+
+.vine-chat-bubble:after
+{
+  content:"";
+  position:absolute;
+  bottom:-20px; /* value = - border-top-width - border-bottom-width */
+  border-style:solid;
+  display:block; 
+  width:0;
+  z-index : 0;
+}
+
+.vine-chat-bubble-left:after
+{
+  border-color:#8DC63F transparent; 
+  left:0px; /* controls horizontal position */
+  border-width:20px 20px 0px 0px; /* vary these values to change the angle of the vertex */
+}
+.vine-chat-bubble-right:after
+{
+  border-color:#00AEEF transparent; 
+  right:0px; /* controls horizontal position */
+  border-width:20px 0px 0px 20px; /* vary these values to change the angle of the vertex */
+}
+
+.vine-chat-bubble-compact
+{
+  margin-bottom:20px;
+}
+
+.vine-chat-bubble-compact.vine-chat-bubble-right:after
+{
+  border-color:#AAA transparent; 
+  right:0px; /* controls horizontal position */
+  border-width:20px 0px 0px 20px; /* vary these values to change the angle of the vertex */
+}
+.vine-chat-bubble-compact.vine-chat-bubble-left:after
+{
+  border-color:#F89406 transparent; 
+}
+
