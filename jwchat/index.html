@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>Vine.IM - Demo</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+        <script src="config.js" language="JavaScript1.2"></script>
+        <script src="browsercheck.js" language="JavaScript1.2"></script>
+        <script src="shared.js" language="JavaScript1.2"></script>
+        <script language="JavaScript">
+<!--
+   /*
+    * JWChat, a web based jabber client
+    * Copyright (C) 2003-2004 Stefan Strigler <steve@zeank.in-berlin.de>
+    *
+    * This program is free software; you can redistribute it and/or
+    * modify it under the terms of the GNU General Public License
+    * as published by the Free Software Foundation; either version 2
+    * of the License, or (at your option) any later version.
+    *
+    * This program is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    * GNU General Public License for more details.
+    *
+    * You should have received a copy of the GNU General Public License
+    * along with this program; if not, write to the Free Software
+    * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+    *
+    * Please visit http://jwchat.sourceforge.net for more information!
+    */
+var jid, pass, register, prio, connect_host, connect_port, connect_secure;
+var jwchats = new Array();
+var JABBERSERVER;
+var HTTPBASE;
+var BACKEND_TYPE;
+var GUEST_ACC;
+var GUEST_PWD;
+
+/** On page load if the user name given in jid parameter is a guest
+    * auto-login the user with preconfigured password.
+    */
+function tryAutoLogin() {
+    if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
+        // Ignore
+    } else {
+        jid = GUEST_ACC + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
+        pass = GUEST_PWD;
+        register = false;
+        prio = DEFAULTPRIORITY;
+        connect_secure = false;
+
+        jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
+        return true;
+    }
+    return false;
+}
+
+/* check if user want's to register new
+ * account and things */    
+function loginCheck(form) { 
+    if (form.jid.value == '') {
+        alert(loc("You need to supply a username"));
+        return false;
+    }
+    if (form.pass.value == '') {
+        alert(loc("You need to supply a password"));
+        return false;
+    }
+    if (document.getElementById('tr_server').style.display != 'none') {
+        var val = document.getElementById('server').value;
+        if (val == '') {
+            alert(loc("You need to supply a jabber server"));
+            return false;
+        }
+        JABBERSERVER = val;
+    }
+    jid = form.jid.value + "@" + JABBERSERVER + "/";
+    if (form.res.value != '')
+        jid += form.res.value;
+    else
+        jid += DEFAULTRESOURCE;
+    if(!isValidJID(jid))
+        return false;
+    if (jwchats[jid] && !jwchats[jid].closed) {
+        jwchats[jid].focus();
+        return false;
+    }
+    pass = form.pass.value;
+    register = form.register.checked;
+    prio = form.prio[form.prio.selectedIndex].value;
+    connect_port = form.connect_port.value;
+    connect_host = form.connect_host.value;
+    connect_secure = form.connect_secure.checked;
+    jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
+    return false;
+}
+
+function toggleMoreOpts(show) {
+    if (show) {
+        document.getElementById('showMoreOpts').style.display = 'none';
+        document.getElementById('showLessOpts').style.display = '';
+    } else {
+        document.getElementById('showLessOpts').style.display = 'none';
+        document.getElementById('showMoreOpts').style.display = '';
+    }
+    var rows = document.getElementById('lTable').getElementsByTagName('TBODY').item(0).getElementsByTagName('TR');
+    for (var i=0; i<rows.length; i++) {
+        if (rows[i].className == 'moreOpts') {
+            if (show)
+    rows[i].style.display = '';
+            else
+    rows[i].style.display = 'none';
+        }
+    }
+    return false;
+}
+
+function serverSelected() {
+    var oSel = document.getElementById('server');
+    var servers_allowed = BACKENDS[bs.selectedIndex].servers_allowed;
+    // TODO ...
+    /* change format of servers_allowed to be able to associate connect 
+     * host information to it 
+     */
+}
+
+function backendSelected() {
+    var bs = document.getElementById('backend_selector');
+    var servers_allowed, default_server;
+    if (bs) {
+        servers_allowed = BACKENDS[bs.selectedIndex].servers_allowed;
+        default_server = BACKENDS[bs.selectedIndex].default_server;
+        if (BACKENDS[bs.selectedIndex].description)
+            document.getElementById('backend_description').innerHTML = BACKENDS[bs.selectedIndex].description;
+        HTTPBASE = BACKENDS[bs.selectedIndex].httpbase;
+        BACKEND_TYPE = BACKENDS[bs.selectedIndex].type;
+    }    else {
+        servers_allowed = BACKENDS[0].servers_allowed;
+        default_server = BACKENDS[0].default_server;
+        HTTPBASE = BACKENDS[0].httpbase;
+        BACKEND_TYPE = BACKENDS[0].type;
+    }
+    JABBERSERVER = servers_allowed[0];
+}
+
+function init() {
+    backendSelected();  // assumes we want the first backend
+    //tryAutoLogin();
+    document.getElementById('username').innerHTML = GUEST_ACC;
+    document.getElementById('password').innerHTML = GUEST_PWD;
+}
+
+onload = init;
+//-->
+        </script>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-35419245-1']);
+          _gaq.push(['_trackPageview']);
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+    </head>
+    <body>
+        <div class='container' style='margin-top:40px'>
+            <a href="/"><img src='images/logo.png' style='height:50px; margin-bottom:20px' /></a>
+            <div class='row'>
+                <div class='span4'>
+                     <a id='login_button' class='btn btn-success vine-chat-bubble-compact' onClick='tryAutoLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
+                     <p>
+                         <strong>Make sure popups are enabled, and then send someone a message!</strong>
+                     </p>
+                     <p>
+                         This demo uses an <a href="http://stefan-strigler.de/jwchat/">open-source</a>, web-based chat client that opens your buddy list in a new window. (It's not perfect, but because Vine is built on XMPP, it works out-of-the-box.)</p>
+                     <p>
+                         If you prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "<span id='username'>[username]</span>@vine.im" and password "<span id='password'>[password]</span>".
+                     </p>
+                     </p>
+                         For an overview of the basic features, watch this screencast (at 720p in full screen mode).
+                     <p>
+                </div>
+                <div class='span8'>
+                    <iframe width="620" height="349" src="https://www.youtube.com/embed/JDsQEMaWjz8?rel=0" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='span12 footer'><a href="http://twitter.com/VineIM">@VineIM</a> | <a href="mailto:info@vine-inc.im">info@vine-inc.im</a> | built by <a href="http://twitter.com/lehrblogger">Steven Lehrburger</a> and <a href="http://twitter.com/jbergen">Joseph Bergen</a> | &copy; 2012 Vine</div>
+            </div>
+        </div>
+        <script type="text/javascript">
+          var _sf_async_config = { uid: 2156, domain: 'vine.im' };
+          (function() {
+            function loadChartbeat() {
+              window._sf_endpt = (new Date()).getTime();
+              var e = document.createElement('script');
+              e.setAttribute('language', 'javascript');
+              e.setAttribute('type', 'text/javascript');
+              e.setAttribute('src',
+                (("https:" == document.location.protocol) ? "https://a248.e.akamai.net/chartbeat.download.akamai.com/102508/" : "http://static.chartbeat.com/") +
+                "js/chartbeat.js");
+              document.body.appendChild(e);
+            };
+            var oldonload = window.onload;
+            window.onload = (typeof window.onload != 'function') ?
+              loadChartbeat : function() { oldonload(); loadChartbeat(); };
+          })();
+        </script>
+    </body>
+</html>
