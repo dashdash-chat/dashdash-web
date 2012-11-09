@@ -22,8 +22,8 @@
     </div>
 {% endblock %}
 {% block script %}
-    <script src="browsercheck.js" language="JavaScript1.2"></script>
-    <script src="shared.js" language="JavaScript1.2"></script>
+    <script src="jwchat/browsercheck.js" language="JavaScript1.2"></script>
+    <script src="jwchat/shared.js" language="JavaScript1.2"></script>
     <script language="JavaScript">
         var jid, pass, register, prio, connect_host, connect_port, connect_secure;
         var jwchats = new Array();
@@ -55,7 +55,7 @@
         var DEBUGJID = "admin@"+SITENAME; // which user get's debug messages
         /* most probably you don't want to change these */
         var timerval = 2000; // poll frequency in msec
-        var stylesheet = "jwchat.css";
+        var stylesheet = "jwchat/jwchat.css";
         var THEMESDIR = "themes";
         /* end config */
         var GUEST_ACC = "{{ username }}";
@@ -72,7 +72,7 @@
                 register = false;
                 prio = DEFAULTPRIORITY;
                 connect_secure = false;
-                jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
+                jwchats[jid] = window.open('jwchat/jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
                 return true;
             }
             return false;
