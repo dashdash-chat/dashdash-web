@@ -10,6 +10,10 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route("/demo")
+def about():
+    return render_template('demo.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
