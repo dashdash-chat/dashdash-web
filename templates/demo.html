@@ -10,7 +10,7 @@
              <p>
                  This demo uses an <a href="http://stefan-strigler.de/jwchat/">open-source</a>, web-based chat client that opens your buddy list in a new window. (It's not perfect, but because Vine is built on XMPP, it works out-of-the-box.)</p>
              <p>
-                 If you prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "<span id='username'>[username]</span>@{{ server }}" and password "<span id='password'>[password]</span>".
+                 If you prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "{{ username }}@{{ server }}" and password "{{ password }}".
              </p>
              </p>
                  For an overview of the basic features, watch this screencast (at 720p in full screen mode).
@@ -22,8 +22,8 @@
     </div>
 {% endblock %}
 {% block script %}
-    <script src="jwchat/browsercheck.js" language="JavaScript1.2"></script>
-    <script src="jwchat/shared.js" language="JavaScript1.2"></script>
+    <script src="/static/jwchat/browsercheck.js" language="JavaScript1.2"></script>
+    <script src="/static/jwchat/jwchat/shared.js" language="JavaScript1.2"></script>
     <script language="JavaScript">
         var jid, pass, register, prio, connect_host, connect_port, connect_secure;
         var jwchats = new Array();
@@ -55,7 +55,7 @@
         var DEBUGJID = "admin@"+SITENAME; // which user get's debug messages
         /* most probably you don't want to change these */
         var timerval = 2000; // poll frequency in msec
-        var stylesheet = "jwchat/jwchat.css";
+        var stylesheet = "/static/jwchat/jwchat.css";
         var THEMESDIR = "themes";
         /* end config */
         var GUEST_ACC = "{{ username }}";
@@ -72,7 +72,7 @@
                 register = false;
                 prio = DEFAULTPRIORITY;
                 connect_secure = false;
-                jwchats[jid] = window.open('jwchat/jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
+                jwchats[jid] = window.open("/static/jwchat/jwchat.html",makeWindowName(jid),'width=320,height=390,resizable=yes');
                 return true;
             }
             return false;
@@ -83,8 +83,6 @@
             HTTPBASE = BACKENDS[0].httpbase;
             BACKEND_TYPE = BACKENDS[0].type;
             JABBERSERVER = servers_allowed[0];
-            document.getElementById('username').innerHTML = GUEST_ACC;
-            document.getElementById('password').innerHTML = GUEST_PWD;
         }
         onload = init;
     </script>
