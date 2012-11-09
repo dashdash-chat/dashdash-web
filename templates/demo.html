@@ -3,7 +3,7 @@
 {% block body %}
     <div class='row'>
         <div class='span4'>
-             <a id='login_button' class='btn btn-success vine-chat-bubble-compact' onClick='tryAutoLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
+             <a id='login_button' class='btn btn-success vine-chat-bubble-compact' onClick='tryLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
              <p>
                  <strong>Make sure popups are enabled, and then send someone a message!</strong>
              </p>
@@ -25,152 +25,37 @@
 <script src="config.js" language="JavaScript1.2"></script>
 <script src="browsercheck.js" language="JavaScript1.2"></script>
 <script src="shared.js" language="JavaScript1.2"></script>
-<script language="JavaScript">
-<!--
-   /*
-    * JWChat, a web based jabber client
-    * Copyright (C) 2003-2004 Stefan Strigler <steve@zeank.in-berlin.de>
-    *
-    * This program is free software; you can redistribute it and/or
-    * modify it under the terms of the GNU General Public License
-    * as published by the Free Software Foundation; either version 2
-    * of the License, or (at your option) any later version.
-    *
-    * This program is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    * GNU General Public License for more details.
-    *
-    * You should have received a copy of the GNU General Public License
-    * along with this program; if not, write to the Free Software
-    * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-    *
-    * Please visit http://jwchat.sourceforge.net for more information!
-    */
-var jid, pass, register, prio, connect_host, connect_port, connect_secure;
-var jwchats = new Array();
-var JABBERSERVER;
-var HTTPBASE;
-var BACKEND_TYPE;
-var GUEST_ACC;
-var GUEST_PWD;
-
-/** On page load if the user name given in jid parameter is a guest
-    * auto-login the user with preconfigured password.
-    */
-function tryAutoLogin() {
-    if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
-        // Ignore
-    } else {
-        jid = GUEST_ACC + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
-        pass = GUEST_PWD;
-        register = false;
-        prio = DEFAULTPRIORITY;
-        connect_secure = false;
-
-        jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
-        return true;
-    }
-    return false;
-}
-
-/* check if user want's to register new
- * account and things */    
-function loginCheck(form) { 
-    if (form.jid.value == '') {
-        alert(loc("You need to supply a username"));
-        return false;
-    }
-    if (form.pass.value == '') {
-        alert(loc("You need to supply a password"));
-        return false;
-    }
-    if (document.getElementById('tr_server').style.display != 'none') {
-        var val = document.getElementById('server').value;
-        if (val == '') {
-            alert(loc("You need to supply a jabber server"));
+    <script language="JavaScript">
+        var jid, pass, register, prio, connect_host, connect_port, connect_secure;
+        var jwchats = new Array();
+        var JABBERSERVER;
+        var HTTPBASE;
+        var BACKEND_TYPE;
+        var GUEST_ACC;
+        var GUEST_PWD;
+        function tryLogin() {
+            if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
+                // Ignore
+            } else {
+                jid = GUEST_ACC + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
+                pass = GUEST_PWD;
+                register = false;
+                prio = DEFAULTPRIORITY;
+                connect_secure = false;
+                jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
+                return true;
+            }
             return false;
         }
-        JABBERSERVER = val;
-    }
-    jid = form.jid.value + "@" + JABBERSERVER + "/";
-    if (form.res.value != '')
-        jid += form.res.value;
-    else
-        jid += DEFAULTRESOURCE;
-    if(!isValidJID(jid))
-        return false;
-    if (jwchats[jid] && !jwchats[jid].closed) {
-        jwchats[jid].focus();
-        return false;
-    }
-    pass = form.pass.value;
-    register = form.register.checked;
-    prio = form.prio[form.prio.selectedIndex].value;
-    connect_port = form.connect_port.value;
-    connect_host = form.connect_host.value;
-    connect_secure = form.connect_secure.checked;
-    jwchats[jid] = window.open('jwchat.html',makeWindowName(jid),'width=320,height=390,resizable=yes');
-    return false;
-}
-
-function toggleMoreOpts(show) {
-    if (show) {
-        document.getElementById('showMoreOpts').style.display = 'none';
-        document.getElementById('showLessOpts').style.display = '';
-    } else {
-        document.getElementById('showLessOpts').style.display = 'none';
-        document.getElementById('showMoreOpts').style.display = '';
-    }
-    var rows = document.getElementById('lTable').getElementsByTagName('TBODY').item(0).getElementsByTagName('TR');
-    for (var i=0; i<rows.length; i++) {
-        if (rows[i].className == 'moreOpts') {
-            if (show)
-    rows[i].style.display = '';
-            else
-    rows[i].style.display = 'none';
+        function init() {
+            var servers_allowed = BACKENDS[0].servers_allowed,
+                default_server = BACKENDS[0].default_server;
+            HTTPBASE = BACKENDS[0].httpbase;
+            BACKEND_TYPE = BACKENDS[0].type;
+            JABBERSERVER = servers_allowed[0];
+            document.getElementById('username').innerHTML = GUEST_ACC;
+            document.getElementById('password').innerHTML = GUEST_PWD;
         }
-    }
-    return false;
-}
-
-function serverSelected() {
-    var oSel = document.getElementById('server');
-    var servers_allowed = BACKENDS[bs.selectedIndex].servers_allowed;
-    // TODO ...
-    /* change format of servers_allowed to be able to associate connect 
-     * host information to it 
-     */
-}
-
-function backendSelected() {
-    var bs = document.getElementById('backend_selector');
-    var servers_allowed, default_server;
-    if (bs) {
-        servers_allowed = BACKENDS[bs.selectedIndex].servers_allowed;
-        default_server = BACKENDS[bs.selectedIndex].default_server;
-        if (BACKENDS[bs.selectedIndex].description)
-            document.getElementById('backend_description').innerHTML = BACKENDS[bs.selectedIndex].description;
-        HTTPBASE = BACKENDS[bs.selectedIndex].httpbase;
-        BACKEND_TYPE = BACKENDS[bs.selectedIndex].type;
-    }    else {
-        servers_allowed = BACKENDS[0].servers_allowed;
-        default_server = BACKENDS[0].default_server;
-        HTTPBASE = BACKENDS[0].httpbase;
-        BACKEND_TYPE = BACKENDS[0].type;
-    }
-    JABBERSERVER = servers_allowed[0];
-}
-
-function init() {
-    backendSelected();  // assumes we want the first backend
-    //tryAutoLogin();
-    document.getElementById('username').innerHTML = GUEST_ACC;
-    document.getElementById('password').innerHTML = GUEST_PWD;
-}
-
-onload = init;
-//-->
-        </script>
+        onload = init;
+    </script>
 {% endblock %}
-        
