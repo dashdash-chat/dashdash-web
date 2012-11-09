@@ -12,7 +12,7 @@ def about():
 
 @app.route("/demo")
 def about():
-    return render_template('demo.html')
+    return render_template('demo.html', server=server, username='alice', password='demo_password')
 
 @app.errorhandler(404)
 def page_not_found(e):

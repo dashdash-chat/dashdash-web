@@ -10,7 +10,7 @@
              <p>
                  This demo uses an <a href="http://stefan-strigler.de/jwchat/">open-source</a>, web-based chat client that opens your buddy list in a new window. (It's not perfect, but because Vine is built on XMPP, it works out-of-the-box.)</p>
              <p>
-                 If you prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "<span id='username'>[username]</span>@vine.im" and password "<span id='password'>[password]</span>".
+                 If you prefer a desktop client such as <a href="http://adium.im/">Adium</a> or <a href="http://www.pidgin.im/">Pidgin</a>, add a new XMPP/Jabber account and sign in with "<span id='username'>[username]</span>@{{ server }}" and password "<span id='password'>[password]</span>".
              </p>
              </p>
                  For an overview of the basic features, watch this screencast (at 720p in full screen mode).
@@ -22,17 +22,47 @@
     </div>
 {% endblock %}
 {% block script %}
-<script src="config.js" language="JavaScript1.2"></script>
-<script src="browsercheck.js" language="JavaScript1.2"></script>
-<script src="shared.js" language="JavaScript1.2"></script>
+    <script src="browsercheck.js" language="JavaScript1.2"></script>
+    <script src="shared.js" language="JavaScript1.2"></script>
     <script language="JavaScript">
         var jid, pass, register, prio, connect_host, connect_port, connect_secure;
         var jwchats = new Array();
+        /* start config */
+        var SITENAME = "{{ server }}";
+        var BACKENDS = [{
+                             name:"Native Binding",
+                             description:"Ejabberd's native HTTP Binding backend",
+                             httpbase:"https://xmpp." + SITENAME + ":5281/http-bind/",
+                             type:"binding",
+                             servers_allowed:[SITENAME]
+                         },
+                         {
+                             name:"Native Polling",
+                             description:"Ejabberd's native HTTP Polling backend",
+                             httpbase:"https://xmpp." + SITENAME + ":5281/http-poll/",
+                             type:"polling",
+                             servers_allowed:[SITENAME]
+                         }];
+        var DEFAULTRESOURCE = "jwchat";
+        var DEFAULTPRIORITY = "10";
+        /* default values for joingroupchat form */
+        var DEFAULTCONFERENCEROOM = "talks";
+        var DEFAULTCONFERENCESERVER = "conference."+SITENAME;
+        /* debugging options */
+        var DEBUG = false; // turn debugging on
+        var DEBUG_LVL = 2; // debug-level 0..4 (4 = very noisy)
+        var USE_DEBUGJID = false; // if true only DEBUGJID gets the debugger
+        var DEBUGJID = "admin@"+SITENAME; // which user get's debug messages
+        /* most probably you don't want to change these */
+        var timerval = 2000; // poll frequency in msec
+        var stylesheet = "jwchat.css";
+        var THEMESDIR = "themes";
+        /* end config */
+        var GUEST_ACC = "{{ username }}";
+        var GUEST_PWD = "{{ password }}";
         var JABBERSERVER;
         var HTTPBASE;
         var BACKEND_TYPE;
-        var GUEST_ACC;
-        var GUEST_PWD;
         function tryLogin() {
             if (typeof(GUEST_ACC) == 'undefined' || GUEST_ACC.length == 0) {
                 // Ignore
