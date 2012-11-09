@@ -42,6 +42,19 @@ Development Setup
   * `deactivate`
   * `cd ..`
   * `sudo cp /vagrant/web-env/web/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
+0. Download the JWChat code and prepare the static files
+  * `cd /vagrant`
+  * `git clone git://github.com/lehrblogger/JWChat.git jwchat`
+  * `git checkout --track -b vine origin/vine`
+  * `cd jwchat`
+  * `make`
+0. NOTES TO ADD
+  * `127.0.0.1       dev.vine.im`
+  * `127.0.0.1       xmpp.dev.vine.im`
+  * `git clone git://github.com/lehrblogger/JSDebugger.git`
+  * `mv JSDebugger/* ./`
+  * `rm -r JSDebugger`
+  * `perl -pi -e 's/var DEBUG = false;/var DEBUG = true;/g' config.js`
 
 To Run the Web Server
 ---------------------
