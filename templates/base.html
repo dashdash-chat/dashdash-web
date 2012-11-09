@@ -14,14 +14,14 @@
             })();
         </script>
         <title>{% block title %}Vine.IM{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vine.css') }}" />
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/vine.css" />
     </head>
     <body>
         <div class="navbar">
                 <div class="container">
                     <ul class="nav">
-                        <li class="logo"><a href="/"><img src='{{ url_for('static', filename='img/logo.png') }}'/></a></li>
+                        <li class="logo"><a href="/"><img src='static/img/logo.png' /></a></li>
                     </ul>
                 </div>
         </div>
@@ -38,9 +38,9 @@
                 </ul>
             </div>
         </footer>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.js') }}" ></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
+        <script type="text/javascript" src="/static/js/jquery.js" ></script>
+        <script type="text/javascript" src="/static/js/jquery-ui.js" ></script>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js" ></script>
         {% block script scoped %}{% endblock %}
         <script type="text/javascript">
             var _sf_async_config = { uid: 2156, domain: 'vine.im' };
