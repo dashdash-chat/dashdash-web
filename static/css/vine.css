@@ -77,6 +77,12 @@ footer .footer-content-list {
 footer .footer-content-list li {
   float: left;
   margin-right: 10px;
+  padding-right: 10px;
+  line-height: 12px;
+  border-right: 1px solid black;
+}
+footer .footer-content-list li:last-child {
+  border-right: none;
 }
 .client-logo-list {
   list-style: none;
