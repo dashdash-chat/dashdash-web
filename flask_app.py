@@ -13,10 +13,6 @@ def about():
 @app.route("/demo")
 def demo():
     return render_template('demo.html', server=server, username='alice', password='demo_password')
-    
-@app.route("/demo/jwchat-config.js")
-def jwchat_config():
-    return render_template('jwchat-config.js', server=server, username='alice', password='demo_password')
 
 @app.errorhandler(404)
 def page_not_found(e):
