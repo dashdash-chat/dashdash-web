@@ -39,6 +39,6 @@ def page_not_found(e):
     return render_template('500.html'), 500
 
 if __name__ == "__main__":
-    app.secret_key = 'ksdfj321-jkhf2enmr 3njklm sdf,fgsd'
+    app.secret_key = constants.flask_secret_key
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
