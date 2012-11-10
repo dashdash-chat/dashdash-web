@@ -17,10 +17,6 @@ conn = engine.connect()
 def index():
     return render_template('home.html')
 
-@app.route("/about")
-def about():
-    return render_template('about.html')
-
 @app.route("/demo/")
 def no_demo():
     return redirect(url_for('index'))
