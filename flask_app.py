@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, url_for
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import xmlrpclib
 import constants
@@ -21,9 +21,18 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route("/demo")
-def demo():
-    return render_template('demo.html', server=server, username='alice', password='demo_password')
+@app.route("/demo/")
+def no_demo():
+    return redirect(url_for('index'))
+
+@app.route("/demo/<token>/")
+def demo(token):
+    s = select([users.c.name, demos.c.password],
+               and_(users.c.id == demos.c.user_id, demos.c.token == token))
+    found_demo = conn.execute(s).fetchone()
+    if found_demo:
+        return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
+    return redirect(url_for('index'))
 
 @app.errorhandler(404)
 def page_not_found(e):
