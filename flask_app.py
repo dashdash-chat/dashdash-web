@@ -1,6 +1,17 @@
 from flask import Flask, render_template, redirect
+from sqlalchemy import create_engine, select, and_, MetaData, Table
+import xmlrpclib
+import constants
+
 app = Flask(__name__)
 server = 'dev.vine.im'
+xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server, constants.xmlrpc_port))
+engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
+metadata = MetaData()
+metadata.bind = engine
+users = Table('users', metadata, autoload=True)
+demos = Table('demos', metadata, autoload=True)
+conn = engine.connect()
 
 @app.route("/")
 def index():
