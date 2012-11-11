@@ -3,6 +3,7 @@ Development Setup
 0. Set up the base VM
   * Follow the instructions in https://github.com/lehrblogger/vine-shared/#development-setup
 0. Install nginx (on the machine that has the vine.im or dev.vine.im URL)
+  * I have notes about running `sudo easy_install pyasn1` and `sudo easy_install pyasn1_modules` but can't figure out at which point or why... just FYI
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
   * `cd ~`
   * `wget http://superb-dca3.dl.sourceforge.net/project/pcre/pcre/8.31/pcre-8.31.tar.gz`
@@ -10,13 +11,20 @@ Development Setup
   * `cd pcre-8.31/`
   * `./configure`
   * `make`
+  * If that fails (in prod), run `sudo yum groupinstall "Development Tools"` first
   * `sudo make install`
-  * `sudo ldconfig`
+  * `sudo ldconfig` and/or `sudo ln -s /lib64/libpcre.so.0.0.1 /lib64/libpcre.so.1`
   * `cd ..`
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
   * `cd nginx-1.2.0/`
   * `./configure --with-http_ssl_module`
+  * If that fails (in prod), run this instead:
+    * `cd ..`
+    * `wget http://www.openssl.org/source/openssl-1.0.1c.tar.gz`
+    * `tar xvzf openssl-1.0.1c.tar.gz 
+    * `cd nginx-1.2.0/`
+    * `./configure --with-http_ssl_module --with-openssl='../openssl-1.0.1c' --without-http_gzip_module`
   * `make`
   * `sudo make install`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
@@ -31,35 +39,54 @@ Development Setup
   * `bin/pip install flask Flask-OAuth Flask-WTF`
   * `bin/pip install mysql-python sqlalchemy`
   * `cd ..`
+0. Install necessary Perl modules
+  * `sudo apt-get install yum`
+  * `sudo yum install cpan`
+  * `cpan`
+  * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
+  * `o conf urllist push http://cpan.strawberryperl.com/`
+  * `o conf commit`
+  * Control-d to leave the cpan prompt
+  * `sudo cpan Locale::Maketext::Fuzzy`  # And repeat for any other necessary modules, noting that error messages like "Can't locate Locale/Maketext/Fuzzy.pm in @INC" when running install.sh below mean you should try commands like the one mentioned
+0. Download the JWChat code and prepare the static files
+  * `cd /vagrant` or `cd /home/ec2-user`
+  * `git clone git://github.com/lehrblogger/JWChat.git jwchat`
+  * `cd jwchat`
+  * `git checkout --track -b vine origin/vine`
+  * `make`
+  * `cd ..`
+  * Optionally get the debugger for JWChat:
+    * `git clone git://github.com/lehrblogger/JSDebugger.git`
+    * `mv JSDebugger/* ./jwchat/htdocs.en`
+    * `perl -pi -e 's/var DEBUG = false;/var DEBUG = true;/g' ./jwchat/htdocs.en/config.dev.vine.im.js`
 0. Download the vine-web code (easier from your local machine) and run the web server (from the VM)
   * `cd web-env`
   * `git clone git@github.com:lehrblogger/vine-web.git web`
   * `cd web`
+  * `git submodule init`
+  * `git submodule update`
+  * In prod, also init the vine-secrets submodule:
+    * `cd shared/`
+    * `git submodule init`
+    * `git submodule update`
+    * `cd ..`
   * `../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000`
   * Visit http://dev.vine.im:8000/ in a browser
   * Control-c to stop the web server
   * `cd ..`
   * `deactivate`
   * `cd ..`
-  * `sudo cp /vagrant/web-env/web/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
-0. Download the JWChat code and prepare the static files
-  * `cd /vagrant`
-  * `git clone git://github.com/lehrblogger/JWChat.git jwchat`
-  * `git checkout --track -b vine origin/vine`
-  * `cd jwchat`
-  * `make`
-0. NOTES TO ADD
-  * `127.0.0.1       dev.vine.im`
-  * `127.0.0.1       xmpp.dev.vine.im`
-  * `git clone git://github.com/lehrblogger/JSDebugger.git`
-  * `mv JSDebugger/* ./`
-  * `rm -r JSDebugger`
-  * `perl -pi -e 's/var DEBUG = false;/var DEBUG = true;/g' config.js`
+  * `sudo cp /vagrant/web-env/web/shared/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload` or 
+  `sudo cp /home/ec2-user/web-env/web/shared/secrets/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
+
 
 To Run the Web Server
 ---------------------
-  * `cd /vagrant/web-env/web && ../bin/python myapp.py && cd ..`
-  * `cd /vagrant/web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
+  * `cd ./web-env/web && ../bin/python myapp.py && cd ..`
+  * `cd ./web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
+  * `cd ./web-env/web && ../bin/python flask_app.py && cd ..`
+  * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..`
+  * To run in prod, `cd /home/ec2-user/web-env && source bin/activate ** cd web && nohup ../bin/gunicorn flask_app:app -b 0.0.0.0:8000 --workers=4 >> /home/ec2-user/logs/gunicorn.log &`
 
 Google Form HTML (for lack of a better place to put it)
 -------------------------------------------------------
