@@ -22,7 +22,7 @@ Development Setup
   * If that fails (in prod), run this instead:
      * `cd ..`
      * `wget http://www.openssl.org/source/openssl-1.0.1c.tar.gz`
-     * `tar xvzf openssl-1.0.1c.tar.gz 
+     * `tar xvzf openssl-1.0.1c.tar.gz`
      * `cd nginx-1.2.0/`
      * `./configure --with-http_ssl_module --with-openssl='../openssl-1.0.1c' --without-http_gzip_module`
   * `make`
@@ -70,6 +70,7 @@ Development Setup
      * `git submodule init`
      * `git submodule update`
      * `cd ..`
+  * `source bin/activate`
   * `../bin/gunicorn -w 4 myapp:app -b 0.0.0.0:8000`
   * Visit http://dev.vine.im:8000/ in a browser
   * Control-c to stop the web server
@@ -82,8 +83,6 @@ Development Setup
 
 To Run the Web Server
 ---------------------
-  * `cd ./web-env/web && ../bin/python myapp.py && cd ..`
-  * `cd ./web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
   * `cd ./web-env/web && ../bin/python flask_app.py && cd ..`
   * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..`
   * To run in prod, `cd /home/ec2-user/web-env && source bin/activate ** cd web && nohup ../bin/gunicorn flask_app:app -b 0.0.0.0:8000 --workers=4 >> /home/ec2-user/logs/gunicorn.log &`
