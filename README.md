@@ -1,4 +1,4 @@
-Development Setup
+Development Setup
 -----------------
 0. Set up the base VM
   * Follow the instructions in https://github.com/lehrblogger/vine-shared/#development-setup
@@ -87,12 +87,7 @@ Development Setup
 
 To Run the Web Server
 ---------------------
-<<<<<<< HEAD
   * Note that supervisor will do this for you, but for dev you might want to use the command line
-  * `cd ./web-env/web && ../bin/python myapp.py && cd ..`
-  * `cd ./web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
-=======
->>>>>>> 4821b91a956159a0c3935c288b7bb52e63e7cb1b
   * `cd ./web-env/web && ../bin/python flask_app.py && cd ..`
   * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..`
   * To run in prod, `cd /home/ec2-user/web-env && source bin/activate ** cd web && nohup ../bin/gunicorn flask_app:app -b 0.0.0.0:8000 --workers=4 >> /home/ec2-user/logs/gunicorn.log &`
