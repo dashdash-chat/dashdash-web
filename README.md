@@ -78,10 +78,15 @@ Development Setup
   * `cd ..`
   * `sudo cp /vagrant/web-env/web/shared/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload` or 
   `sudo cp /home/ec2-user/web-env/web/shared/secrets/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
-
+0. Install and configure [Supervisor](http://supervisord.org/) to run/manage the web server (and eventually [Celery](http://celeryproject.org/))
+  * `sudo pip install supervisor==3.0a10` # The current version, 3.0b1, wasn't working I think because of [this bug](https://github.com/Supervisor/supervisor/issues/121).
+  * `sudo supervisord -c /home/ec2-user/web-env/web/shared/supervisord.conf`
+  * Wait a moment, and then verify that `supervisorctl -c /home/ec2-user/web-env/web/shared/supervisord.conf status` lists gunicorn as running
+  * If nginx is running and working properly, you should be able to visit http://dev.vine.im/supervisor/ and control supervisor from the browser.
 
 To Run the Web Server
 ---------------------
+  * Note that supervisor will do this for you, but for dev you might want to use the command line
   * `cd ./web-env/web && ../bin/python myapp.py && cd ..`
   * `cd ./web-env/web && ../bin/gunicorn -w 4 myapp:app -b 0.0.0.0 && cd ..`
   * `cd ./web-env/web && ../bin/python flask_app.py && cd ..`
