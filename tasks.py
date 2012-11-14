@@ -10,7 +10,7 @@ celery.conf.update(
     CELERY_RESULT_SERIALIZER = 'json',
     CELERY_RESULT_BACKEND = 'database',
     CELERY_RESULT_DBURI = 'mysql://%s:%s@%s/%s' % (constants.celery_mysql_user, constants.celery_mysql_password, constants.db_host, constants.celery_db_name),
-    CELERY_RESULT_ENGINE_OPTIONS = {"echo": True},
+    #CELERY_RESULT_ENGINE_OPTIONS = {"echo": True},
     BROKER_URL = 'sqs://%s:%s@' % (constants.aws_access_key_id, constants.aws_secret_access_key),
     BROKER_TRANSPORT_OPTIONS = {
         'region': 'us-east-1',
