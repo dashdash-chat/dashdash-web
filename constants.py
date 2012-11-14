@@ -1,4 +1,5 @@
 from shared import env_vars
+debug = env_vars.debug
 
 domain = env_vars.domain
 server = '%s.%s' % ('xmpp', domain)
@@ -11,6 +12,9 @@ web_mysql_user = 'web'
 web_mysql_password = env_vars.web_mysql_password
 db_host = env_vars.db_host
 db_name = 'vine'
+
+twitter_consumer_key = env_vars.twitter_consumer_key
+twitter_consumer_secret = env_vars.twitter_consumer_secret
 
 celery_mysql_user = 'celery'
 celery_mysql_password = env_vars.celery_mysql_password

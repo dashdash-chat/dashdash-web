@@ -1,9 +1,12 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, flash, render_template, redirect, request, session, url_for
+from flask.ext.oauth import OAuth
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import xmlrpclib
 import constants
 
 app = Flask(__name__)
+app.debug = constants.debug
+app.secret_key = constants.flask_secret_key
 server = 'dev.vine.im'
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server, constants.xmlrpc_port))
 engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
@@ -12,10 +15,57 @@ metadata.bind = engine
 users = Table('users', metadata, autoload=True)
 demos = Table('demos', metadata, autoload=True)
 conn = engine.connect()
+oauth = OAuth()
+twitter = oauth.remote_app('twitter',
+    base_url='https://api.twitter.com/1/',
+    request_token_url='https://api.twitter.com/oauth/request_token',
+    access_token_url='https://api.twitter.com/oauth/access_token',
+    authorize_url='https://api.twitter.com/oauth/authenticate',
+    consumer_key=constants.twitter_consumer_key,
+    consumer_secret=constants.twitter_consumer_secret
+)
 
 @app.route("/")
 def index():
-    return render_template('home.html')
+    user = session.get('vine_user')
+    return render_template('home.html', user=user)
+
+@app.route('/login')
+def login():
+    return twitter.authorize()
+    #return twitter.authorize(callback=url_for('oauth_authorized', next=request.args.get('next') or request.referrer or None))
+
+@app.route('/logout')
+def logout():
+    session.pop('vine_user', None)
+    flash('You were signed out', 'error')
+    return redirect(request.referrer or url_for('index'))
+
+@twitter.tokengetter
+def get_twitter_token():
+    s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
+    return conn.execute(s).fetchone()
+
+@app.route('/twitter/oauth_callback')
+@twitter.authorized_handler
+def oauth_authorized(resp):
+    if resp is None:
+        flash(u'You cancelled the Twitter authorization flow.', 'error')
+        return redirect(url_for('index'))
+    twitter_user = resp['screen_name'].lower()
+    s = select([users.c.email, users.c.twitter_token, users.c.twitter_secret],
+            and_(users.c.name == twitter_user))
+    found_user = conn.execute(s).fetchone()
+    if found_user:
+        if not found_user.twitter_token == resp['oauth_token'] or not found_user.twitter_secret == resp['oauth_token_secret']:
+            conn.execute(users.update().\
+                         where(users.c.name == twitter_user).\
+                         values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
+        session['vine_user'] = twitter_user
+        flash('You were signed in as %s' % twitter_user, 'error')
+    else:    
+        flash('Sorry, but we\'re in private beta. Come back later!', 'error')
+    return redirect(url_for('index'))
 
 @app.route("/demo/")
 def no_demo():
@@ -39,6 +89,5 @@ def page_not_found(e):
     return render_template('500.html'), 500
 
 if __name__ == "__main__":
-    app.secret_key = constants.flask_secret_key
-    app.debug = True
+    #NOTE this code only gets run when you're using Flask's built-in server, so gunicorn never sees this code.
     app.run(host='0.0.0.0', port=8000)
