@@ -20,7 +20,7 @@ celery_mysql_user = 'celery'
 celery_mysql_password = env_vars.celery_mysql_password
 celery_db_name = 'celery_db'
 
-aws_sqs_prefix = 'vine-dev-'
+aws_sqs_prefix = env_vars.aws_sqs_prefix
 aws_access_key_id = env_vars.aws_access_key_id
 aws_secret_access_key = env_vars.aws_secret_access_key  # if it's broken, regenerate this until you get one without a "/"
 
