@@ -30,16 +30,16 @@ twitter = oauth.remote_app('twitter',
 
 @celery.task
 def fetch_follows(token, secret):
-    resp = twitter.get('friends/ids.json', data={'stringify_ids': True}, token=(token, secret))
-    if resp.status == 200:
-        print resp.data
-        #TODO paginated results https://dev.twitter.com/docs/api/1.1/get/friends/ids
-    else:
-        print "Request failed"
-        print resp.headers
-        print resp.data
-        print resp.raw_data
-        print resp.status
+    follow_ids = []
+    cursor = '-1'
+    while cursor != '0':  #LATER split this into separate celery tasks
+        resp = twitter.get('friends/ids.json', data={'stringify_ids': True, 'cursor': cursor}, token=(token, secret))
+        if resp.status != 200:
+            print "Request failed for cursor %d" % cursor
+            return
+        cursor = resp.data['next_cursor_str']
+        follow_ids.extend(resp.data['ids'])
+    print follow_ids
 
 @twitter.tokengetter
 def split_twitter_token_pair(token_pair):
