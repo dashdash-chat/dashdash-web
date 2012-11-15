@@ -54,14 +54,18 @@ def oauth_authorized(resp):
         flash(u'You cancelled the Twitter authorization flow.', 'error')
         return redirect(url_for('index'))
     twitter_user = resp['screen_name'].lower()
-    s = select([users.c.email, users.c.twitter_token, users.c.twitter_secret],
+    s = select([users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
             and_(users.c.name == twitter_user))
     found_user = conn.execute(s).fetchone()
     if found_user:
-        if not found_user.twitter_token == resp['oauth_token'] or not found_user.twitter_secret == resp['oauth_token_secret']:
+        if not found_user.twitter_id == resp['user_id'] or \
+           not found_user.twitter_token == resp['oauth_token'] or \
+           not found_user.twitter_secret == resp['oauth_token_secret']:
             conn.execute(users.update().\
                          where(users.c.name == twitter_user).\
-                         values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
+                         values(twitter_id=resp['user_id'],
+                                twitter_token=resp['oauth_token'],
+                                twitter_secret=resp['oauth_token_secret']))
         result = fetch_follows.delay(resp['oauth_token'], resp['oauth_token_secret'])
         print result #TODO store this
         session['vine_user'] = twitter_user
