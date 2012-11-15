@@ -3,6 +3,7 @@ from flask.ext.oauth import OAuth
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import xmlrpclib
 import constants
+from tasks import fetch_follows
 
 app = Flask(__name__)
 app.debug = constants.debug
@@ -61,6 +62,8 @@ def oauth_authorized(resp):
             conn.execute(users.update().\
                          where(users.c.name == twitter_user).\
                          values(twitter_token=resp['oauth_token'], twitter_secret=resp['oauth_token_secret']))
+        result = fetch_follows.delay(resp['oauth_token'], resp['oauth_token_secret'])
+        print result #TODO store this
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
     else:    
