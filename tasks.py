@@ -35,7 +35,7 @@ def fetch_follows(token, secret):
     while cursor != '0':  #LATER split this into separate celery tasks
         resp = twitter.get('friends/ids.json', data={'stringify_ids': True, 'cursor': cursor}, token=(token, secret))
         if resp.status != 200:
-            print "Request failed for cursor %d" % cursor
+            print "Request failed for cursor %s" % cursor
             return
         cursor = resp.data['next_cursor_str']
         follow_ids.extend(resp.data['ids'])
