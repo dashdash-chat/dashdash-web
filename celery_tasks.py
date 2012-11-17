@@ -1,6 +1,7 @@
 from celery import Celery
 from flask.ext.oauth import OAuth
 from kombu import Exchange, Queue
+from sqlalchemy import create_engine, select, and_, MetaData, Table
 from time import sleep
 import constants
 
@@ -18,6 +19,11 @@ celery.conf.update(
         'queue_name_prefix': constants.aws_sqs_prefix,
     }
 )
+engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + constants.celery_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
+metadata = MetaData()
+metadata.bind = engine
+demos = Table('twitter_follows', metadata, autoload=True)
+conn = engine.connect()
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -29,7 +35,7 @@ twitter = oauth.remote_app('twitter',
 )
 
 @celery.task
-def fetch_follows(token, secret):
+def fetch_follows(user_twitter_id, token, secret):
     follow_ids = []
     cursor = '-1'
     while cursor != '0':  #LATER split this into separate celery tasks
@@ -40,8 +46,20 @@ def fetch_follows(token, secret):
         cursor = resp.data['next_cursor_str']
         follow_ids.extend(resp.data['ids'])
     print follow_ids
+    for follow_id in follow_ids:
+        
+            conn.execute(users.update().\
+                         where(users.c.name == twitter_user).\
+                         values(twitter_id=resp['user_id'],
+                                twitter_token=resp['oauth_token'],
+                                twitter_secret=resp['oauth_token_secret']))
+                                
+        s = select([twitter_follows.c.twitter_token, twitter_follows.c.twitter_secret],
+                    twitter_follows.c.from_twitter_id == user_twitter_id,
+                    twitter_follows.c.to_twitter_id == follow_id,)
     # use https://dev.twitter.com/docs/api/1.1/get/users/lookup to convert to real user objects, maybe?
     # or just store and correlate with users.twitter_id
+    # and then delete old ones? 
 
 @twitter.tokengetter
 def split_twitter_token_pair(token_pair):

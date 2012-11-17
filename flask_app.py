@@ -3,12 +3,11 @@ from flask.ext.oauth import OAuth
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import xmlrpclib
 import constants
-from tasks import fetch_follows
+from celery_tasks import fetch_follows
 
 app = Flask(__name__)
 app.debug = constants.debug
 app.secret_key = constants.flask_secret_key
-server = 'dev.vine.im'
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server, constants.xmlrpc_port))
 engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
 metadata = MetaData()
@@ -66,8 +65,8 @@ def oauth_authorized(resp):
                          values(twitter_id=resp['user_id'],
                                 twitter_token=resp['oauth_token'],
                                 twitter_secret=resp['oauth_token_secret']))
-        result = fetch_follows.delay(resp['oauth_token'], resp['oauth_token_secret'])
-        print result #TODO store this
+        #result = fetch_follows.delay(resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
+        #print result #TODO store this
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
     else:    
