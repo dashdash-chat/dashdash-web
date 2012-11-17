@@ -18,6 +18,7 @@ metadata = MetaData()
 metadata.bind = engine
 users = Table('users', metadata, autoload=True)
 demos = Table('demos', metadata, autoload=True)
+user_tasks = Table('user_tasks', metadata, autoload=True)
 conn = engine.connect()
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
@@ -37,7 +38,6 @@ def index():
 @app.route('/login')
 def login():
     return twitter.authorize()
-    #return twitter.authorize(callback=url_for('oauth_authorized', next=request.args.get('next') or request.referrer or None))
 
 @app.route('/logout')
 def logout():
@@ -57,7 +57,7 @@ def oauth_authorized(resp):
         flash(u'You cancelled the Twitter authorization flow.', 'error')
         return redirect(url_for('index'))
     twitter_user = resp['screen_name'].lower()
-    s = select([users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
+    s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
             and_(users.c.name == twitter_user))
     found_user = conn.execute(s).fetchone()
     if found_user:
@@ -69,8 +69,11 @@ def oauth_authorized(resp):
                          values(twitter_id=resp['user_id'],
                                 twitter_token=resp['oauth_token'],
                                 twitter_secret=resp['oauth_token_secret']))
-        #result = fetch_follows.delay(resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
-        #print result #TODO store this
+        result = fetch_follows.delay(resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
+        conn.execute(user_tasks.insert().\
+                     values(user_id=found_user.id,
+                            celery_task_id=result,
+                            celery_task_type='fetch_follows'))
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
     else:    
