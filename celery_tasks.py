@@ -19,7 +19,11 @@ celery.conf.update(
         'queue_name_prefix': constants.aws_sqs_prefix,
     }
 )
-engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + constants.celery_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
+engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + constants.celery_mysql_password + '@' + constants.db_host + '/' + constants.db_name,
+                       pool_size=100,
+                       max_overflow=-1,
+                       pool_recycle=3600,
+                       pool_timeout=10)
 metadata = MetaData()
 metadata.bind = engine
 demos = Table('twitter_follows', metadata, autoload=True)

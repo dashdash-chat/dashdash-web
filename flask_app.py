@@ -9,7 +9,11 @@ app = Flask(__name__)
 app.debug = constants.debug
 app.secret_key = constants.flask_secret_key
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server, constants.xmlrpc_port))
-engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name)
+engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name,
+                       pool_size=100,
+                       max_overflow=-1,
+                       pool_recycle=3600,
+                       pool_timeout=10)
 metadata = MetaData()
 metadata.bind = engine
 users = Table('users', metadata, autoload=True)
