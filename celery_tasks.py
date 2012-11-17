@@ -50,17 +50,17 @@ def fetch_follows(user_twitter_id, token, secret):
         cursor = resp.data['next_cursor_str']
         follow_ids.extend(resp.data['ids'])
     print follow_ids
-    for follow_id in follow_ids:
-        
-            conn.execute(users.update().\
-                         where(users.c.name == twitter_user).\
-                         values(twitter_id=resp['user_id'],
-                                twitter_token=resp['oauth_token'],
-                                twitter_secret=resp['oauth_token_secret']))
-                                
-        s = select([twitter_follows.c.twitter_token, twitter_follows.c.twitter_secret],
-                    twitter_follows.c.from_twitter_id == user_twitter_id,
-                    twitter_follows.c.to_twitter_id == follow_id,)
+    # for follow_id in follow_ids:
+    #     
+    #         conn.execute(users.update().\
+    #                      where(users.c.name == twitter_user).\
+    #                      values(twitter_id=resp['user_id'],
+    #                             twitter_token=resp['oauth_token'],
+    #                             twitter_secret=resp['oauth_token_secret']))
+    #                             
+    #     s = select([twitter_follows.c.twitter_token, twitter_follows.c.twitter_secret],
+    #                 twitter_follows.c.from_twitter_id == user_twitter_id,
+    #                 twitter_follows.c.to_twitter_id == follow_id,)
     # use https://dev.twitter.com/docs/api/1.1/get/users/lookup to convert to real user objects, maybe?
     # or just store and correlate with users.twitter_id
     # and then delete old ones? 
