@@ -35,14 +35,14 @@
   * `sudo virtualenv web-env`  # sudoing because python-dev changed python permissions
   * `cd web-env`
   * `source bin/activate`
-  * `bin/pip install gunicorn`
-  * `bin/pip install flask Flask-OAuth Flask-WTF`
   * `bin/pip install mysql-python sqlalchemy`
+  * `bin/pip install gunicorn celery`
+  * `bin/pip install flask Flask-OAuth Flask-WTF`
   * `cd ..`
 0. Install necessary Perl modules
   * `sudo apt-get install yum`
   * `sudo yum install cpan`
-  * `cpan`
+  * `cpan` and type `yes` at the prompt to have it configure as much as possible
   * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
   * `o conf urllist push http://cpan.strawberryperl.com/`
   * `o conf commit`
@@ -81,15 +81,17 @@
   `sudo cp /home/ec2-user/web-env/web/shared/secrets/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
 0. Install and configure [Supervisor](http://supervisord.org/) to run/manage the web server (and eventually [Celery](http://celeryproject.org/))
   * `sudo pip install supervisor==3.0a10` # The current version, 3.0b1, wasn't working I think because of [this bug](https://github.com/Supervisor/supervisor/issues/121).
-  * `sudo supervisord -c /home/ec2-user/web-env/web/shared/supervisord.conf` or `sudo supervisord -c /home/ec2-user/web-env/web/shared/supervisord.conf`
+  * `sudo mkdir /var/log/supervisord`
+  * `sudo chown vagrant /var/log/supervisord`
+  * `sudo supervisord -c /vagrant/web-env/web/shared/supervisord.conf` or `sudo supervisord -c /home/ec2-user/web-env/web/shared/secrets/supervisord.conf`
   * Wait a moment, and then verify that `supervisorctl -c /home/ec2-user/web-env/web/shared/`(`secrets/`)`supervisord.conf status` lists gunicorn as running
   * If nginx is running and working properly, you should be able to visit http://dev.vine.im/supervisor/ or http://vine.im/supervisor/ and control supervisor from the browser.
 
 To Run the Web Server
 ---------------------
   * Note that supervisor will do this for you, but for dev you might want to use the command line
-  * `cd ./web-env/web && ../bin/python flask_app.py && cd ..`
-  * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..`
+  * `cd ./web-env/web && ../bin/python flask_app.py && cd ..` (Flask's built-in server restarts itself for you if any files have changed.)
+  * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..` (Gunicorn needs you to restart it manually if any files have changed.)
   * To run in prod, `cd /home/ec2-user/web-env && source bin/activate ** cd web && nohup ../bin/gunicorn flask_app:app -b 0.0.0.0:8000 --workers=4 >> /home/ec2-user/logs/gunicorn.log &`
 
 To Run the Celery Worker
