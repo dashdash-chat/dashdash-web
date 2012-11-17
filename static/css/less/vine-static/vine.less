@@ -33,26 +33,30 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 {background-color: @brandPrimaryColor}
 
 
+.logo img{
+	width: 175px;
+}
 
-
-.navbar
+.vine-header
 {
-	margin-bottom:0;
-	.nav
+	padding:10px 0 20px;
+
+	.vine-main-logo
 	{
-		>li
-		{
-			display: inline-block;
-			padding: 10px 0;
-			&:first-child
-			{
-				padding-left:0;
-				padding-top:0;
-			}
-			>a
-			{
-				text-shadow: none;
-				padding-top:10px;
+		float:left;
+	}
+
+	.header-right-link-list
+	{
+		float:right;
+		ul {
+			margin:0;
+			list-style: none;
+
+			li {
+				float:left;
+				display:block;
+				margin-left:10px;
 			}
 		}
 	}
@@ -111,20 +115,19 @@ footer
 	min-height:400px;
 }
 
-.vine-sign-in
+.vine-sign-in img
 {
-	padding:20px 0;
-	width:100%;
+	width:136px;
+	float:right;
 }
 
-.right-col-section
-{
-	margin-bottom:20px;
-}
+
 
 #vine-invite-code-input
 {
-	width:140px
+	width: 137px;
+	float: right;
+	margin-bottom:0;
 }
 
 /*  chat bubbles */
@@ -242,6 +245,17 @@ footer
 	a:active,
 	a:visited
 	{ color:white; }
+}
+
+
+.right-col-section
+{
+	color:#888;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	font-size:;
+	line-height:25px;
 }
 
 
