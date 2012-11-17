@@ -66,10 +66,6 @@
 				</div>
 			</div>
 
-
-			
-			
-			
 			</div> <!-- container -->
 	{% else %}
 
@@ -77,13 +73,14 @@
 		<div class='vine-container container'>
 			<div class='row'>
 				<div class='vine-intro-convo span8'>
-					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>Hello!</h1></div>
-					<div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h1>Vine is a cocktail party on the Internet</h1></div>
-					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h1>You can see that your friends are chatting, but not what they're saying, unless you join their conversation... just like you could at a party in real life.</h1></div>
-					<!--
-					<div class="vine-chat-bubble vine-chat-bubble-right hide"><h1>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</h1></div>
-					-->
-					&nbsp;
+
+					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h2><i>Hello!</i></h2></div>
+					<div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>Vine is a cocktail party on the Internet</h3></div>
+					<div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h3>You can see that your friends are chatting</h3></div>
+                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>But not what they're saying</h3></div>
+                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h3>Unless you join their conversation</h3></div>
+                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>…just like you could at a party in real life!</h3></div>
+
 				</div>
 				<div class='vine-intro-invite span4'>
 
@@ -98,7 +95,7 @@
 						<a class='vine-sign-in' href="{{ url_for('login') }}"><img src='{{ url_for('static', filename='img/sign-in-with-twitter-d.png') }}' /></a>
 					
                         </br>
-                        <a href='#'><b>Want to know when we launch?</b></a>
+                        <a href='#'><i class="icon-envelope"></i> Want to know when we launch?</a>
 
                     </div>
 					<div class='clearfix'>

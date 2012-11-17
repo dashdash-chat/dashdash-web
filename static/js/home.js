@@ -1,32 +1,20 @@
 $(window).ready(function(){
 	
-	setTimeout(function(){ hello(); },1000);
-	setTimeout(function(){ vineIs(); },2000);
-	setTimeout(function(){ youCanSee(); },3000);
-	//setTimeout(function(){ bounceSignIn(); },6000);
 
+	var kids = $('.vine-intro-convo').children('.vine-chat-bubble');
+	setTimeout(function(){ chatLeft(kids[0]); },1000);
+	setTimeout(function(){ chatRight(kids[1]); },2000);
+	setTimeout(function(){ chatLeft(kids[2]); },3000);
+	setTimeout(function(){ chatRight(kids[3]); },3500);
+	setTimeout(function(){ chatLeft(kids[4]); },4000);
+	setTimeout(function(){ chatRight(kids[5]); },4250);
 
 });
 
-function hello()
-{
-	var bubble = $('.vine-intro-convo').children('.vine-chat-bubble')[0];
-	$(bubble).show('slide',{},500);
+function chatLeft(el) {
+	$(el).show('slide',{},500);
 }
 
-function vineIs()
-{
-	var bubble = $('.vine-intro-convo').children('.vine-chat-bubble')[1];
-	$(bubble).show('slide',{direction:'right'},500);
-}
-
-function youCanSee()
-{
-	var bubble = $('.vine-intro-convo').children('.vine-chat-bubble')[2];
-	$(bubble).show('slide',{direction:'left'},500);
-}
-
-function bounceSignIn()
-{
-	$('.vine-sign-in').effect('bounce',{times:2,direction:'horizontal', distance:5},500)
+function chatRight(el) {
+	$(el).show('slide',{direction:'right'},500);
 }
