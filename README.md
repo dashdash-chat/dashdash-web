@@ -92,6 +92,10 @@ To Run the Web Server
   * `cd ./web-env/web && ../bin/gunicorn -w 4 flask_app:app -b 0.0.0.0 && cd ..`
   * To run in prod, `cd /home/ec2-user/web-env && source bin/activate ** cd web && nohup ../bin/gunicorn flask_app:app -b 0.0.0.0:8000 --workers=4 >> /home/ec2-user/logs/gunicorn.log &`
 
+To Run the Celery Worker
+------------------------
+  * `celery -A celery_tasks worker --loglevel debug` is useful for development
+
 Google Form HTML (for lack of a better place to put it)
 -------------------------------------------------------
   ```<!DOCTYPE html>

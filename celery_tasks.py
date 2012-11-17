@@ -40,6 +40,8 @@ def fetch_follows(token, secret):
         cursor = resp.data['next_cursor_str']
         follow_ids.extend(resp.data['ids'])
     print follow_ids
+    # use https://dev.twitter.com/docs/api/1.1/get/users/lookup to convert to real user objects, maybe?
+    # or just store and correlate with users.twitter_id
 
 @twitter.tokengetter
 def split_twitter_token_pair(token_pair):
