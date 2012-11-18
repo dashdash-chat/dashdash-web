@@ -61,6 +61,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         self.start_time = datetime.now()
     
     def start(self, event):
+        self.send_presence()
         self.process_logs()
         self.update_next_old_edge()
     
