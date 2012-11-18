@@ -2,8 +2,14 @@
 @brandSecondaryColor : rgba(206,230,191,1);
 
 
-h1,h2,h3,h4,h5,h6{ font-family:'Helvetica', sans-serif }
+h1,h2,h3,h4,h5,h6 {
+	font-family:'Helvetica', sans-serif;
+	font-weight: 100;
+}
 
+p {
+	color: #777;
+}
 
 .navbar-inner{ box-shadow : none }
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret
@@ -164,6 +170,13 @@ footer
 		z-index : 0;
 		border-width:20px 20px 0px 0px;
 		border-color:orange transparent;
+
+		-webkit-filter: drop-shadow(5px 5px 10px #ddd);
+		-moz-filter: drop-shadow(5px 5px 10px #ddd);
+		-ms-filter: drop-shadow(5px 5px 10px #ddd);
+		-o-filter: drop-shadow(5px 5px 10px #ddd);
+		filter: drop-shadow(5px 5px 10px #ddd);
+	
 	}
 
 	&.vine-chat-bubble-left
@@ -252,4 +265,21 @@ footer
 	padding-bottom: 20px;
 	font-size:;
 	line-height:25px;
+}
+
+.page-section-header
+{
+	margin-top:20px;
+	height: 65px;
+	h1 {
+		float:left;
+		font-size:25px;
+		font-weight:100;
+	}
+
+	img {
+		float:left;
+		height:25px;
+		margin-right:10px;
+	}
 }
