@@ -60,7 +60,9 @@ def oauth_authorized(resp):
     s = select([users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
             and_(users.c.name == twitter_user))
     found_user = conn.execute(s).fetchone()
+    print found_user
     if found_user:
+        print 'here'
         if not found_user.twitter_id == resp['user_id'] or \
            not found_user.twitter_token == resp['oauth_token'] or \
            not found_user.twitter_secret == resp['oauth_token_secret']:
