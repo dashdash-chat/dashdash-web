@@ -19,14 +19,14 @@ class RelationshipScores(object):
     def __init__(self, threshold=0):
         self.threshold = threshold
         self._scores = defaultdict(lambda : defaultdict(int))
-        
+    
     def delete_score(self, sender, recipient):
         if sender in self._scores:
             if recipient in self._scores[sender]:
                 del self._scores[sender][recipient]
             if len(self._scores[sender]) == 0:
                 del self._scores[sender]
-
+    
     def adjust_score(self, sender, recipient, amount):
         self._scores[sender][recipient] += amount
     
@@ -44,13 +44,13 @@ class RelationshipScores(object):
             recipients = self._scores[sender].keys()
             recipient = recipients[0]  # and the first recipient (assuming delete_score properly handles senders with no recipients)
         return sender, recipient
-            
+    
     def __str__(self):
         return json.dumps(self._scores, indent=4)
 
 class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self):
-        sleekxmpp.ClientXMPP.__init__(self, '%s@%s' % (constants.graph_xmpp_user, constants.server), constants.graph_xmpp_password)
+        sleekxmpp.ClientXMPP.__init__(self, '%s@%s' % (constants.graph_xmpp_user, constants.domain), constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         self.db = None
@@ -58,11 +58,11 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         self.db_connect()
         self.scores = RelationshipScores()
         self.start_time = datetime.now()
-
+    
     def start(self, event):
         self.process_logs()
         self.update_next_old_edge()
-
+    
     def process_logs(self):
         def process_log_type(db_query_fn, multiplier_fn):
             offset = 0
@@ -134,7 +134,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                 return
         logging.error('Received unexpected response from %s: %s' % (msg['from'], msg['body']))
         self.cleanup()  # to disconnect if something goes wrong
-            
+    
     def send_message_to_leaf(self, body):
         logging.info("SENDING %s" % body)
         msg = self.Message()
@@ -251,7 +251,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                LIMIT 1
                                             """, {
                                                'start_time': self.start_time
-                                            })    
+                                            })
     
     def db_insert_edge(self, sender, recipient):
         self.db_execute("""INSERT INTO edges (from_id, to_id)
@@ -269,8 +269,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                            """, {
                               'sender': sender,
                               'recipient': recipient
-                           })    
-
+                           })
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
         self.db_execute(query, data)
@@ -325,16 +324,16 @@ if __name__ == '__main__':
                     action='store_const', dest='loglevel',
                     const=5, default=logging.INFO)
     opts, args = optp.parse_args()
-
+    
     logging.basicConfig(level=opts.loglevel,
                         format='%(asctime)-15s graph %(levelname)-8s %(message)s')
-
+    
     calculator = EdgeCalculator()
     calculator.register_plugin('xep_0030') # Service Discovery
     calculator.register_plugin('xep_0004') # Data Forms
     calculator.register_plugin('xep_0060') # PubSub
     calculator.register_plugin('xep_0199') # XMPP Ping
-
+    
     if calculator.connect((constants.server_ip, constants.client_port)):# caused a weird _der_cert error
         calculator.process(block=True)
         logging.info("Done")

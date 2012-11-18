@@ -1,6 +1,6 @@
 from shared import env_vars
 
-server = env_vars.server
+domain = env_vars.domain
 server_ip = env_vars.server_ip
 
 graph_mysql_user = 'graph'
