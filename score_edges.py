@@ -47,6 +47,7 @@ class RelationshipScores(object):
     
     def __str__(self):
         return json.dumps(self._scores, indent=4)
+    
 
 class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self):
@@ -73,11 +74,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                 for message in messages:
                     sender, recipient, body = message
                     self.scores.adjust_score(sender, recipient, multiplier_fn(body))
-        process_log_type(self.db_fetch_messages, lambda s: len(s))
-        process_log_type(self.db_fetch_topics,  lambda s: len(s))
-        process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
-        process_log_type(self.db_fetch_invites,  lambda s: 100)
-        process_log_type(self.db_fetch_kicks,  lambda s: -100)
+        # process_log_type(self.db_fetch_messages, lambda s: len(s))
+        # process_log_type(self.db_fetch_topics,  lambda s: len(s))
+        # process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
+        # process_log_type(self.db_fetch_invites,  lambda s: 100)
+        # process_log_type(self.db_fetch_kicks,  lambda s: -100)
+        process_log_type(self.db_fetch_twitter_follows,  lambda s: 300)
         logging.info('\n' + str(self.scores))
     
     def update_next_old_edge(self):
@@ -240,7 +242,20 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'pagesize': PAGESIZE,
                                                'offset': offset
-                                            })    
+                                            })
+    
+    def db_fetch_twitter_follows(self, offset):
+        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
+                                               FROM twitter_follows, users as from_user, users as to_user
+                                               WHERE to_user.twitter_id = twitter_follows.to_twitter_id
+                                               AND from_user.twitter_id = twitter_follows.from_twitter_id
+                                               ORDER BY twitter_follows.last_updated_on DESC
+                                               LIMIT %(pagesize)s
+                                               OFFSET %(offset)s
+                                            """, {
+                                               'pagesize': PAGESIZE,
+                                               'offset': offset
+                                            })
     
     def db_fetch_edge(self):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
