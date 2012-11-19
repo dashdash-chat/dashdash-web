@@ -51,9 +51,10 @@ class RelationshipScores(object):
 
 class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self):
-        sleekxmpp.ClientXMPP.__init__(self, '%s@%s' % (constants.graph_xmpp_user, constants.domain), constants.graph_xmpp_password)
+        sleekxmpp.ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
+        self.old_edge_offset = 0
         self.db = None
         self.cursor = None
         self.db_connect()
@@ -75,16 +76,16 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                 for message in messages:
                     sender, recipient, body = message
                     self.scores.adjust_score(sender, recipient, multiplier_fn(body))
-        # process_log_type(self.db_fetch_messages, lambda s: len(s))
-        # process_log_type(self.db_fetch_topics,  lambda s: len(s))
-        # process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
-        # process_log_type(self.db_fetch_invites,  lambda s: 100)
-        # process_log_type(self.db_fetch_kicks,  lambda s: -100)
-        process_log_type(self.db_fetch_twitter_follows,  lambda s: 300)
+        process_log_type(self.db_fetch_messages,        lambda s: len(s))
+        process_log_type(self.db_fetch_topics,          lambda s: len(s))
+        process_log_type(self.db_fetch_whispers,        lambda s: 2 * len(s))
+        process_log_type(self.db_fetch_invites,         lambda s: 100)
+        process_log_type(self.db_fetch_kicks,           lambda s: -100)
+        process_log_type(self.db_fetch_twitter_follows, lambda s: 300)
         logging.info('\n' + str(self.scores))
     
     def update_next_old_edge(self):
-        old_edge = self.db_fetch_edge()
+        old_edge = self.db_fetch_next_old_edge()
         if old_edge:
             sender, recipient = old_edge[0]
             if self.scores.check_score(sender, recipient):
@@ -93,7 +94,8 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                 self.update_next_old_edge()
             else:
                 # otherwise we've found an edge in the database that no longer meets the threshold, so delete the vinebot (and, after receiving a response, the edge)
-                self.send_message_to_leaf('/del_friendship %s %s' % (sender, recipient))
+                self.scores.delete_score(sender, recipient)
+                self.send_message_to_leaf('/del_edge %s %s' % (sender, recipient))
         else:
             self.update_next_new_edge()
     
@@ -104,7 +106,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
             if self.scores.check_score(sender, recipient):
                 # this is an edge that now does meet the threshold and didn't before, so create the vinebot (and, after receiving a response, the edge)
                 self.scores.delete_score(sender, recipient)
-                self.send_message_to_leaf('/new_friendship %s %s' % (sender, recipient))
+                self.send_message_to_leaf('/new_edge %s %s' % (sender, recipient))
             else:
                 # this is an edge that didn't exist before, and still shouldn't exist now, so go on to the next one
                 self.scores.delete_score(sender, recipient)
@@ -113,37 +115,38 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
             self.cleanup()  # to disconnect when finished
     
     def message(self, msg):
-        # %s and %s are now friends.
-        # Sorry, %s and %s were not already friends.
-        # Sorry, %s and %s were already friends.
-        # %s and %s are no longer friends.
-        m = re.match(r'(?P<sorry>Sorry\, )?(?P<sender>\w+) and (?P<recipient>\w+) (?P<result>.*)\.', msg['body'])
+        # *** %s and %s now have a directed edge between them.
+        # *** Sorry, %s and %s already have a directed edge between them.
+        # *** Sorry, %s and %s do not have a directed edge between them.
+        # *** %s and %s no longer have a directed edge between them.
+        m = re.match(r'\*\*\* (?P<sorry>Sorry\, )?(?P<sender>\w+) and (?P<recipient>\w+) (?P<result>.*)\.', msg['body'])
         if m:
             sorry     = m.groupdict()['sorry']
             sender    = m.groupdict()['sender']
             recipient = m.groupdict()['recipient']
             result    = m.groupdict()['result']
-            if result in ['are no longer friends', 'were not already friends']:
+            if result in ['no longer have a directed edge between them', 'do not have a directed edge between them']:
                 if sorry:
-                    logging.warning('Tried to delete friendship for %s and %s, but they were not already friends' % (sender, recipient))
-                self.db_delete_edge(sender, recipient)
+                    logging.warning('Tried to delete edge for %s and %s, but it didn\'t exist.' % (sender, recipient))
+                #self.db_delete_edge(sender, recipient)
                 self.update_next_old_edge()
                 return
-            elif result in ['are now friends', 'were already friends']:
+            elif result in ['now have a directed edge between them', 'already have a directed edge between them']:
                 if sorry:
-                    logging.warning('Tried to create friendship for %s and %s, but they were already friends' % (sender, recipient))
-                self.db_insert_edge(sender, recipient)
+                    logging.warning('Tried to create edge for %s and %s, but it already existed.' % (sender, recipient))
+                #self.db_insert_edge(sender, recipient)
                 self.update_next_new_edge()
                 return
         logging.error('Received unexpected response from %s: %s' % (msg['from'], msg['body']))
+        logging.error('Are you sure the leaf is running?')
         self.cleanup()  # to disconnect if something goes wrong
     
     def send_message_to_leaf(self, body):
-        logging.info("SENDING %s" % body)
         msg = self.Message()
-        msg['to'] = 'leaf1.dev.vine.im'
+        msg['to'] = constants.leaves_jid
         msg['body'] = body
         msg.send()
+        logging.info("SENT %s" % body)
     
     def db_fetch_messages(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
@@ -258,34 +261,20 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                'offset': offset
                                             })
     
-    def db_fetch_edge(self):
-        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
-                                               FROM edges, users as from_user, users as to_user
-                                               WHERE edges.last_updated_on < %(start_time)s
-                                               AND edges.from_id = from_user.id
-                                               AND edges.to_id = to_user.id
-                                               LIMIT 1
-                                            """, {
-                                               'start_time': self.start_time
-                                            })
-    
-    def db_insert_edge(self, sender, recipient):
-        self.db_execute("""INSERT INTO edges (from_id, to_id)
-                           VALUES ((SELECT id FROM users WHERE name = %(recipient)s LIMIT 1),
-                                   (SELECT id FROM users WHERE name = %(sender)s LIMIT 1))
-                        """, {
-                           'sender': sender,
-                           'recipient': recipient
-                        })
-    
-    def db_delete_edge(self, sender, recipient):
-        self.db_execute("""DELETE FROM edges
-                              WHERE edges.to_id = (SELECT id FROM users WHERE name = %(recipient)s LIMIT 1)
-                              AND edges.from_id = (SELECT id FROM users WHERE name = %(sender)s LIMIT 1)
-                           """, {
-                              'sender': sender,
-                              'recipient': recipient
-                           })
+    def db_fetch_next_old_edge(self):
+        # This let's us cycle through the current edges one at a time, to figure out which we need to delete.
+        old_edge = self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
+                                                   FROM edges, users as from_user, users as to_user
+                                                   WHERE edges.to_id = to_user.id
+                                                   AND edges.from_id = from_user.id
+                                                   ORDER BY edges.id DESC
+                                                   LIMIT 1
+                                                   OFFSET %(old_edge_offset)s
+                                                """, {
+                                                   'old_edge_offset': self.old_edge_offset
+                                                })
+        self.old_edge_offset += 1
+        return old_edge
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
         self.db_execute(query, data)
