@@ -64,25 +64,37 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     def start(self, event):
         self.send_presence()
         self.process_logs()
+        self.process_blocks()
+        logging.info('\n' + str(self.scores))
         self.update_next_old_edge()
     
     def process_logs(self):
         def process_log_type(db_query_fn, multiplier_fn):
             offset = 0
-            messages = True
-            while messages:
-                messages = db_query_fn(offset)
+            rows = True
+            while rows:
+                rows = db_query_fn(offset)
                 offset += PAGESIZE
-                for message in messages:
-                    sender, recipient, body = message
-                    self.scores.adjust_score(sender, recipient, multiplier_fn(body))
-        process_log_type(self.db_fetch_messages,        lambda s: len(s))
-        process_log_type(self.db_fetch_topics,          lambda s: len(s))
-        process_log_type(self.db_fetch_whispers,        lambda s: 2 * len(s))
-        process_log_type(self.db_fetch_invites,         lambda s: 100)
-        process_log_type(self.db_fetch_kicks,           lambda s: -100)
-        process_log_type(self.db_fetch_twitter_follows, lambda s: 300)
-        logging.info('\n' + str(self.scores))
+                for row in rows:
+                    sender, recipient, content = row
+                    self.scores.adjust_score(sender, recipient, multiplier_fn(content))
+        process_log_type(self.db_fetch_artificial_follows, lambda s: 10000)
+        process_log_type(self.db_fetch_twitter_follows,    lambda s: 300)
+        process_log_type(self.db_fetch_messages, lambda s: len(s))
+        process_log_type(self.db_fetch_topics,   lambda s: len(s))
+        process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
+        process_log_type(self.db_fetch_invites,  lambda s: 100)
+        process_log_type(self.db_fetch_kicks,    lambda s: -100)
+    
+    def process_blocks(self):
+        offset = 0
+        blocks = True
+        while blocks:
+            blocks = self.db_fetch_blocks(offset)
+            offset += PAGESIZE
+            for block in blocks:
+                sender, recipient = block
+                self.scores.delete_score(sender, recipient)
     
     def update_next_old_edge(self):
         old_edge = self.db_fetch_next_old_edge()
@@ -147,6 +159,32 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         msg['body'] = body
         msg.send()
         logging.info("SENT %s" % body)
+    
+    def db_fetch_artificial_follows(self, offset):
+        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
+                                               FROM artificial_follows, users as from_user, users as to_user
+                                               WHERE to_user.twitter_id = artificial_follows.to_user_id
+                                               AND from_user.twitter_id = artificial_follows.from_user_id
+                                               ORDER BY artificial_follows.created DESC
+                                               LIMIT %(pagesize)s
+                                               OFFSET %(offset)s
+                                            """, {
+                                               'pagesize': PAGESIZE,
+                                               'offset': offset
+                                            })
+    
+    def db_fetch_twitter_follows(self, offset):
+        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
+                                               FROM twitter_follows, users as from_user, users as to_user
+                                               WHERE to_user.twitter_id = twitter_follows.to_twitter_id
+                                               AND from_user.twitter_id = twitter_follows.from_twitter_id
+                                               ORDER BY twitter_follows.last_updated_on DESC
+                                               LIMIT %(pagesize)s
+                                               OFFSET %(offset)s
+                                            """, {
+                                               'pagesize': PAGESIZE,
+                                               'offset': offset
+                                            })
     
     def db_fetch_messages(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
@@ -248,12 +286,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                'offset': offset
                                             })
     
-    def db_fetch_twitter_follows(self, offset):
-        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
-                                               FROM twitter_follows, users as from_user, users as to_user
-                                               WHERE to_user.twitter_id = twitter_follows.to_twitter_id
-                                               AND from_user.twitter_id = twitter_follows.from_twitter_id
-                                               ORDER BY twitter_follows.last_updated_on DESC
+    def db_fetch_blocks(self, offset):
+        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
+                                               FROM blocks, users as from_user, users as to_user
+                                               WHERE to_user.twitter_id = blocks.to_user_id
+                                               AND from_user.twitter_id = blocks.from_user_id
+                                               ORDER BY blocks.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
