@@ -2,7 +2,7 @@ from shared import env_vars
 debug = env_vars.debug
 
 domain = env_vars.domain
-server = '%s.%s' % ('xmpp', domain)
+xmlrpc_server = env_vars.xmlrpc_server
 
 xmlrpc_port = env_vars.xmlrpc_port
 web_xmlrpc_user  = '_web'
