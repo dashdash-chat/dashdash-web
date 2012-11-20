@@ -1,6 +1,8 @@
 from flask import Flask, flash, render_template, redirect, request, session, url_for
 from flask.ext.oauth import OAuth
-from sqlalchemy import create_engine, select, and_, MetaData, Table
+from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import select, and_
+
 import xmlrpclib
 import constants
 from celery_tasks import fetch_follows
@@ -8,18 +10,18 @@ from celery_tasks import fetch_follows
 app = Flask(__name__)
 app.debug = constants.debug
 app.secret_key = constants.flask_secret_key
-xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server, constants.xmlrpc_port))
-engine = create_engine('mysql+mysqldb://' + constants.web_mysql_user + ':' + constants.web_mysql_password + '@' + constants.db_host + '/' + constants.db_name,
-                       pool_size=100,
-                       max_overflow=-1,
-                       pool_recycle=3600,
-                       pool_timeout=10)
-metadata = MetaData()
-metadata.bind = engine
-users = Table('users', metadata, autoload=True)
-demos = Table('demos', metadata, autoload=True)
-user_tasks = Table('user_tasks', metadata, autoload=True)
-conn = engine.connect()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (constants.web_mysql_user,
+                                                                 constants.web_mysql_password,
+                                                                 constants.db_host,
+                                                                 constants.db_name)
+app.config['SQLALCHEMY_POOL_SIZE'] = 100
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 10
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 3600
+db = SQLAlchemy(app)
+metadata = db.MetaData(bind = db.engine)
+users = db.Table('users', metadata, autoload=True)
+demos = db.Table('demos', metadata, autoload=True)
+user_tasks = db.Table('user_tasks', metadata, autoload=True)
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -29,6 +31,7 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
+xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
 
 @app.route("/")
 def index():
@@ -48,7 +51,7 @@ def logout():
 @twitter.tokengetter
 def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
-    return conn.execute(s).fetchone()
+    return db.session.execute(s).fetchone()
 
 @app.route('/twitter/oauth_callback')
 @twitter.authorized_handler
@@ -59,18 +62,18 @@ def oauth_authorized(resp):
     twitter_user = resp['screen_name'].lower()
     s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
             and_(users.c.name == twitter_user))
-    found_user = conn.execute(s).fetchone()
+    found_user = db.session.execute(s).fetchone()
     if found_user:
         if not found_user.twitter_id == resp['user_id'] or \
            not found_user.twitter_token == resp['oauth_token'] or \
            not found_user.twitter_secret == resp['oauth_token_secret']:
-            conn.execute(users.update().\
+            db.session.execute(users.update().\
                          where(users.c.name == twitter_user).\
                          values(twitter_id=resp['user_id'],
                                 twitter_token=resp['oauth_token'],
                                 twitter_secret=resp['oauth_token_secret']))
         result = fetch_follows.delay(resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
-        conn.execute(user_tasks.insert().\
+        db.session.execute(user_tasks.insert().\
                      values(user_id=found_user.id,
                             celery_task_id=result,
                             celery_task_type='fetch_follows'))
@@ -78,6 +81,7 @@ def oauth_authorized(resp):
         flash('You were signed in as %s' % twitter_user, 'error')
     else:    
         flash('Sorry, but we\'re in private beta. Come back later!', 'error')
+    db.session.commit()
     return redirect(url_for('index'))
 
 @app.route("/demo/")
@@ -88,7 +92,7 @@ def no_demo():
 def demo(token):
     s = select([users.c.name, demos.c.password],
                and_(users.c.id == demos.c.user_id, demos.c.token == token))
-    found_demo = conn.execute(s).fetchone()
+    found_demo = db.session.execute(s).fetchone()
     if found_demo:
         return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))

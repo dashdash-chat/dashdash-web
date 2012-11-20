@@ -37,7 +37,7 @@
   * `source bin/activate`
   * `bin/pip install mysql-python sqlalchemy`
   * `bin/pip install gunicorn celery`
-  * `bin/pip install flask Flask-OAuth Flask-WTF`
+  * `bin/pip install flask Flask-OAuth Flask-WTF Flask-SQLAlchemy`
   * `cd ..`
 0. Install necessary Perl modules
   * `sudo apt-get install yum`
