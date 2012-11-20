@@ -77,11 +77,11 @@ def oauth_authorized(resp):
                      values(user_id=found_user.id,
                             celery_task_id=result,
                             celery_task_type='fetch_follows'))
+        db.session.commit()
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
     else:    
         flash('Sorry, but we\'re in private beta. Come back later!', 'error')
-    db.session.commit()
     return redirect(url_for('index'))
 
 @app.route("/demo/")
