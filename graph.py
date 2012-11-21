@@ -10,7 +10,7 @@ import sleekxmpp
 import sys
 import constants
 
-PAGESIZE = 20
+PAGESIZE = 100
 NUM_DAYS = 90
 
 class RelationshipScores(object):
@@ -161,8 +161,8 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     def db_fetch_artificial_follows(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
                                                FROM artificial_follows, users as from_user, users as to_user
-                                               WHERE to_user.twitter_id = artificial_follows.to_user_id
-                                               AND from_user.twitter_id = artificial_follows.from_user_id
+                                               WHERE to_user.id = artificial_follows.to_user_id
+                                               AND from_user.id = artificial_follows.from_user_id
                                                ORDER BY artificial_follows.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
@@ -186,12 +186,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     
     def db_fetch_messages(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
-                                               FROM messages, message_recipients, users as sender, users as recipient
-                                               WHERE messages.id = message_recipients.message_id
+                                               FROM messages, recipients, users as sender, users as recipient
+                                               WHERE messages.id = recipients.message_id
                                                AND messages.parent_command_id IS NULL
                                                AND messages.sender_id IS NOT NULL
                                                AND sender.id = messages.sender_id
-                                               AND recipient.id = message_recipients.recipient_id
+                                               AND recipient.id = recipients.recipient_id
                                                AND messages.sent_on > %(startdate)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
@@ -203,13 +203,13 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     
     def db_fetch_topics(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, commands.string
-                                               FROM commands, messages, message_recipients, users as sender, users as recipient
+                                               FROM commands, messages, recipients, users as sender, users as recipient
                                                WHERE commands.command_name = 'topic'
                                                AND commands.sender_id = sender.id
                                                AND commands.id = messages.parent_command_id
-                                               AND messages.id = message_recipients.message_id
-                                               AND recipient.id = message_recipients.recipient_id
-                                               AND sender.id != message_recipients.recipient_id
+                                               AND messages.id = recipients.message_id
+                                               AND recipient.id = recipients.recipient_id
+                                               AND sender.id != recipients.recipient_id
                                                AND commands.string IS NOT NULL
                                                AND commands.sent_on > %(startdate)s
                                                LIMIT %(pagesize)s
@@ -222,12 +222,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     
     def db_fetch_whispers(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
-                                               FROM commands, messages, message_recipients, users as sender, users as recipient
+                                               FROM commands, messages, recipients, users as sender, users as recipient
                                                WHERE commands.command_name = 'whisper'
-                                               AND messages.id = message_recipients.message_id
+                                               AND messages.id = recipients.message_id
                                                AND messages.sender_id IS NOT NULL
                                                AND sender.id = messages.sender_id
-                                               AND recipient.id = message_recipients.recipient_id
+                                               AND recipient.id = recipients.recipient_id
                                                AND commands.id = messages.parent_command_id
                                                AND commands.sent_on > %(startdate)s
                                                LIMIT %(pagesize)s
@@ -240,7 +240,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     
     def db_fetch_invites(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, commands.token, messages.body
-                                               FROM commands, messages, message_recipients, users as sender
+                                               FROM commands, messages, recipients, users as sender
                                                WHERE commands.command_name = 'invite'
                                                AND commands.sender_id IS NOT NULL
                                                AND sender.id = commands.sender_id
@@ -251,8 +251,8 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.body NOT LIKE 'Sorry, %%'
                                                #TODO fix this ugly hack, which assumes that if a response to a command begins with 'Sorry', 
                                                # there was an ExecutionError, and all other responses indicate a successful command.
-                                               AND messages.id = message_recipients.message_id
-                                               AND message_recipients.recipient_id = sender.id
+                                               AND messages.id = recipients.message_id
+                                               AND recipients.recipient_id = sender.id
                                                AND commands.sent_on > %(startdate)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
@@ -264,7 +264,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     
     def db_fetch_kicks(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, commands.token, messages.body
-                                               FROM commands, messages, message_recipients, users as sender
+                                               FROM commands, messages, recipients, users as sender
                                                WHERE commands.sender_id IS NOT NULL
                                                AND sender.id = commands.sender_id
                                                AND commands.sent_on > %(startdate)s
@@ -274,8 +274,8 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.parent_message_id IS NULL
                                                AND messages.parent_command_id = commands.id
                                                AND messages.body NOT LIKE 'Sorry, %%'
-                                               AND messages.id = message_recipients.message_id
-                                               AND message_recipients.recipient_id = sender.id
+                                               AND messages.id = recipients.message_id
+                                               AND recipients.recipient_id = sender.id
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {

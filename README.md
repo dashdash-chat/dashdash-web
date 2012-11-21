@@ -42,7 +42,7 @@
   * `bin/pip install dnspython pyasn1 pyasn1_modules`
   * `bin/pip install gunicorn boto celery`
   * `bin/pip install flask Flask-OAuth Flask-WTF Flask-SQLAlchemy`
-  * `bin/pip install sleekxmpp'
+  * `bin/pip install sleekxmpp`
   * Note that maybe you need to install SleekXMPP from master for commits like [this](https://github.com/fritzy/SleekXMPP/commit/8c2ece3bca24c8b6452860db916713b55455050e)?
      * `git clone git@github.com:fritzy/SleekXMPP.git`
      * `cd SleekXMPP` 
