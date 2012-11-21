@@ -42,7 +42,6 @@ engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + 
 metadata = MetaData()
 metadata.bind = engine
 twitter_follows = Table('twitter_follows', metadata, autoload=True)
-conn = engine.connect()
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -59,6 +58,7 @@ def add(x,y):
         
 @celery.task
 def fetch_follows(user_twitter_id, token, secret):
+    conn = engine.connect()
     follow_ids = []
     cursor = '-1'
     while cursor != '0':  #LATER split this into separate celery tasks
