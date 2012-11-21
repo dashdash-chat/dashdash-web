@@ -2,6 +2,9 @@
 -----------------
 0. Set up the base VM
   * Follow the instructions in https://github.com/lehrblogger/vine-shared/#development-setup
+0. If you want to run the score_edges Celery task, set up ejabberd and the leaf node(s)
+  * Follow the instructions in https://github.com/lehrblogger/vine-xmpp/#development-setup
+  * `sudo ejabberdctl register _graph dev.vine.im [graph_xmpp_password]` ([from vine-shared](https://github.com/lehrblogger/vine-shared/blob/master/env_vars.py#L15))
 0. Install nginx (on the machine that has the vine.im or dev.vine.im URL)
   * I have notes about running `sudo easy_install pyasn1` and `sudo easy_install pyasn1_modules` but can't figure out at which point or why... just FYI
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
@@ -36,8 +39,14 @@
   * `cd web-env`
   * `source bin/activate`
   * `bin/pip install mysql-python sqlalchemy`
+  * `bin/pip install dnspython pyasn1 pyasn1_modules` (first one might be optional)
   * `bin/pip install gunicorn boto celery`
   * `bin/pip install flask Flask-OAuth Flask-WTF Flask-SQLAlchemy`
+  * Note that maybe you need to install SleekXMPP from master for commits like [this](https://github.com/fritzy/SleekXMPP/commit/8c2ece3bca24c8b6452860db916713b55455050e)?
+     * `git clone git@github.com:fritzy/SleekXMPP.git`
+     * `cd SleekXMPP` 
+     * `../bin/python setup.py install`
+     * `cd ..`
   * `cd ..`
 0. Install necessary Perl modules
   * `sudo apt-get install yum`
@@ -97,6 +106,10 @@ To Run the Web Server
 To Run the Celery Worker
 ------------------------
   * `celery -A celery_tasks worker --loglevel debug` is useful for development
+
+Social Graph Description
+------------------------
+See [Data Models for Vine](https://docs.google.com/document/d/1MVF3_4WhT9_3okjllc4f9tfV9scTDVJ2bn8ilk1cJkU/edit) for more information.
 
 Google Form HTML (for lack of a better place to put it)
 -------------------------------------------------------
