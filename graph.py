@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
-import logging
-from optparse import OptionParser
 from collections import defaultdict
 from datetime import datetime, timedelta
 import json
-import re
-import constants
 import MySQLdb
 from MySQLdb import IntegrityError, OperationalError
+import re
 import sleekxmpp
+import sys
+import constants
 
 PAGESIZE = 20
 NUM_DAYS = 90
@@ -50,7 +48,8 @@ class RelationshipScores(object):
     
 
 class EdgeCalculator(sleekxmpp.ClientXMPP):
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         sleekxmpp.ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
@@ -65,7 +64,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         self.send_presence()
         self.process_logs()
         self.process_blocks()
-        logging.info('\n' + str(self.scores))
+        self.logger.info('\n' + str(self.scores))
         self.update_next_old_edge()
     
     def process_logs(self):
@@ -100,6 +99,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         old_edge = self.db_fetch_next_old_edge()
         if old_edge:
             sender, recipient = old_edge[0]
+            self.logger.info('in update_next_old_edge for %s, %s' % (sender, recipient))
             if self.scores.check_score(sender, recipient):
                 # this edge should continue to exist, so remove it from scores so we don't try to add it again later
                 self.scores.delete_score(sender, recipient)
@@ -114,7 +114,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     def update_next_new_edge(self):
         sender, recipient = self.scores.get_user_pair()
         if sender and recipient:
-            logging.info('in update_next_new_edge for %s, %s' % (sender, recipient))
+            self.logger.info('in update_next_new_edge for %s, %s' % (sender, recipient))
             if self.scores.check_score(sender, recipient):
                 # this is an edge that now does meet the threshold and didn't before, so create the vinebot (and, after receiving a response, the edge)
                 self.scores.delete_score(sender, recipient)
@@ -139,18 +139,16 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
             result    = m.groupdict()['result']
             if result in ['no longer have a directed edge between them', 'do not have a directed edge between them']:
                 if sorry:
-                    logging.warning('Tried to delete edge for %s and %s, but it didn\'t exist.' % (sender, recipient))
-                #self.db_delete_edge(sender, recipient)
+                    self.logger.warning('Tried to delete edge for %s and %s, but it didn\'t exist.' % (sender, recipient))
                 self.update_next_old_edge()
                 return
             elif result in ['now have a directed edge between them', 'already have a directed edge between them']:
                 if sorry:
-                    logging.warning('Tried to create edge for %s and %s, but it already existed.' % (sender, recipient))
-                #self.db_insert_edge(sender, recipient)
+                    self.logger.warning('Tried to create edge for %s and %s, but it already existed.' % (sender, recipient))
                 self.update_next_new_edge()
                 return
-        logging.error('Received unexpected response from %s: %s' % (msg['from'], msg['body']))
-        logging.error('Are you sure the leaf is running?')
+        self.logger.error('Received unexpected response from %s: %s' % (msg['from'], msg['body']))
+        self.logger.error('Are you sure the leaf is running?')
         self.cleanup()  # to disconnect if something goes wrong
     
     def send_message_to_leaf(self, body):
@@ -158,7 +156,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         msg['to'] = constants.leaves_jid
         msg['body'] = body
         msg.send()
-        logging.info("SENT %s" % body)
+        self.logger.info("SENT %s" % body)
     
     def db_fetch_artificial_follows(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
@@ -325,16 +323,16 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return []
     
     def db_execute(self, query, data={}):
-        #logging.info(query % data)
+        #self.logger.info(query % data)
         if not self.db or not self.cursor:
-            logging.info("Database connection missing, attempting to reconnect and retry query")
+            self.logger.info("Database connection missing, attempting to reconnect and retry query")
             if self.db:
                 self.db.close()
             self.db_connect()
         try:
             self.cursor.execute(query, data)
         except MySQLdb.OperationalError, e:
-            logging.info('Database OperationalError %s for query, will retry: %s' % (e, query % data))
+            self.logger.info('Database OperationalError %s for query, will retry: %s' % (e, query % data))
             self.db_connect()  # Try again, but only once
             self.cursor.execute(query, data)
         return self.db.insert_id()
@@ -347,9 +345,9 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                       constants.db_name)
             self.db.autocommit(True)
             self.cursor = self.db.cursor()
-            logging.info("Database connection created")
+            self.logger.info("Database connection created")
         except MySQLdb.Error, e:
-            logging.error('Database connection and/or cursor creation failed with %d: %s' % (e.args[0], e.args[1]))
+            self.logger.error('Database connection and/or cursor creation failed with %d: %s' % (e.args[0], e.args[1]))
             self.cleanup()
     
     def cleanup(self):
@@ -358,27 +356,3 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         sys.exit(1)
     
 
-if __name__ == '__main__':
-    optp = OptionParser()
-    optp.add_option('-q', '--quiet', help='set logging to ERROR',
-                    action='store_const', dest='loglevel',
-                    const=logging.ERROR, default=logging.INFO)
-    optp.add_option('-v', '--verbose', help='set logging to COMM',
-                    action='store_const', dest='loglevel',
-                    const=5, default=logging.INFO)
-    opts, args = optp.parse_args()
-    
-    logging.basicConfig(level=opts.loglevel,
-                        format='%(asctime)-15s graph %(levelname)-8s %(message)s')
-    
-    calculator = EdgeCalculator()
-    calculator.register_plugin('xep_0030') # Service Discovery
-    calculator.register_plugin('xep_0004') # Data Forms
-    calculator.register_plugin('xep_0060') # PubSub
-    calculator.register_plugin('xep_0199') # XMPP Ping
-    
-    if calculator.connect((constants.server_ip, constants.client_port)):# caused a weird _der_cert error
-        calculator.process(block=True)
-        logging.info("Done")
-    else:
-        logging.info("Unable to connect.")

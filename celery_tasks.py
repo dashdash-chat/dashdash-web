@@ -1,10 +1,15 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from celery import Celery
+from celery.utils.log import get_task_logger
 from datetime import datetime
 from flask.ext.oauth import OAuth
 from kombu import Exchange, Queue
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import constants
+from graph import EdgeCalculator
 
+logger = get_task_logger(__name__)
 celery = Celery('tasks')
 celery.conf.update(
     CELERY_CREATE_MISSING_QUEUES = False,
@@ -70,3 +75,17 @@ def fetch_follows(user_twitter_id, token, secret):
 @twitter.tokengetter
 def split_twitter_token_pair(token_pair):
     return token_pair
+
+@celery.task
+def score_edges():
+    logger.info('Adding %r + %r' % (3,4))
+    calculator = EdgeCalculator(logger)
+    calculator.register_plugin('xep_0030') # Service Discovery
+    calculator.register_plugin('xep_0004') # Data Forms
+    calculator.register_plugin('xep_0060') # PubSub
+    calculator.register_plugin('xep_0199') # XMPP Ping
+    if calculator.connect((constants.server_ip, constants.client_port)):# caused a weird _der_cert error
+        calculator.process(block=True)
+        logger.info("Done")
+    else:
+        logger.info("Unable to connect.")
