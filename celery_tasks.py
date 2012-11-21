@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from celery import Celery
+from celery.schedules import crontab
 from celery.utils.log import get_task_logger
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask.ext.oauth import OAuth
 from kombu import Exchange, Queue
 from sqlalchemy import create_engine, select, and_, MetaData, Table
@@ -23,6 +24,14 @@ celery.conf.update(
     BROKER_TRANSPORT_OPTIONS = {
         'region': 'us-east-1',
         'queue_name_prefix': constants.aws_sqs_prefix,
+    },
+    CELERY_IMPORTS=('celery_tasks'),
+    CELERYBEAT_SCHEDULE = {
+        'runs-every-night': {
+            'task': 'celery_tasks.score_edges',
+            'schedule': crontab(minute=0, hour=10), #5am EST
+            'args': ()
+        },
     }
 )
 engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + constants.celery_mysql_password + '@' + constants.db_host + '/' + constants.db_name,
@@ -44,6 +53,10 @@ twitter = oauth.remote_app('twitter',
     consumer_secret=constants.twitter_consumer_secret
 )
 
+@celery.task
+def add(x,y):
+    print x+y
+        
 @celery.task
 def fetch_follows(user_twitter_id, token, secret):
     follow_ids = []
@@ -78,7 +91,6 @@ def split_twitter_token_pair(token_pair):
 
 @celery.task
 def score_edges():
-    logger.info('Adding %r + %r' % (3,4))
     calculator = EdgeCalculator(logger)
     calculator.register_plugin('xep_0030') # Service Discovery
     calculator.register_plugin('xep_0004') # Data Forms
