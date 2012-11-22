@@ -287,8 +287,8 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
     def db_fetch_blocks(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
                                                FROM blocks, users as from_user, users as to_user
-                                               WHERE to_user.twitter_id = blocks.to_user_id
-                                               AND from_user.twitter_id = blocks.from_user_id
+                                               WHERE to_user.id = blocks.to_user_id
+                                               AND from_user.id = blocks.from_user_id
                                                ORDER BY blocks.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
