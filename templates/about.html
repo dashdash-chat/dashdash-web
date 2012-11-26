@@ -1,73 +1,62 @@
 {% extends "base.html" %}
 {% block body %}
-
-	<div class='container'>
-		<div class='row'>
-			<div class='span12'>
-				<div class='page-section-header'>
-					<img src='{{ url_for('static', filename='img/bubble-right-orange.png') }}'>
-					<h1>About Vine</h1>
-				</div>
-			</div>
-		</div>
-
-		<div class='row'>
-			<div class='span8'>
-				<p>
-					This is all about how Vine.im came to be
-				</p>
-			</div>
-			<div class='span4'>// image here</div>
-		</div><!--row -->
-
-		<div class='row'>
-			<div class='span8'>
-				<div class='page-section-header'>
-					<img src='{{ url_for('static', filename='img/bubble-right-orange.png') }}'>
-					<h1>Contact Us!</h1>
-				</div>
-				<div><b>Twitter: <a href='http://www.twitter.com/vineIM' target='blank'>@vineIM</a></b></div>
-				<div><b>Questions? Email <a href='mailto:help@vine-inc.im' target='blank'>help@vine-inc.im</a></b></div>
-
-			</div>
-			<div class='span4'>// image here</div>
-		</div><!--row -->
-
-		<div class='row'>
-			<div class='span12'>
-				<div class='page-section-header'>
-					<img src='{{ url_for('static', filename='img/bubble-right-orange.png') }}'>
-					<h1>Who We Are</h1>
-				</div>
-			</div>
-		</div>
-
-		<div class='row'>
-			<div class='span8'>
-				<h4>Steven Lehrburger</h4>
-				<p>
-					This is all about Steven
-				</p>
-			</div>
-			<div class='span4'>
-				//photo here
-			</div>
-		</div>
-
-		<div class='row'>
-			<div class='span8'>
-				<h4>Joseph Bergen</h4>
-
-				<p>
-					<b>Joseph Bergen</b> is currently the Lead Interaction Designer/Developer for <a href='http://www.zeega.org'target='blank'>Zeega.org</a>. He is an engineer and designer whose interests revolve around technology, data, and art in relation to physical place. A self-taught programmer, he enjoys the challenge presented by large, complex, and dynamic data sets and teasing out otherwise hidden relationships with interactive visualizations. His work has been featured on FastCoDesign, the Wall Street Journal blog, and visualizing.org and has received top awards from Google. He has a BS from Stanford University '07 and a Masters of Architecture from Harvard University Graduate School of Design '11. More at: <a href='http://www.josephbergen.com' target='blank'>josephbergen.com</a>
-				</p>
-			</div>
-			<div class='span4'>
-				<img src='{{ url_for('static', filename='img/joseph.jpeg') }}'/>
-			</div>
-		</div>
-					
-					
-	</div>
-
+    <div class='container'>
+        <div class='row'>
+            <div class='span12'>
+                <div class='page-section-header'>
+                    <img src='/static/img/bubble-right-orange.png'>
+                    <h1>About Vine</h1>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span8'>
+                <p>
+                    This is all about how Vine.IM came to be
+                </p>
+            </div>
+            <div class='span4'>// image here</div>
+        </div>
+        <div class='row'>
+            <div class='span8'>
+                <div class='page-section-header'>
+                    <img src='/static/img/bubble-right-orange.png'>
+                    <h1>Contact Us!</h1>
+                </div>
+                <div><b>Twitter: <a href='http://www.twitter.com/vineIM' target='blank'>@VineIM</a></b></div>
+                <div><b>Questions? Email <a href='mailto:info@vine-inc.im' target='blank'>info@vine-inc.im</a></b></div>
+            </div>
+            <div class='span4'>// image here</div>
+        </div><!--row -->
+        <div class='row'>
+            <div class='span12'>
+                <div class='page-section-header'>
+                    <img src='/static/img/bubble-right-orange.png'>
+                    <h1>Who We Are</h1>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span8'>
+                <h4>Steven Lehrburger</h4>
+                <p>
+                    This is all about Steven
+                </p>
+            </div>
+            <div class='span4'>
+                //photo here
+            </div>
+        </div>
+        <div class='row'>
+            <div class='span8'>
+                <h4>Joseph Bergen</h4>
+                <p>
+                    <b>Joseph Bergen</b> is currently the Lead Interaction Designer/Developer for <a href='http://www.zeega.org'target='blank'>Zeega.org</a>. He is an engineer and designer whose interests revolve around technology, data, and art in relation to physical place. A self-taught programmer, he enjoys the challenge presented by large, complex, and dynamic data sets and teasing out otherwise hidden relationships with interactive visualizations. His work has been featured on FastCoDesign, the Wall Street Journal blog, and visualizing.org and has received top awards from Google. He has a BS from Stanford University '07 and a Masters of Architecture from Harvard University Graduate School of Design '11. More at: <a href='http://www.josephbergen.com' target='blank'>josephbergen.com</a>
+                </p>
+            </div>
+            <div class='span4'>
+                <img src='/static/img/joseph.jpeg'/>
+            </div>
+        </div>
+    </div>
 {% endblock %}

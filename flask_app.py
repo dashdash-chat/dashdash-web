@@ -59,7 +59,7 @@ def index():
         s = select([invites.c.code, users.c.name, invites.c.used],
                    and_(invites.c.sender == user_id, invites.c.recipient == users.c.id, ))
         used_invites = db.session.execute(s).fetchall()
-    return render_template('home.html', user=user, unused_invites=unused_invites, used_invites=used_invites)
+    return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
 
 @app.route('/login')
 def login():
@@ -114,7 +114,6 @@ def oauth_authorized(resp):
             and_(users.c.name == twitter_user))
     found_user = db.session.execute(s).fetchone()
     if found_user:
-        print 'here'
         if not found_user.twitter_id == resp['user_id'] or \
            not found_user.twitter_token == resp['oauth_token'] or \
            not found_user.twitter_secret == resp['oauth_token_secret']:
