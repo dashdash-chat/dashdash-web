@@ -65,8 +65,9 @@ def index():
 def login():
     return twitter.authorize()
 
+@app.route('/invite')
 @app.route('/invite/<code>')
-def invite(code):
+def invite(code=None):
     user = session.get('vine_user')
     form = InviteCodeForm()
     if user:
@@ -108,7 +109,7 @@ def clear_bad_oauth_cookies(fn):
         try:
             return fn()
         except OAuthException, e:
-            if e['message'] == 'Invalid response from twitter':
+            if e.message == 'Invalid response from twitter':
                 session.pop('vine_user', None)
                 return fn()
             else:

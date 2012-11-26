@@ -32,7 +32,18 @@
             </div>
         </div>
         <div class="container">
-            {% block body scoped %}{% endblock %}
+            {% with errors = get_flashed_messages(category_filter=['error']) %}
+                {% if errors %}
+                    <div class='container'>
+                        {% for msg in errors %}
+                            <div class="vine-chat-bubble vine-chat-bubble-left">
+                                <h1>{{ msg }}</h1>
+                            </div>
+                        {% endfor -%}
+                    </div>
+                {% endif %}
+                {% block body scoped %}{% endblock %}
+            {% endwith %}
         </div>
         <footer>
             <div class='container'>
