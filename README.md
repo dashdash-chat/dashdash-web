@@ -8,7 +8,7 @@
 0. Install nginx (on the machine that has the vine.im or dev.vine.im URL)
   * I have notes about running `sudo easy_install pyasn1` and `sudo easy_install pyasn1_modules` but can't figure out at which point or why... just FYI
   * `sudo apache2ctl -k stop`  # since otherwise nginx can't run on port 80
-  * In prod, run `sudo yum groupinstall "Development Tools"` to get a C compiler.
+  * To get a C compiler, try `sudo apt-get install build-essential` in dev, or `sudo yum groupinstall "Development Tools"` in prod. 
   * `cd ~`
   * `wget http://superb-dca3.dl.sourceforge.net/project/pcre/pcre/8.31/pcre-8.31.tar.gz`
   * `tar xvzf pcre-8.31.tar.gz `
@@ -16,7 +16,6 @@
   * `./configure`
   * `make`
   * `sudo make install`
-  * `sudo ldconfig` and/or `sudo ln -s /lib64/libpcre.so.0.0.1 /lib64/libpcre.so.1`
   * `cd ..`
   * `wget http://nginx.org/download/nginx-1.2.0.tar.gz`
   * `gunzip -c nginx-1.2.0.tar.gz | tar xf -`
@@ -30,6 +29,7 @@
      * `./configure --with-http_ssl_module --with-openssl='../openssl-1.0.1c' --without-http_gzip_module`
   * `make`
   * `sudo make install`
+  * `sudo ldconfig` and/or `sudo ln -s /lib64/libpcre.so.0.0.1 /lib64/libpcre.so.1`
   * `sudo /usr/local/nginx/sbin/nginx`  # to start nginx
   * Try navigating to http://vine.im or http://dev.vine.im in your browser
 0. Create the web-env virtualenv on the VM
@@ -50,7 +50,6 @@
      * `cd ..`
   * `cd ..`
 0. Install necessary Perl modules
-  * `sudo apt-get install yum` in dev (TODO, move this earlier in the instructions, and get rid of the apt-get commands)
   * `sudo yum install cpan`
   * `cpan` and type `yes` at the prompt to have it configure as much as possible
   * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
