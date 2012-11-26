@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from flask.ext.oauth import OAuth
 from kombu import Exchange, Queue
 from sqlalchemy import create_engine, select, and_, MetaData, Table
+from time import sleep
 import constants
 from graph import EdgeCalculator
 
@@ -97,8 +98,14 @@ def score_edges(user_id=None):
     calculator.register_plugin('xep_0004') # Data Forms
     calculator.register_plugin('xep_0060') # PubSub
     calculator.register_plugin('xep_0199') # XMPP Ping
-    if calculator.connect((constants.server_ip, constants.client_port)):# caused a weird _der_cert error
+    if calculator.connect((constants.server_ip, constants.client_port), reattempt=False):# caused a weird _der_cert error
         calculator.process(block=True)
         logger.info("Done")
     else:
-        logger.info("Unable to connect.")
+        logger.info("Unable to connect, will retry in 3 seconds.")
+        sleep(3)
+        if calculator.connect((constants.server_ip, constants.client_port), reattempt=False):
+            calculator.process(block=True)
+            logger.info("Done")
+        else:
+            logger.info("Unable to connect after retry.")
