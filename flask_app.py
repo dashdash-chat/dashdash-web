@@ -140,12 +140,66 @@ def oauth_authorized(resp):
                            values(user_id=found_user.id,
                                   celery_task_id=result,
                                   celery_task_type='fetch_follows'))
-        db.session.commit()
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
-    else:    
-        flash('Sorry, but we\'re in private beta. Come back later!', 'error')
+    else:
+        db.session.execute(users.insert().\
+                           values(name=twitter_user,
+                                  twitter_token=resp['oauth_token'],
+                                  twitter_secret=resp['oauth_token_secret']))
+    db.session.commit()
+    if found_user and found_user.email:  # if we have a user that's finished the process
+        session['vine_user'] = twitter_user
+        flash('You were signed in as %s' % twitter_user, 'error')
+    else:
+        if session.get('invite_code'):
+            s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
+            if db.session.execute(s).fetchone():
+                session['twitter_user'] = twitter_user
+                return redirect(url_for('create_account'))
+            else:
+                flash('Sorry, that invite code is not valid.', 'error')
+        else:
+            flash('Sorry, but you need an invite code to sign up.', 'error')
     return redirect(url_for('index'))
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    if request.method == 'GET':
+        user = session.get('twitter_user')
+        form = CreateAccountForm()
+        return render_template('create_account.html', user=user, form=form)
+    else:       
+        if session.get('invite_code'):
+            s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
+            if db.session.execute(s).fetchone():
+                form = CreateAccountForm(request.form)
+                if form.validate():
+                    try:
+                        #_register(session.get('twitter_user'), form.password.data) # commented out because xmpp server does not exist on my machine
+                        db.session.execute(users.update().\
+                                       where(users.c.name == session.get('twitter_user')).\
+                                       values(email=form.email.data))
+                        user_id = db.session.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
+                        db.session.execute(invites.update().\
+                                         where(invites.c.code == session['invite_code']).\
+                                         values(recipient=user_id, used=datetime.datetime.now()))
+                        db.session.commit()
+                        session['vine_user'] = session.get('twitter_user')
+                        session.pop('twitter_user')
+                        session.pop('invite_code')
+                        flash('You signed up as %s' % session.get('vine_user'), 'error')
+                    except xmlrpclib.ProtocolError, e:
+                        flash('There was an error creating your XMPP account.', 'error')
+                        return redirect(url_for('create_account'))
+                else:
+                    #flash('There was an error in the form.', 'error')
+                    return redirect(url_for('create_account'))
+            else:
+                flash('Sorry, that invite code is not valid.', 'error')
+        else:
+            flash('Sorry, but you need an invite code to sign up.', 'error')
+        return redirect(url_for('index'))
 
 @app.route("/demo/")
 def no_demo():
