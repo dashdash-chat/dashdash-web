@@ -1,5 +1,6 @@
 from flask import Flask, flash, render_template, redirect, request, session, url_for
 from flask.ext.oauth import OAuth
+from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 import xmlrpclib
 import constants
@@ -28,6 +29,11 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
+invites = Table('invites', metadata, autoload=True)
+
+
+class InviteCodeForm(Form):
+    code = TextField('code', validators=[Required()])
 
 @app.route("/")
 def index():
@@ -112,6 +118,34 @@ def setup():
 def contacts():
     user = session.get('vine_user')
     return render_template('contacts.html', user=user)
+
+@app.route('/invite/<code>')
+def invite(code):
+    user = session.get('vine_user')
+    form = InviteCodeForm()
+    if user:
+        return redirect(url_for('index'))
+    invite = conn.execute(select([users.c.name, invites.c.recipient],
+                                 and_(users.c.id == invites.c.sender, invites.c.code == code))).fetchone()
+    if invite:
+        if invite['recipient']:
+            flash('Sorry, that invite code has already been used.', 'error')
+        else:
+            session['invite_code'] = code
+            return render_template('invite.html', sender=invite[0])
+    else:
+        flash('Sorry, that invite code isn\'t valid.', 'error')
+    return render_template('invite.html', form=form)
+
+@app.route('/check_invite', methods=['POST'])
+def check_invite():
+    form = InviteCodeForm(request.form)
+    if form.validate():
+        code = form.code.data
+        return redirect(url_for('invite', code=code))
+    flash('Please enter an invite code.', 'error')
+    return redirect(request.referrer or url_for('index'))
+
 
 @app.errorhandler(404)
 def page_not_found(e):
