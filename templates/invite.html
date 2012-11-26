@@ -9,6 +9,16 @@
             </form>
         </p>
     {% else %}
-        <p>You've been invited by {{ sender }}! <a href="{{ url_for('login') }}">Sign in with Twitter</a></p>
+
+        <div class='page-content'>
+            <div class='page-section-header'>
+                <img src='/static/img/bubble-right-orange.png'>
+                <h1>You've been invited by <b>{{ sender }}</b>!</h1>
+            </div>
+            <div class=''>
+                <p>Now all that's left is for you to sign in with Twitter by clicking the button below!</p>
+                <a href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
