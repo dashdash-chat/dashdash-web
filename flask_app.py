@@ -178,7 +178,7 @@ def create_account():
                 form = CreateAccountForm(request.form)
                 if form.validate():
                     try:
-                        #_register(session.get('twitter_user'), form.password.data) # commented out because xmpp server does not exist on my machine
+                        _register(session.get('twitter_user'), form.password.data) # commented out because xmpp server does not exist on my machine
                         db.session.execute(users.update().\
                                        where(users.c.name == session.get('twitter_user')).\
                                        values(email=form.email.data))

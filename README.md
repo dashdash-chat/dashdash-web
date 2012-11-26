@@ -70,12 +70,12 @@
 0. Download the vine-web code (easier from your local machine) and run the web server (from the VM)
   * `cd /vagrant/web-env` or `cd /home/ec2-user/web-env`
   * `git clone git@github.com:lehrblogger/vine-web.git web`
+  * `cd web` 
   * `git checkout --track -b demo origin/demo`
-  * `sudo cp /vagrant/web-env/web/shared/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload` or 
-    `sudo cp /home/ec2-user/web-env/web/shared/secrets/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
-  * `cd web`
   * `git submodule init`
   * `git submodule update`
+  * `sudo cp /vagrant/web-env/web/shared/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload` or 
+    `sudo cp /home/ec2-user/web-env/web/shared/secrets/nginx.conf /usr/local/nginx/conf/ && sudo /usr/local/nginx/sbin/nginx -s reload`
   * In prod, also init the vine-secrets submodule:
      * `cd shared/`
      * `git submodule init`
