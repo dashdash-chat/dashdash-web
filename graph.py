@@ -50,6 +50,7 @@ class RelationshipScores(object):
 class EdgeCalculator(sleekxmpp.ClientXMPP):
     def __init__(self, logger, user_id=None):
         self.logger = logger
+        self.user_id = user_id
         sleekxmpp.ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
@@ -163,10 +164,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                FROM artificial_follows, users as from_user, users as to_user
                                                WHERE to_user.id = artificial_follows.to_user_id
                                                AND from_user.id = artificial_follows.from_user_id
+                                               AND from_user.id LIKE %(user_id)s
                                                ORDER BY artificial_follows.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -176,10 +179,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                FROM twitter_follows, users as from_user, users as to_user
                                                WHERE to_user.twitter_id = twitter_follows.to_twitter_id
                                                AND from_user.twitter_id = twitter_follows.from_twitter_id
+                                               AND from_user.id LIKE %(user_id)s
                                                ORDER BY twitter_follows.last_updated_on DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -193,10 +198,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND sender.id = messages.sender_id
                                                AND recipient.id = recipients.recipient_id
                                                AND messages.sent_on > %(startdate)s
+                                               AND sender.id LIKE %(user_id)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -210,12 +217,14 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.id = recipients.message_id
                                                AND recipient.id = recipients.recipient_id
                                                AND sender.id != recipients.recipient_id
+                                               AND sender.id LIKE %(user_id)s
                                                AND commands.string IS NOT NULL
                                                AND commands.sent_on > %(startdate)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -230,10 +239,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND recipient.id = recipients.recipient_id
                                                AND commands.id = messages.parent_command_id
                                                AND commands.sent_on > %(startdate)s
+                                               AND sender.id LIKE %(user_id)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -254,10 +265,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.id = recipients.message_id
                                                AND recipients.recipient_id = sender.id
                                                AND commands.sent_on > %(startdate)s
+                                               AND sender.id LIKE %(user_id)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -276,10 +289,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.body NOT LIKE 'Sorry, %%'
                                                AND messages.id = recipients.message_id
                                                AND recipients.recipient_id = sender.id
+                                               AND sender.id LIKE %(user_id)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
@@ -289,10 +304,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                FROM blocks, users as from_user, users as to_user
                                                WHERE to_user.id = blocks.to_user_id
                                                AND from_user.id = blocks.from_user_id
+                                               AND from_user.id LIKE %(user_id)s
                                                ORDER BY blocks.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
+                                               'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
                                             })
