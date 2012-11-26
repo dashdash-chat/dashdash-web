@@ -217,9 +217,9 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                AND messages.id = recipients.message_id
                                                AND recipient.id = recipients.recipient_id
                                                AND sender.id != recipients.recipient_id
-                                               AND sender.id LIKE %(user_id)s
                                                AND commands.string IS NOT NULL
                                                AND commands.sent_on > %(startdate)s
+                                               AND sender.id LIKE %(user_id)s
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
