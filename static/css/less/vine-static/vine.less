@@ -1,22 +1,15 @@
 @brandPrimaryColor : rgba(241,91,64,1);
 @brandSecondaryColor : rgba(206,230,191,1);
 
-@font-face {
-  font-family: 'Rosario';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Rosario Bold'), local('Rosario-Bold'), url(http://themes.googleusercontent.com/static/fonts/rosario/v6/C6vOqPM2grRKaQTsxWhqnL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
-}
-@font-face {
-  font-family: 'Rosario';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Rosario Regular'), local('Rosario-Regular'), url(http://themes.googleusercontent.com/static/fonts/rosario/v6/1czDsfUw1sIxXBq0PGI58ALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+
+h1,h2,h3,h4,h5,h6 {
+	font-family:'Helvetica', sans-serif;
+	font-weight: 100;
 }
 
-
-h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
-
+p {
+	color: #777;
+}
 
 .navbar-inner{ box-shadow : none }
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret
@@ -33,29 +26,38 @@ h1,h2,h3,h4,h5,h6{ font-family:'Rosario', sans-serif }
 {background-color: @brandPrimaryColor}
 
 
+.logo img{
+	width: 175px;
+}
 
-
-.navbar
+.vine-header
 {
-	margin-bottom:0;
-	.nav
+	padding:10px 0 20px;
+
+	.vine-main-logo
 	{
-		>li
-		{
-			display: inline-block;
-			padding: 10px 0;
-			&:first-child
-			{
-				padding-left:0;
-				padding-top:0;
-			}
-			>a
-			{
-				text-shadow: none;
-				padding-top:10px;
+		float:left;
+	}
+
+	.header-right-link-list
+	{
+		float:right;
+		ul {
+			margin:0;
+			list-style: none;
+
+			li {
+				float:left;
+				display:block;
+				margin-left:10px;
 			}
 		}
 	}
+}
+
+.vine-intro-convo
+{
+	min-height:510px;
 }
 
 footer
@@ -111,20 +113,19 @@ footer
 	min-height:400px;
 }
 
-.vine-sign-in
+.vine-sign-in img
 {
-	padding:20px 0;
-	width:100%;
+	width:136px;
+	float:right;
 }
 
-.right-col-section
-{
-	margin-bottom:20px;
-}
+
 
 #vine-invite-code-input
 {
-	width:140px
+	width: 137px;
+	float: right;
+	margin-bottom:0;
 }
 
 /*  chat bubbles */
@@ -145,15 +146,19 @@ footer
 	background: orange;
 	box-shadow: 5px 5px 10px #ddd;
 	clear:both;
-	padding: 20px;
+	padding: 0 20px;
 	position: relative;
-	color: white;
+	color: #333;
 	min-width: 25%;
 	text-align: center;
-	text-shadow: 0px -1px 0px #666;
+	text-shadow: 0px -1px 0px #fff;
 	margin-bottom: 25px;
 	z-index: 1;
 
+	h1,h2,h3,h4
+	{
+		font-weight: 100;
+	}
 	&:after
 	{
 		content:"";
@@ -165,6 +170,13 @@ footer
 		z-index : 0;
 		border-width:20px 20px 0px 0px;
 		border-color:orange transparent;
+
+		-webkit-filter: drop-shadow(5px 5px 10px #ddd);
+		-moz-filter: drop-shadow(5px 5px 10px #ddd);
+		-ms-filter: drop-shadow(5px 5px 10px #ddd);
+		-o-filter: drop-shadow(5px 5px 10px #ddd);
+		filter: drop-shadow(5px 5px 10px #ddd);
+	
 	}
 
 	&.vine-chat-bubble-left
@@ -206,13 +218,13 @@ footer
 
 	&.chat-blue
 	{
-		.bubble-gradient(#00AEEF,#00CCFF);
-		&:after{ border-color:#00AEEF transparent; } 
+		.bubble-gradient(#FDC271,#FFE5C3);
+		&:after{ border-color:#FDC271 transparent; } 
 	}
 	&.chat-green
 	{
-		.bubble-gradient(#8DC63F,#B6C63F);
-		&:after{ border-color:#8DC63F transparent; } 
+		.bubble-gradient(#A9D26E,#D2E6B3);
+		&:after{ border-color:#A9D26E transparent; } 
 	}
 	&.chat-grey
 	{
@@ -245,3 +257,29 @@ footer
 }
 
 
+.right-col-section
+{
+	color:#888;
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	font-size:;
+	line-height:25px;
+}
+
+.page-section-header
+{
+	margin-top:20px;
+	height: 65px;
+	h1 {
+		float:left;
+		font-size:25px;
+		font-weight:100;
+	}
+
+	img {
+		float:left;
+		height:25px;
+		margin-right:10px;
+	}
+}

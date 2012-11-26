@@ -1,34 +1,15 @@
 /*  chat bubbles */
-@font-face {
-  font-family: 'Rosario-Bold';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Rosario Bold'), local('Rosario-Bold'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/C6vOqPM2grRKaQTsxWhqnL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
-}
-@font-face {
-  font-family: 'Rosario';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Rosario Regular'), local('Rosario-Regular'), url(https://themes.googleusercontent.com/static/fonts/rosario/v6/1czDsfUw1sIxXBq0PGI58ALUuEpTyoUstqEm5AMlJo4.woff) format('woff');
-}
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: 'Rosario', sans-serif;
+  font-family: 'Helvetica', sans-serif;
+  font-weight: 100;
 }
-a {
-    color: #2d9c2d;
-}
-a:hover {
-    color: #228b22;
-}
-
-.logo a img {
-    margin-top: 40px;
-    height: 50px;
+p {
+  color: #777;
 }
 .navbar-inner {
   box-shadow: none;
@@ -50,39 +31,41 @@ a:hover {
 .dropdown-menu .active > a:hover {
   background-color: #f15b40;
 }
-.navbar {
-  margin-bottom: 0;
+.logo img {
+  width: 175px;
 }
-.navbar .nav > li {
-  display: inline-block;
-  padding: 10px 0;
+.vine-header {
+  padding: 10px 0 20px;
 }
-.navbar .nav > li:first-child {
-  padding-left: 0;
-  padding-top: 0;
+.vine-header .vine-main-logo {
+  float: left;
 }
-.navbar .nav > li > a {
-  text-shadow: none;
-  padding: 0 0 10px 0;
+.vine-header .header-right-link-list {
+  float: right;
+}
+.vine-header .header-right-link-list ul {
+  margin: 0;
+  list-style: none;
+}
+.vine-header .header-right-link-list ul li {
+  float: left;
+  display: block;
+  margin-left: 10px;
+}
+.vine-intro-convo {
+  min-height: 510px;
 }
 footer {
   min-height: 50px;
   padding: 20px 0;
 }
 footer .footer-content-list {
-  float: right;
   list-style: none;
   margin: 0;
 }
 footer .footer-content-list li {
   float: left;
   margin-right: 10px;
-  padding-right: 10px;
-  line-height: 12px;
-  border-right: 1px solid black;
-}
-footer .footer-content-list li:last-child {
-  border-right: none;
 }
 .client-logo-list {
   list-style: none;
@@ -107,29 +90,34 @@ footer .footer-content-list li:last-child {
 .vine-container {
   min-height: 400px;
 }
-.vine-sign-in {
-  padding: 20px 0;
-  width: 100%;
-}
-.right-col-section {
-  margin-bottom: 20px;
+.vine-sign-in img {
+  width: 136px;
+  float: right;
 }
 #vine-invite-code-input {
-  width: 140px;
+  width: 137px;
+  float: right;
+  margin-bottom: 0;
 }
 /*  chat bubbles */
 .vine-chat-bubble {
   background: orange;
   box-shadow: 5px 5px 10px #ddd;
   clear: both;
-  padding: 20px;
+  padding: 0 20px;
   position: relative;
-  color: white;
+  color: #333;
   min-width: 25%;
   text-align: center;
-  text-shadow: 0px -1px 0px #666666;
+  text-shadow: 0px -1px 0px #ffffff;
   margin-bottom: 25px;
   z-index: 1;
+}
+.vine-chat-bubble h1,
+.vine-chat-bubble h2,
+.vine-chat-bubble h3,
+.vine-chat-bubble h4 {
+  font-weight: 100;
 }
 .vine-chat-bubble:after {
   content: "";
@@ -143,6 +131,11 @@ footer .footer-content-list li:last-child {
   z-index: 0;
   border-width: 20px 20px 0px 0px;
   border-color: orange transparent;
+  -webkit-filter: drop-shadow(5px 5px 10px #dddddd);
+  -moz-filter: drop-shadow(5px 5px 10px #dddddd);
+  -ms-filter: drop-shadow(5px 5px 10px #dddddd);
+  -o-filter: drop-shadow(5px 5px 10px #dddddd);
+  filter: drop-shadow(5px 5px 10px #dddddd);
 }
 .vine-chat-bubble.vine-chat-bubble-left {
   border-radius: 10px 10px 10px 0;
@@ -183,28 +176,28 @@ footer .footer-content-list li:last-child {
   color: white;
 }
 .vine-chat-bubble.chat-blue {
-  background-color: #00aeef;
-  background-image: -moz-linear-gradient(top, #00ccff, #00aeef);
-  background-image: -ms-linear-gradient(top, #00ccff, #00aeef);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00ccff), to(#00aeef));
-  background-image: -webkit-linear-gradient(top, #00ccff, #00aeef);
-  background-image: -o-linear-gradient(top, #00ccff, #00aeef);
-  background-image: linear-gradient(top, #00ccff, #00aeef);
+  background-color: #fdc271;
+  background-image: -moz-linear-gradient(top, #ffe5c3, #fdc271);
+  background-image: -ms-linear-gradient(top, #ffe5c3, #fdc271);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffe5c3), to(#fdc271));
+  background-image: -webkit-linear-gradient(top, #ffe5c3, #fdc271);
+  background-image: -o-linear-gradient(top, #ffe5c3, #fdc271);
+  background-image: linear-gradient(top, #ffe5c3, #fdc271);
 }
 .vine-chat-bubble.chat-blue:after {
-  border-color: #00AEEF transparent;
+  border-color: #FDC271 transparent;
 }
 .vine-chat-bubble.chat-green {
-  background-color: #8dc63f;
-  background-image: -moz-linear-gradient(top, #b6c63f, #8dc63f);
-  background-image: -ms-linear-gradient(top, #b6c63f, #8dc63f);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b6c63f), to(#8dc63f));
-  background-image: -webkit-linear-gradient(top, #b6c63f, #8dc63f);
-  background-image: -o-linear-gradient(top, #b6c63f, #8dc63f);
-  background-image: linear-gradient(top, #b6c63f, #8dc63f);
+  background-color: #a9d26e;
+  background-image: -moz-linear-gradient(top, #d2e6b3, #a9d26e);
+  background-image: -ms-linear-gradient(top, #d2e6b3, #a9d26e);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d2e6b3), to(#a9d26e));
+  background-image: -webkit-linear-gradient(top, #d2e6b3, #a9d26e);
+  background-image: -o-linear-gradient(top, #d2e6b3, #a9d26e);
+  background-image: linear-gradient(top, #d2e6b3, #a9d26e);
 }
 .vine-chat-bubble.chat-green:after {
-  border-color: #8DC63F transparent;
+  border-color: #A9D26E transparent;
 }
 .vine-chat-bubble.chat-grey {
   background-color: #aaaaaa;
@@ -253,12 +246,25 @@ footer .footer-content-list li:last-child {
 .tip-box a:visited {
   color: white;
 }
-
-.invite-content
-{
-  min-height: 280px;
+.right-col-section {
+  color: #888;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  font-size: ;
+  line-height: 25px;
 }
-.invite-content input.email-address
-{
-  margin-bottom: 15px;
+.page-section-header {
+  margin-top: 20px;
+  height: 65px;
+}
+.page-section-header h1 {
+  float: left;
+  font-size: 25px;
+  font-weight: 100;
+}
+.page-section-header img {
+  float: left;
+  height: 25px;
+  margin-right: 10px;
 }

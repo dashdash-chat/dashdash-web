@@ -64,6 +64,7 @@ def oauth_authorized(resp):
             and_(users.c.name == twitter_user))
     found_user = db.session.execute(s).fetchone()
     if found_user:
+        print 'here'
         if not found_user.twitter_id == resp['user_id'] or \
            not found_user.twitter_token == resp['oauth_token'] or \
            not found_user.twitter_secret == resp['oauth_token_secret']:
@@ -96,6 +97,26 @@ def demo(token):
     if found_demo:
         return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
+
+@app.route("/about")
+def about():
+    user = session.get('vine_user')
+    return render_template('about.html', user=user)
+
+@app.route("/legal")
+def legal():
+    user = session.get('vine_user')
+    return render_template('legal.html', user=user)
+
+@app.route("/setup")
+def setup():
+    user = session.get('vine_user')
+    return render_template('setup.html', user=user)
+
+@app.route("/contacts")
+def contacts():
+    user = session.get('vine_user')
+    return render_template('contacts.html', user=user)
 
 @app.errorhandler(404)
 def page_not_found(e):
