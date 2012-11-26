@@ -1,5 +1,5 @@
 from flask import Flask, flash, render_template, redirect, request, session, url_for
-from flask.ext.oauth import OAuth
+from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 from sqlalchemy import select, and_
@@ -103,7 +103,19 @@ def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
     return db.session.execute(s).fetchone()
 
+def clear_bad_oauth_cookies(fn):
+    def wrapped():
+        try:
+            return fn()
+        except OAuthException, e:
+            if e['message'] == 'Invalid response from twitter':
+                session.pop('vine_user', None)
+                return fn()
+            else:
+                raise e
+    return wrapped
 @app.route('/twitter/oauth_callback')
+@clear_bad_oauth_cookies
 @twitter.authorized_handler
 def oauth_authorized(resp):
     if resp is None:
