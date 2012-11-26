@@ -5,7 +5,8 @@ from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, Equal
 from sqlalchemy import select, and_
 import xmlrpclib
 import constants
-from celery_tasks import fetch_follows
+from celery import chain
+from celery_tasks import fetch_follows, score_edges
 
 app = Flask(__name__)
 app.debug = constants.debug
@@ -135,7 +136,8 @@ def oauth_authorized(resp):
                                values(twitter_id=resp['user_id'],
                                       twitter_token=resp['oauth_token'],
                                       twitter_secret=resp['oauth_token_secret']))
-        result = fetch_follows.delay(resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
+        result = chain(fetch_follows.s(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret']),
+                       score_edges.s())()
         db.session.execute(user_tasks.insert().\
                            values(user_id=found_user.id,
                                   celery_task_id=result,

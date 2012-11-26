@@ -57,7 +57,7 @@ def add(x,y):
     print x+y
         
 @celery.task
-def fetch_follows(user_twitter_id, token, secret):
+def fetch_follows(user_id, user_twitter_id, token, secret):
     conn = engine.connect()
     follow_ids = []
     cursor = '-1'
@@ -84,14 +84,15 @@ def fetch_follows(user_twitter_id, token, secret):
         conn.execute(twitter_follows.insert().\
                      values(from_twitter_id=user_twitter_id,
                             to_twitter_id=follow_id))
+    return user_id
 
 @twitter.tokengetter
 def split_twitter_token_pair(token_pair):
     return token_pair
 
 @celery.task
-def score_edges():
-    calculator = EdgeCalculator(logger)
+def score_edges(user_id=None):
+    calculator = EdgeCalculator(logger, user_id)
     calculator.register_plugin('xep_0030') # Service Discovery
     calculator.register_plugin('xep_0004') # Data Forms
     calculator.register_plugin('xep_0060') # PubSub

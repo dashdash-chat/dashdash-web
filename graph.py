@@ -48,7 +48,7 @@ class RelationshipScores(object):
     
 
 class EdgeCalculator(sleekxmpp.ClientXMPP):
-    def __init__(self, logger):
+    def __init__(self, logger, user_id=None):
         self.logger = logger
         sleekxmpp.ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
