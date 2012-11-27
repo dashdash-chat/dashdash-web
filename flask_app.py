@@ -178,7 +178,7 @@ def create_account():
                 form = CreateAccountForm(request.form)
                 if form.validate():
                     try:
-                        _register(session.get('twitter_user'), form.password.data) # commented out because xmpp server does not exist on my machine
+                        _register(session.get('twitter_user'), form.password.data)
                         db.session.execute(users.update().\
                                        where(users.c.name == session.get('twitter_user')).\
                                        values(email=form.email.data))
@@ -236,7 +236,7 @@ def settings():
             db.session.execute(users.update().where(users.c.name == user).values(email=form.email.data))
             db.session.commit()
             flash('Your email address has been changed.', 'error')
-    return render_template('settings.html', form=form)
+    return render_template('settings.html', user=user, form=form)
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -254,7 +254,7 @@ def change_password():
             except xmlrpclib.ProtocolError, e:
                 flash('There was an error changing your XMPP password.', 'error')
                 return redirect(url_for('change_password'))
-    return render_template('change_password.html', form=form)
+    return render_template('change_password.html', user=user, form=form)
 
 @app.route("/about")
 def about():
@@ -272,11 +272,12 @@ def contacts():
     return render_template('contacts.html', user=user)
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found(e=None):
     return render_template('404.html'), 404
 
+@app.route("/50x.html")
 @app.errorhandler(500)
-def page_not_found(e):
+def page_not_found(e=None):
     return render_template('500.html'), 500
 
 def _register(user, password):
