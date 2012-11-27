@@ -177,7 +177,7 @@ def create_account():
         user = session.get('twitter_user')
         form = CreateAccountForm()
         return render_template('create_account.html', user=user, form=form)
-    else:       
+    else:
         if session.get('invite_code'):
             s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
             if db.session.execute(s).fetchone():

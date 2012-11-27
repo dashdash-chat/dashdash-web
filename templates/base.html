@@ -26,7 +26,8 @@
             </div>
             <div class='header-right-link-list'>
                 <ul>
-                    <li>{% if user %}Hey {{ user }}! <a href='{{ url_for('logout') }}'>Sign out?</a>{% else %}<a href="{{ url_for('login') }}">sign in</a> (devs only){% endif %}
+                    {% if user %}<li><a href='{{ url_for('settings') }}'><b>Settings</b></a></li>{% endif %}
+                    <li>{% if user %}Hey {{ user }}! <a href='{{ url_for('logout') }}'>Sign out?</a>{% else %}<a href="{{ url_for('login') }}">sign in</a> (devs only){% endif %}</li>
                 </ul>
             </div>
         </div>
