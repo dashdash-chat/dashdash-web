@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, flash, render_template, redirect, request, session, url_for
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -153,6 +154,9 @@ def oauth_authorized(resp):
     if found_user and found_user.email:  # if we have a user that's finished the process
         session['vine_user'] = twitter_user
         flash('You were signed in as %s' % twitter_user, 'error')
+    elif found_user and not found_user.email:
+        return redirect(url_for('create_account'))
+        flash('You were signed in as %s, but still need to enter an email address and password' % twitter_user, 'error')
     else:
         if session.get('invite_code'):
             s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
@@ -168,6 +172,8 @@ def oauth_authorized(resp):
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'GET':
+        if session.get('vine_user'):
+            return redirect(url_for('settings'))
         user = session.get('twitter_user')
         form = CreateAccountForm()
         return render_template('create_account.html', user=user, form=form)
@@ -283,21 +289,21 @@ def page_not_found(e=None):
 def _register(user, password):
     _xmlrpc_command('register', {
         'user': user,
-        'host': server,
+        'host': constants.domain,
         'password': password
     })
 def _change_password(user, password):
     _xmlrpc_command('change_password', {
         'user': user,
-        'host': server,
+        'host': constants.domain,
         'newpass': password
     })
 def _xmlrpc_command(command, data):
     fn = getattr(xmlrpc_server, command)
     return fn({
-        'user': '_web0',
-        'server': server,
-        'password': web_xmlrpc_password
+        'user': constants.web_xmlrpc_user,
+        'server': constants.domain,
+        'password': constants.web_xmlrpc_password
     }, data)
 
 if __name__ == "__main__":
