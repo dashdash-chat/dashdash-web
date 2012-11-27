@@ -164,6 +164,7 @@ def oauth_authorized(resp):
                                   twitter_secret=resp['oauth_token_secret']))
         db.session.commit()
         if session.get('invite_code'):
+            session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
         else:
             return redirect(url_for('invite'))
@@ -194,14 +195,14 @@ def create_account():
                 session['vine_user'] = found_user.name
                 flash('You signed in as %s' % found_user.name, 'error')
                 return redirect(url_for('index'))
+            if user_used_invite:
+                form = CreateAccountForm()
+                return render_template('create_account.html', user=found_user.name, form=form)
             if has_unused_invite:
                 db.session.execute(invites.update().\
                                where(invites.c.id == has_unused_invite.id).\
                                values(recipient=found_user.id, used=datetime.datetime.now()))
                 db.session.commit()
-                form = CreateAccountForm()
-                return render_template('create_account.html', user=found_user.name, form=form)
-            if user_used_invite:
                 form = CreateAccountForm()
                 return render_template('create_account.html', user=found_user.name, form=form)
             return redirect(url_for('invite') + invite_code)
