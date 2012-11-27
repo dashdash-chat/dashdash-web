@@ -1,3 +1,10 @@
+@coffin_color: rgba(0,0,0,0.1);
+
+header {
+	background:@coffin_color;
+	background: -webkit-linear-gradient(45deg, #fff, @brandPrimaryColor);
+}
+
 .navbar-inner{ box-shadow : none }
 .navbar .nav li.dropdown .dropdown-toggle .caret, .navbar .nav li.dropdown.open .caret
 {
@@ -19,11 +26,44 @@
 
 .vine-header
 {
-	padding:10px 0 20px;
+
+	.container { position: relative; }
+
+	.header-banner
+	{
+		color:white;
+		position: absolute;
+		right: 0;
+		background: orange;
+		padding: 20px;
+		top: 0;
+		min-height: 75px;
+		text-align: center;
+		//box-shadow: 6px 5px 10px #333;
+		width:300px;
+		
+		h2 {
+			text-shadow: 0px -1px 3px black;
+		}
+		
+		&:after {
+			content: "";
+			position: absolute;
+			bottom: -15px;
+			left: 0px;
+			border-width: 15px 0 0 340px;
+			border-style: solid;
+			border-color: orange transparent;
+			display: block;
+			width: 0;
+			//-webkit-filter: drop-shadow( 6px 5px 10px #333);
+		}
+
+	}
 
 	.vine-main-logo
 	{
-		float:left;
+		padding: 20px 0;
 	}
 
 	.header-right-link-list

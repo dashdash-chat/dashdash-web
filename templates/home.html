@@ -54,41 +54,16 @@
         </div>
     {% else %}
         <div class='vine-container container'>
-            <div class='row'>
-                <div class='vine-intro-convo span8'>
-                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h2><i>Hello!</i></h2></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>Vine is a cocktail party on the Internet</h3></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h3>You can see that your friends are chatting</h3></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>But not what they're saying</h3></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-left chat-green hide"><h3>Unless you join their conversation</h3></div>
-                    <div class="vine-chat-bubble vine-chat-bubble-right chat-blue hide"><h3>…just like you could at a party in real life!</h3></div>
-                </div>
-                <div class='vine-intro-invite span4'>
-                    <div class='right-col-section'>
-                        <h4><i>Vine is currently in private alpha</i></h4>
-                    </div>
-                    <div class='right-col-section'>
-                        <i class="icon-question-sign"></i> Have an invite code? <input id='vine-invite-code-input' type='text' placeholder='enter it here'/>
-                        <i class="icon-ok-circle"></i> Have an account?
-                        <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
-                        </br>
-                        <a href='#'><i class="icon-envelope"></i>Want to know when we launch?</a>
-                    </div>
-                    <div class='clearfix'>
-                        <ul class='client-logo-list'>
-                            <li><a href='#'><img src='/static/img/client_logos/adium.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/pidgin.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/messages.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/imoim.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/jabber.png' /></a></li>
-                        </ul>
-                    </div>
-                    <div class='right-col-section'>
-                        <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                    </div>
-                </div>
+           
+            <div class='vine-intro-convo'>
+                <div id='bubble-0' class="vine-chat-bubble vine-chat-bubble-left chat-green"><h1><i>Hello!</i></h1></div>
+                <div id='bubble-1' class="vine-chat-bubble vine-chat-bubble-right chat-blue"><h3>Vine is a cocktail party on the Internet</h3></div>
+                <div id='bubble-2' class="vine-chat-bubble vine-chat-bubble-left chat-green"><h3>You can see that your friends are chatting</h3></div>
+                <div id='bubble-3' class="vine-chat-bubble vine-chat-bubble-right chat-blue"><h3>But not what they're saying</h3></div>
+                <div id='bubble-4' class="vine-chat-bubble vine-chat-bubble-left chat-green"><h3>Unless you join their conversation</h3></div>
+                <div id='bubble-5' class="vine-chat-bubble vine-chat-bubble-right chat-blue"><h3>…just like you could at a party in real life!</h3></div>
             </div>
+            
         </div>
     {% endif %}
 {% endblock %}

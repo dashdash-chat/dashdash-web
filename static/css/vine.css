@@ -1086,8 +1086,8 @@ select:focus:required:invalid:focus {
 }
 .input-prepend .active,
 .input-append .active {
-  background-color: #a9dba9;
-  border-color: #46a546;
+  background-color: #afdbaa;
+  border-color: #50a646;
 }
 .input-prepend .add-on,
 .input-prepend .btn {
@@ -4175,6 +4175,10 @@ a.badge:hover {
   line-height: 27px;
   color: inherit;
 }
+header {
+  background: rgba(0, 0, 0, 0.1);
+  background: -webkit-linear-gradient(45deg, #ffffff, #50a646);
+}
 .navbar-inner {
   box-shadow: none;
 }
@@ -4198,11 +4202,36 @@ a.badge:hover {
 .logo img {
   width: 175px;
 }
-.vine-header {
-  padding: 10px 0 20px;
+.vine-header .container {
+  position: relative;
+}
+.vine-header .header-banner {
+  color: white;
+  position: absolute;
+  right: 0;
+  background: orange;
+  padding: 20px;
+  top: 0;
+  min-height: 75px;
+  text-align: center;
+  width: 300px;
+}
+.vine-header .header-banner h2 {
+  text-shadow: 0px -1px 3px #000000;
+}
+.vine-header .header-banner:after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 0px;
+  border-width: 15px 0 0 340px;
+  border-style: solid;
+  border-color: orange transparent;
+  display: block;
+  width: 0;
 }
 .vine-header .vine-main-logo {
-  float: left;
+  padding: 20px 0;
 }
 .vine-header .header-right-link-list {
   float: right;
@@ -4217,6 +4246,7 @@ a.badge:hover {
   margin-left: 10px;
 }
 footer {
+  background: rgba(0, 0, 0, 0.1);
   min-height: 50px;
   padding: 20px 0;
 }
@@ -4227,6 +4257,15 @@ footer .footer-content-list {
 footer .footer-content-list li {
   float: left;
   margin-right: 10px;
+}
+footer .vine-sign-in img {
+  width: 300px;
+}
+footer .footer-non-user {
+  padding-bottom: 20px;
+}
+footer .footer-links > ul {
+  float: right;
 }
 /*  chat bubbles */
 .vine-chat-bubble {
@@ -4364,8 +4403,56 @@ h6 {
 p {
   color: #777;
 }
+.primary-container {
+  width: 100%;
+  box-shadow: 0 0 30px;
+  padding: 20px 0;
+}
+.vine-container {
+  min-height: 350px;
+  padding: 10px 0;
+}
 .vine-intro-convo {
-  min-height: 510px;
+  height: 350px;
+  overflow: hidden;
+  position: relative;
+}
+#bubble-0,
+#bubble-1,
+#bubble-2,
+#bubble-3,
+#bubble-4,
+#bubble-5 {
+  position: absolute;
+}
+#bubble-0 {
+  top: 0px;
+  left: 0px;
+}
+#bubble-1 {
+  display: none;
+  top: 89px;
+  left: 60px;
+}
+#bubble-2 {
+  display: none;
+  top: 50px;
+  left: 488px;
+}
+#bubble-3 {
+  display: none;
+  top: 130px;
+  left: 477px;
+}
+#bubble-4 {
+  display: none;
+  top: 190px;
+  left: 46px;
+}
+#bubble-5 {
+  display: none;
+  top: 250px;
+  left: 300px;
 }
 .client-logo-list {
   list-style: none;
@@ -4383,13 +4470,6 @@ p {
 .legal-mumbo {
   text-align: justify;
   text-justify: inter-word;
-}
-.vine-container {
-  min-height: 400px;
-}
-.vine-sign-in img {
-  width: 136px;
-  float: right;
 }
 #vine-invite-code-input {
   width: 137px;
