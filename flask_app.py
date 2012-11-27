@@ -67,24 +67,28 @@ def index():
 def login():
     return twitter.authorize()
 
-@app.route('/invite')
+@app.route('/invite/')
 @app.route('/invite/<code>')
 def invite(code=None):
     user = session.get('vine_user')
-    form = InviteCodeForm()
     if user:
         return redirect(url_for('index'))
     invite = db.session.execute(select([users.c.name, invites.c.recipient],
                                 and_(users.c.id == invites.c.sender, invites.c.code == code))).fetchone()
+    form = InviteCodeForm()
     if invite:
         if invite['recipient']:
             flash('Sorry, that invite code has already been used.', 'error')
+            return render_template('invite.html', form=form)
         else:
             session['invite_code'] = code
             return render_template('invite.html', sender=invite[0])
     else:
-        flash('Sorry, that invite code isn\'t valid.', 'error')
-    return render_template('invite.html', form=form)
+        if code:
+            flash('Sorry, %s is not a valid invite code.' % code, 'error')
+        else:
+            flash('Sorry, but you need an invite code to sign up.', 'error')
+        return render_template('invite.html', form=form)
 
 @app.route('/check_invite', methods=['POST'])
 def check_invite():
@@ -98,8 +102,10 @@ def check_invite():
 @app.route('/logout')
 def logout():
     session.pop('vine_user', None)
+    session.pop('twitter_user', None)
+    session.pop('invite_code', None)
     flash('You were signed out', 'error')
-    return redirect(request.referrer or url_for('index'))
+    return redirect(url_for('index'))
 
 @twitter.tokengetter
 def get_twitter_token():
@@ -143,21 +149,20 @@ def oauth_authorized(resp):
                            values(user_id=found_user.id,
                                   celery_task_id=result,
                                   celery_task_type='fetch_follows'))
-        session['vine_user'] = twitter_user
-        flash('You were signed in as %s' % twitter_user, 'error')
-    else:
+        db.session.commit()
+        if found_user.email:
+            session['vine_user'] = twitter_user
+            flash('You were signed in as %s' % twitter_user, 'error')
+            return redirect(url_for('index'))
+        else:
+            session['twitter_user'] = twitter_user
+            return redirect(url_for('create_account'))
+    else:  # still store the user object and tokens, but elsewhere only set the session['vine_user'] if we have an email already!
         db.session.execute(users.insert().\
                            values(name=twitter_user,
                                   twitter_token=resp['oauth_token'],
                                   twitter_secret=resp['oauth_token_secret']))
-    db.session.commit()
-    if found_user and found_user.email:  # if we have a user that's finished the process
-        session['vine_user'] = twitter_user
-        flash('You were signed in as %s' % twitter_user, 'error')
-    elif found_user and not found_user.email:
-        return redirect(url_for('create_account'))
-        flash('You were signed in as %s, but still need to enter an email address and password' % twitter_user, 'error')
-    else:
+        db.session.commit()
         if session.get('invite_code'):
             s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
             if db.session.execute(s).fetchone():
@@ -165,49 +170,72 @@ def oauth_authorized(resp):
                 return redirect(url_for('create_account'))
             else:
                 flash('Sorry, that invite code is not valid.', 'error')
+                return redirect(url_for('invite') + session.get('invite_code'))
         else:
-            flash('Sorry, but you need an invite code to sign up.', 'error')
-    return redirect(url_for('index'))
+            return redirect(url_for('invite'))
 
 @app.route('/create_account', methods=['GET', 'POST'])
-def create_account():
+def create_account():    
+    if session.get('vine_user'):
+        return redirect(url_for('settings'))
+    twitter_user = session.get('twitter_user')
+    found_user = None
+    has_unused_invite = None
+    user_used_invite = None
+    if twitter_user:
+        s = select([users.c.id, users.c.email], and_(users.c.name == twitter_user))
+        found_user = db.session.execute(s).fetchone()
+    if session.get('invite_code'):
+        s = select([invites], and_(invites.c.code == session.get('invite_code'), invites.c.recipient == None))
+        has_unused_invite = db.session.execute(s).fetchone()
+    if found_user:
+        s = select([invites], and_(invites.c.recipient == found_user.id))
+        user_used_invite = db.session.execute(s).fetchone()
     if request.method == 'GET':
-        if session.get('vine_user'):
-            return redirect(url_for('settings'))
-        user = session.get('twitter_user')
-        form = CreateAccountForm()
-        return render_template('create_account.html', user=user, form=form)
-    else:
-        if session.get('invite_code'):
-            s = select([invites], and_(invites.c.code == session['invite_code'], invites.c.recipient == None))
-            if db.session.execute(s).fetchone():
-                form = CreateAccountForm(request.form)
-                if form.validate():
-                    try:
-                        _register(session.get('twitter_user'), form.password.data)
-                        db.session.execute(users.update().\
-                                       where(users.c.name == session.get('twitter_user')).\
-                                       values(email=form.email.data))
-                        user_id = db.session.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
-                        db.session.execute(invites.update().\
-                                         where(invites.c.code == session['invite_code']).\
-                                         values(recipient=user_id, used=datetime.datetime.now()))
-                        db.session.commit()
-                        session['vine_user'] = session.get('twitter_user')
-                        session.pop('twitter_user')
-                        session.pop('invite_code')
-                        flash('You signed up as %s' % session.get('vine_user'), 'error')
-                    except xmlrpclib.ProtocolError, e:
-                        flash('There was an error creating your XMPP account.', 'error')
-                        return redirect(url_for('create_account'))
-                else:
-                    #flash('There was an error in the form.', 'error')
-                    return redirect(url_for('create_account'))
-            else:
-                flash('Sorry, that invite code is not valid.', 'error')
+        if twitter_user and has_unused_invite:
+            form = CreateAccountForm()
+            return render_template('create_account.html', user=twitter_user, form=form)
         else:
-            flash('Sorry, but you need an invite code to sign up.', 'error')
-        return redirect(url_for('index'))
+            if found_user:
+                if found_user.email:
+                    session['vine_user'] = twitter_user
+                    session.pop('twitter_user', None)
+                    session.pop('invite_code', None)
+                    flash('You signed in as %s' % twitter_user, 'error')
+                    return redirect(url_for('index'))
+                else:
+                    if user_used_invite:
+                        form = CreateAccountForm()
+                        return render_template('create_account.html', user=twitter_user, form=form)
+            return redirect(url_for('invite'))
+    else:
+        if (session.get('twitter_user') and has_unused_invite) or (found_user and user_used_invite):
+            form = CreateAccountForm(request.form)
+            if form.validate():
+                try:
+                    _register(session.get('twitter_user'), form.password.data)
+                except xmlrpclib.ProtocolError, e:
+                    flash('There was an error creating your XMPP account.', 'error')
+                    return redirect(url_for('create_account'))
+                db.session.execute(users.update().\
+                               where(users.c.name == session.get('twitter_user')).\
+                               values(email=form.email.data))
+                user_id = db.session.execute(select([users.c.id], users.c.name == session.get('twitter_user'))).fetchone()[0]
+                db.session.execute(invites.update().\
+                                 where(invites.c.code == session['invite_code']).\
+                                 values(recipient=user_id, used=datetime.datetime.now()))
+                db.session.commit()
+                session['vine_user'] = session.get('twitter_user')
+                session.pop('twitter_user', None)
+                session.pop('invite_code', None)
+                flash('You signed up as %s' % session.get('vine_user'), 'error')
+                return redirect(url_for('index'))
+            else:
+                flash('There was an error in the form.', 'error')
+                return redirect(url_for('create_account'))
+        else:        
+            flash('Sorry, that post didn\'t have a valid invite code.', 'error')
+            return redirect(url_for('index'))
 
 @app.route("/demo/")
 def no_demo():
