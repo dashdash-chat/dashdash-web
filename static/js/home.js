@@ -21,6 +21,7 @@ $(window).ready(function(){
 	if( $('.list-request').length )
 	{
 		$('.list-request').click(function(){
+
 			$('.list-request-container .hidden-form').show('blind',{'direction':'vertical'},'fast');
 			return false;
 		});
@@ -41,7 +42,7 @@ $(window).ready(function(){
 					$('.list-request-container .hidden-form').hide('blind',{'direction':'vertical'},'slow');
 					$('.header-banner').effect('highlight',{},750);
 					$('.list-request').remove();
-					$('.list-request-container').prepend('<h3>Thanks! Keep an eye on your inbox</h3>');
+					$('.list-request-container').prepend('<p>Thanks! Keep an eye on your inbox</p>');
 				}
 			}
 		});
