@@ -12,7 +12,10 @@ p {
 {
 	width:100%;
 	box-shadow: 0 0 30px;
+	min-height: 350px;
 	padding: 20px 0;
+	position: relative;
+	z-index: 10;
 }
 
 .vine-container
@@ -153,3 +156,35 @@ p {
 		margin-right:10px;
 	}
 }
+
+/* flash */
+
+.flash-container
+{
+	color: rgba(0,0,0,0.5);
+	background: coral;
+	background: -webkit-linear-gradient(45deg, coral, #fff);
+	position: relative;
+	top: -20px;
+	padding: 10px 0 5px;
+
+	.close {
+		float:left;
+	}
+
+	ul {
+		padding-left:50px;
+	}
+}
+
+.invite-container
+{
+	input {
+		font-size: 2em;
+		height: 2em;
+		width: 300px;
+	}
+}
+
+
+
