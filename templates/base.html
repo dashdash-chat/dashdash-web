@@ -26,7 +26,17 @@
                     <a href="/"><img src='/static/img/logo.png' width='320px'/></a>
                 </div>
 
-                {% if not user %}
+
+                {% if user %}
+                    <div class='user-greeting'>
+                        <div class='username'>{{ user }}</div>
+                        <div class='actions'>
+                            <a href='settings/'>settings</a>
+                            <a href='logout/'>logout</a>
+                        </div>
+                    </div>
+
+                {% else %}
                     <div class='header-banner'>
                         <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
                         
@@ -92,18 +102,21 @@
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
                     <li><a href='{{ url_for('legal') }}'>legal</a></li>
-                    <li>
-                        {% if user %}
-                            Hey {{ user }}! <a href='{{ url_for('logout') }}'>Sign out?</a>
-                        {% else %}
-                            <a href="{{ url_for('login') }}">sign in</a> (devs only)
-                        {% endif %}
-                    </li>
+            
                     {% if user %}
                         <li>
-                            <a href='{{ url_for('settings') }}'><b>Settings</b></a>
+                            <a href='{{ url_for('settings') }}'>settings</a>
+                        </li>
+                         <li>
+                            <a href='{{ url_for('logout') }}'>logout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ url_for('login') }}">sign in</a> (devs only)
                         </li>
                     {% endif %}
+                    </li>
+
                     <li>&copy; 2012 Vine</li>
                 </ul>
             </div>

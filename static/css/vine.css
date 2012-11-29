@@ -4198,6 +4198,14 @@ a.badge:hover {
 .logo img {
   width: 175px;
 }
+header a:link,
+footer a:link,
+header a:visited,
+footer a:visited,
+header a:active,
+footer a:active {
+  color: rgba(0, 0, 0, 0.5);
+}
 .vine-header .container {
   position: relative;
 }
@@ -4247,6 +4255,22 @@ a.badge:hover {
 }
 .vine-header .header-banner .list-request {
   margin-bottom: 10px;
+}
+.vine-header .user-greeting {
+  text-align: right;
+  position: absolute;
+  top: 76px;
+  right: 0;
+}
+.vine-header .user-greeting .username {
+  margin-bottom: 27px;
+  font-size: 5em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.35;
+}
+.vine-header .user-greeting .actions {
+  font-size: 1.25em;
 }
 .vine-header .vine-main-logo {
   padding: 40px 0;
