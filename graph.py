@@ -348,7 +348,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return old_edge
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
-        #self.db_execute(query, data)
+        self.db_execute(query, data)
         fetched = self.cursor.fetchall()
         if fetched and len(fetched) > 0:
             if strip_pairs:
@@ -358,7 +358,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return []
     
     def db_execute(self, query, data={}):
-        self.logger.info(query % data)
+        #self.logger.info(query % data)
         if not self.db or not self.cursor:
             self.logger.info("Database connection missing, attempting to reconnect and retry query")
             if self.db:
