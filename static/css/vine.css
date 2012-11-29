@@ -4222,6 +4222,9 @@ a.badge:hover {
   line-height: 16px;
   font-size: 1.1em;
 }
+.vine-header .header-banner input {
+  background: #ffd280;
+}
 .vine-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
 }
@@ -4236,8 +4239,14 @@ a.badge:hover {
   display: block;
   width: 0;
 }
-.vine-header .header-banner .vine-sign-in {
-  margin-left: 73px;
+.vine-header .header-banner .center-text {
+  text-align: center;
+}
+.vine-header .header-banner .description {
+  color: maroon;
+}
+.vine-header .header-banner .list-request {
+  margin-bottom: 10px;
 }
 .vine-header .vine-main-logo {
   padding: 40px 0;
