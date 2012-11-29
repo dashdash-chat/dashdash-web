@@ -220,10 +220,16 @@ def create_account():
                 db.session.execute(users.update().\
                                where(users.c.id == found_user.id).\
                                values(email=form.email.data))
-                db.session.execute(invites.update().\
-                                 where(invites.c.code == session['invite_code']).\
-                                 values(recipient=found_user.id, used=datetime.datetime.now()))
-                db.session.commit()
+		if has_unused_invite and session.get('invite_code'):
+                    db.session.execute(invites.update().\
+                                       where(invites.c.code == session.get('invite_code')).\
+                                       values(recipient=found_user.id, used=datetime.datetime.now()))
+                elif has_used_invite: 
+                    db.session.execute(invites.update().\
+                                       where(invites.c.recipient == found_user.id).\
+                                       values(used=datetime.datetime.now()))
+			
+		db.session.commit()
                 session['vine_user'] = found_user.name
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
