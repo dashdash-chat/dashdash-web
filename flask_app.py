@@ -345,10 +345,10 @@ def page_not_found(e=None):
     return render_template('500.html'), 500
 
 def _check_account(user):
-   return _xmlrpc_command('check_account', {
+    return _xmlrpc_command('check_account', {
         'user': user,
         'host': constants.domain
-    })
+    })['res'] == 0
 
 def _register(user, password):
     _xmlrpc_command('register', {
