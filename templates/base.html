@@ -31,8 +31,8 @@
                     <div class='user-greeting'>
                         <div class='username'>{{ user }}</div>
                         <div class='actions'>
-                            <a href='settings/'>settings</a>
-                            <a href='logout/'>logout</a>
+                            <a href='{{ url_for('settings') }}'>settings</a>
+                            <a href='{{ url_for('logout') }}'>logout</a>
                         </div>
                     </div>
 

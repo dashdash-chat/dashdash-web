@@ -4455,6 +4455,9 @@ h6 {
 p {
   color: #777;
 }
+.hero-unit {
+  background: transparent;
+}
 .primary-container {
   background: white;
   width: 100%;
@@ -4600,6 +4603,17 @@ input.create_account {
 }
 input.create_account_go {
   width: 321px;
+}
+.vine-form {
+  margin-left: 20px;
+  width: 321px;
+  position: relative;
+}
+.vine-form input {
+  width: 100%;
+  height: 1.25em;
+  font-size: 2em;
+  display: block;
 }
 .pull-right {
   float: right;
