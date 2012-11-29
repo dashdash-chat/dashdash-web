@@ -79,6 +79,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                     sender, recipient, content = row
                     self.scores.adjust_score(sender, recipient, multiplier_fn(content))
         process_log_type(self.db_fetch_artificial_follows, lambda s: 10000)
+        process_log_type(self.db_fetch_account_invites,    lambda s: 10000)
         process_log_type(self.db_fetch_twitter_follows,    lambda s: 300)
         process_log_type(self.db_fetch_messages, lambda s: len(s))
         process_log_type(self.db_fetch_topics,   lambda s: len(s))
@@ -169,6 +170,23 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
+                                               'user_id': self.user_id if self.user_id else '%',
+                                               'pagesize': PAGESIZE,
+                                               'offset': offset
+                                            })
+    
+    def db_fetch_account_invites(self, offset):
+        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
+                                               FROM invites, users as from_user, users as to_user
+                                               WHERE to_user.id = invites.recipient
+                                               AND from_user.id = invites.sender
+                                               AND invites.used > %(startdate)s
+                                               AND from_user.id LIKE %(user_id)s
+                                               ORDER BY invites.created DESC
+                                               LIMIT %(pagesize)s
+                                               OFFSET %(offset)s
+                                            """, {
+                                               'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
                                                'offset': offset
@@ -330,7 +348,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return old_edge
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
-        self.db_execute(query, data)
+        #self.db_execute(query, data)
         fetched = self.cursor.fetchall()
         if fetched and len(fetched) > 0:
             if strip_pairs:
@@ -340,7 +358,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return []
     
     def db_execute(self, query, data={}):
-        #self.logger.info(query % data)
+        self.logger.info(query % data)
         if not self.db or not self.cursor:
             self.logger.info("Database connection missing, attempting to reconnect and retry query")
             if self.db:

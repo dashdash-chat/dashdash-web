@@ -174,9 +174,7 @@ def create_account():
     if session.get('vine_user'):
         return redirect(url_for('settings'))
     twitter_user = session.get('twitter_user')
-    session.pop('twitter_user', None)
     invite_code = session.get('invite_code')
-    session.pop('invite_code', None)
     found_user = None
     has_unused_invite = None
     user_used_invite = None
