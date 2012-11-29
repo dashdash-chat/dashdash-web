@@ -4198,11 +4198,8 @@ a.badge:hover {
 .logo img {
   width: 175px;
 }
-header a:link,
 footer a:link,
-header a:visited,
 footer a:visited,
-header a:active,
 footer a:active {
   color: rgba(0, 0, 0, 0.5);
 }
@@ -4210,7 +4207,6 @@ footer a:active {
   position: relative;
 }
 .vine-header .header-banner {
-  color: white;
   position: absolute;
   right: 0;
   background: orange;
@@ -4226,7 +4222,7 @@ footer a:active {
   text-shadow: 0px 0px 2px white;
 }
 .vine-header .header-banner p {
-  color: white;
+  color: maroon;
   line-height: 16px;
   font-size: 1.1em;
 }
@@ -4249,9 +4245,6 @@ footer a:active {
 }
 .vine-header .header-banner .center-text {
   text-align: center;
-}
-.vine-header .header-banner .description {
-  color: maroon;
 }
 .vine-header .header-banner .list-request {
   margin-bottom: 10px;

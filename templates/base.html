@@ -25,39 +25,32 @@
                 <div class='vine-main-logo'>
                     <a href="/"><img src='/static/img/logo.png' width='320px'/></a>
                 </div>
-
-
                 {% if user %}
                     <div class='user-greeting'>
                         <div class='username'>{{ user }}</div>
                         <div class='actions'>
+                            <a href='{{ url_for('contacts') }}'>contacts</a>
                             <a href='{{ url_for('settings') }}'>settings</a>
                             <a href='{{ url_for('logout') }}'>logout</a>
                         </div>
                     </div>
-
                 {% else %}
                     <div class='header-banner'>
                         <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                        
                         <div class='center-text'>
-                            <p><i>Vine is in private alpha</i></p>
-
+                            <p><i><b>Vine is in private alpha</b></i></p>
                             <div class='list-request-container'>
                                 <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
                                 <div class='hidden-form'>
-                                    
                                     <input id='list-request-email' type='text' placeholder='enter your email'/>
-                                    <a href='#' class='cancel-request'><button class="close">&times;</button></a>
-                            
+                                    <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
                                 </div>
                             </div>
-                            <p><i>Already have an account?</i></p>
+                            <p><i><b>Already have an account?</b></i></p>
                             <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
                         </div>
                     </div>
                 {% endif %}
-                
                 </div> <!-- container -->
             </div>
         </header>
@@ -97,26 +90,10 @@
             {% endwith %}
         </div>
         <footer>
-
             <div class='container footer-links'>
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
                     <li><a href='{{ url_for('legal') }}'>legal</a></li>
-            
-                    {% if user %}
-                        <li>
-                            <a href='{{ url_for('settings') }}'>settings</a>
-                        </li>
-                         <li>
-                            <a href='{{ url_for('logout') }}'>logout</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{{ url_for('login') }}">sign in</a> (devs only)
-                        </li>
-                    {% endif %}
-                    </li>
-
                     <li>&copy; 2012 Vine</li>
                 </ul>
             </div>
