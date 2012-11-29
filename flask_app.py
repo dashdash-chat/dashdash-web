@@ -43,6 +43,8 @@ class CreateAccountForm(Form):
     email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
     password = PasswordField('New Password', [Required(), EqualTo('confirm', message='Passwords must match')])
     confirm  = PasswordField('Repeat Password')
+class AddEmailForm(Form):
+    email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
 class ChangeEmailForm(Form):
     email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
 class ChangePasswordForm(Form):
@@ -194,45 +196,52 @@ def create_account():
                 session['vine_user'] = found_user.name
                 flash('You signed in as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
-            if user_used_invite:
+            session['account_exists'] = _check_account(found_user.name)
+            if session.get('account_exists'):
+                form = AddEmailForm()
+            else:
                 form = CreateAccountForm()
-                return render_template('create_account.html', user=found_user.name, form=form)
+            if user_used_invite:
+                return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             if has_unused_invite:
                 db.session.execute(invites.update().\
                                where(invites.c.id == has_unused_invite.id).\
                                values(recipient=found_user.id, used=datetime.datetime.now()))
                 db.session.commit()
-                form = CreateAccountForm()
-                return render_template('create_account.html', user=found_user.name, form=form)
+                return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
         else:
             flash('Sorry, first you\'ll need to sign in with Twitter and have a valid invite code!', 'failure')
             return redirect(url_for('index'))
     else:
         if found_user and (has_unused_invite or user_used_invite):
-            form = CreateAccountForm(request.form)
+            if session.get('account_exists'):
+                form = AddEmailForm(request.form)
+            else:
+                form = CreateAccountForm(request.form)
             if form.validate():
-                try:
-                    _register(found_user.name, form.password.data)
-                except xmlrpclib.ProtocolError, e:
-                    flash('There was an error creating your XMPP account.', 'failure')
-                    return redirect(url_for('create_account'))
+                if not session.get('account_exists'):
+                    try:
+                        _register(found_user.name, form.password.data)
+                    except xmlrpclib.ProtocolError, e:
+                        flash('There was an error creating your XMPP account.', 'failure')
+                        return redirect(url_for('create_account'))
                 db.session.execute(users.update().\
                                where(users.c.id == found_user.id).\
                                values(email=form.email.data))
-		if has_unused_invite and session.get('invite_code'):
+                if has_unused_invite and session.get('invite_code'):
                     db.session.execute(invites.update().\
                                        where(invites.c.code == session.get('invite_code')).\
                                        values(recipient=found_user.id, used=datetime.datetime.now()))
-                elif has_used_invite: 
+                elif user_used_invite: 
                     db.session.execute(invites.update().\
                                        where(invites.c.recipient == found_user.id).\
                                        values(used=datetime.datetime.now()))
-			
-		db.session.commit()
+                db.session.commit()
                 session['vine_user'] = found_user.name
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
+                session.pop('account_exists', None)
                 flash('You signed up as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
             else:
@@ -334,6 +343,12 @@ def page_not_found(e=None):
 @app.errorhandler(500)
 def page_not_found(e=None):
     return render_template('500.html'), 500
+
+def _check_account(user):
+   return _xmlrpc_command('check_account', {
+        'user': user,
+        'host': constants.domain
+    })
 
 def _register(user, password):
     _xmlrpc_command('register', {
