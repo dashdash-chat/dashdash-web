@@ -4240,7 +4240,7 @@ a.badge:hover {
   margin-left: 73px;
 }
 .vine-header .vine-main-logo {
-  padding: 20px 0;
+  padding: 40px 0;
 }
 .vine-header .header-right-link-list {
   float: right;
@@ -4408,7 +4408,7 @@ footer .footer-links > ul {
 }
 body {
   background: #d1eace;
-  background: -webkit-linear-gradient(45deg, #ffffff, #50a646);
+  background: -webkit-linear-gradient(0deg, #ffffff, #50a646);
 }
 h1,
 h2,
@@ -4563,6 +4563,14 @@ p {
   font-size: 2em;
   height: 2em;
   width: 300px;
+}
+input.create_account {
+  height: 1.25em;
+  font-size: 2em;
+  width: 321px;
+}
+input.create_account_go {
+  width: 321px;
 }
 .pull-right {
   float: right;
