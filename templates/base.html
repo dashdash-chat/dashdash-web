@@ -28,7 +28,9 @@
 
                 {% if not user %}
                 <div class='header-banner'>
-                    <h2><i>Vine is in private alpha</i></h2>
+                    <p><i>Vine is in private alpha</i></p>
+                    <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
+
                     <div class='list-request-container'>
                         <a href='#' class='list-request'><i class="icon-envelope icon-white"></i> Want to know when we launch?</a>
                         <div class='hidden-form'>
@@ -67,29 +69,6 @@
         </div>
         
         <footer>
-
-            {% if not user %}
-            <div class='container footer-non-user'>
-                <div class='row'>
-                    <div class='span4'>
-                        <ul class='client-logo-list'>
-                            <li><a href='#'><img src='/static/img/client_logos/adium.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/pidgin.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/messages.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/imoim.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                            <li><a href='#'><img src='/static/img/client_logos/jabber.png' /></a></li>
-                        </ul>
-                    </div>
-                    <div class='span4'>
-                        <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                    </div>
-                   
-                </div><!-- row -->
-            </div> <!-- container -->
-            {% endif %}
-
-
 
             <div class='container footer-links'>
                 <ul class='footer-content-list'>

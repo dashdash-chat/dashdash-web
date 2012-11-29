@@ -31,8 +31,8 @@ twitter = oauth.remote_app('twitter',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
-    consumer_key=constants.twitter_consumer_key,
-    consumer_secret=constants.twitter_consumer_secret
+    consumer_key='PyS083J6ouJcqkNAp6vg',#constants.twitter_consumer_key,
+    consumer_secret='Ra7szis7nGeGTdbEKhguHJYOmJXv37kyTPtMK2MtY'#constants.twitter_consumer_secret
 )
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
 

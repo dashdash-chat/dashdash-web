@@ -4210,12 +4210,17 @@ a.badge:hover {
   padding: 20px;
   top: 0;
   min-height: 75px;
-  text-align: center;
+  text-align: justify;
   width: 300px;
   z-index: 20;
 }
 .vine-header .header-banner a {
   text-shadow: 0px 0px 2px white;
+}
+.vine-header .header-banner p {
+  color: white;
+  line-height: 16px;
+  font-size: 1.1em;
 }
 .vine-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
@@ -4230,6 +4235,9 @@ a.badge:hover {
   border-color: orange transparent;
   display: block;
   width: 0;
+}
+.vine-header .header-banner .vine-sign-in {
+  margin-left: 73px;
 }
 .vine-header .vine-main-logo {
   padding: 20px 0;
