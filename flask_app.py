@@ -25,6 +25,7 @@ demos = db.Table('demos', metadata, autoload=True)
 users = db.Table('users', metadata, autoload=True)
 invites = db.Table('invites', metadata, autoload=True)
 user_tasks = db.Table('user_tasks', metadata, autoload=True)
+edges = db.Table('edges', metadata, autoload=True)
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -288,6 +289,27 @@ def change_password():
                 return redirect(url_for('change_password'))
     return render_template('change_password.html', user=user, form=form)
 
+@app.route("/contacts")
+def contacts():
+    def filter_admins(user_rows):
+        users = [user_row.name for user_row in user_rows]
+        jids_to_filter = constants.admin_jids + [constants.leaves_jid, constants.graph_xmpp_jid]
+        users_to_filter = [jid.split('@')[0] for jid in jids_to_filter] + [constants.web_xmlrpc_user]
+        return set(users).difference(users_to_filter)
+    user = session.get('vine_user')
+    if user:
+        user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']
+        s = select([users.c.name], and_(edges.c.from_id == user_id, edges.c.to_id == users.c.id))
+        outgoing = filter_admins(db.session.execute(s).fetchall())
+        s = select([users.c.name], and_(edges.c.to_id == user_id, edges.c.from_id == users.c.id))
+        incoming = filter_admins(db.session.execute(s).fetchall())
+        friends = outgoing.intersection(incoming)
+        return render_template('contacts.html', user=user,
+                                                friends=friends,
+                                                incomings=incoming.difference(outgoing),
+                                                outgoings=outgoing.difference(incoming))
+    return redirect(url_for('index'))
+
 @app.route("/about")
 def about():
     user = session.get('vine_user')
@@ -297,11 +319,6 @@ def about():
 def legal():
     user = session.get('vine_user')
     return render_template('legal.html', user=user)
-
-@app.route("/contacts")
-def contacts():
-    user = session.get('vine_user')
-    return render_template('contacts.html', user=user)
 
 @app.errorhandler(404)
 def page_not_found(e=None):
