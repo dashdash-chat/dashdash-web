@@ -31,8 +31,8 @@ twitter = oauth.remote_app('twitter',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
-    consumer_key=constants.twitter_consumer_key,
-    consumer_secret=constants.twitter_consumer_secret
+    consumer_key='PyS083J6ouJcqkNAp6vg',#constants.twitter_consumer_key,
+    consumer_secret='Ra7szis7nGeGTdbEKhguHJYOmJXv37kyTPtMK2MtY'#constants.twitter_consumer_secret
 )
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
 
@@ -174,9 +174,7 @@ def create_account():
     if session.get('vine_user'):
         return redirect(url_for('settings'))
     twitter_user = session.get('twitter_user')
-    session.pop('twitter_user', None)
     invite_code = session.get('invite_code')
-    session.pop('invite_code', None)
     found_user = None
     has_unused_invite = None
     user_used_invite = None
@@ -214,7 +212,7 @@ def create_account():
             form = CreateAccountForm(request.form)
             if form.validate():
                 try:
-                    _register(found_user.name, form.password.data)
+                    pass #_register(found_user.name, form.password.data)
                 except xmlrpclib.ProtocolError, e:
                     flash('There was an error creating your XMPP account.', 'failure')
                     return redirect(url_for('create_account'))
