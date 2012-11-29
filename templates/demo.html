@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Vine.IM - Demo{% endblock %}
 {% block body %}
+
+    <div class="page-header">
+        <a id='login_button' class='btn btn-success vine-chat-bubble-compact' onClick='tryLogin();' style='text-align:center;padding:5px 77px'><h2>Launch Demo</h2></a>
+
+    </div>
+
     <div class='row'>
         <div class='span4'>
-             <a id='login_button' class='btn btn-success vine-chat-bubble-compact' onClick='tryLogin();' style='width:100%;text-align:center;padding:0'><h2>Launch Demo</h2></a>
              <p>
                  <strong>Make sure popups are enabled, and then send someone a message!</strong>
              </p>

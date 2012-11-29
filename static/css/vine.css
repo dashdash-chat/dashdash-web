@@ -4454,6 +4454,7 @@ h6 {
 }
 p {
   color: #777;
+  text-align: justify;
 }
 .hero-unit {
   background: transparent;
