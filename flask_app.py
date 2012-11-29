@@ -226,6 +226,8 @@ def create_account():
                                  values(recipient=found_user.id, used=datetime.datetime.now()))
                 db.session.commit()
                 session['vine_user'] = found_user.name
+                session.pop('twitter_user', None)
+                session.pop('invite_code', None)
                 flash('You signed up as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
             else:
