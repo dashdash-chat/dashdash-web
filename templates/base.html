@@ -49,20 +49,36 @@
         </header>
 
         <div class="primary-container">
-            {% with errors = get_flashed_messages(category_filter=['error']) %}
-                {% if errors %}
+            {% with success_messages = get_flashed_messages(category_filter=['success']) %}
+            {% with failure_messages = get_flashed_messages(category_filter=['failure']) %}
+            {% with invite_error_messages = get_flashed_messages(category_filter=['invite_error']) %}
+                {% if success_messages %}
                     <div class='flash-container'>
                         <div class='container'>
                             <button class="close">&times;</button>
                             <ul>
-                                {% for msg in errors %}
-                                    <li><b>{{ msg }}</b></li>
+                                {% for message in success_messages %}
+                                    <li><b>{{ message }}</b></li>
+                                {% endfor -%}
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if failure_messages %}
+                    <div class='flash-container'>
+                        <div class='container'>
+                            <button class="close">&times;</button>
+                            <ul>
+                                {% for message in failure_messages %}
+                                    <li><b>{{ message }}</b></li>
                                 {% endfor -%}
                             </ul>
                         </div>
                     </div>
                 {% endif %}
                 {% block body scoped %}{% endblock %}
+            {% endwith %}    
+            {% endwith %}
             {% endwith %}
         </div>
         

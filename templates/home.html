@@ -10,28 +10,31 @@
                             <h1>Hello, {{ user }}!</h1>
                         </div>
                     </div>
-                    {% if unused_invites %}
+                    {% if unused_invites or used_invites %}
                         <div class='well'>
-                            <h3>Unused invite codes:</h3>
-                            <p><i>Each invite code only works once, so send them privately to the friends you chat with most on IM.</i></p>
-                            <ul class='unstyled'>
-                                {% for invite in unused_invites %}
-                                    <li><b>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</b></li>
-                                {% endfor %}
-                            </ul>
+                            {% if unused_invites %}
+                                <h3>Unused invite codes:</h3>
+                                <p><i>Each invite code only works once, so send them privately to the friends you chat with most on IM.</i></p>
+                                <ul class='unstyled'>
+                                    {% for invite in unused_invites %}
+                                        <li><b>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</b></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                            {% if used_invites %}
+                                <br>
+                                <h3>Used invite codes:</h3>
+                                <ul class='unstyled'>
+                                    {% for invite in used_invites %}
+                                        <li>http://{{ domain }}{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     {% else %}
                         <div class="alert">
                             <strong>You don't have any invitations to send out right now.</strong>
                         </div>
-                    {% endif %}
-                    {% if used_invites %}
-                        <p>Used invite codes:</p>
-                        <ul class='unstyled'>
-                            {% for invite in used_invites %}
-                                <li>{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
-                            {% endfor %}
-                        </ul>
                     {% endif %}
                 </div>
                 <div class='span4'>

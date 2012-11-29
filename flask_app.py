@@ -31,8 +31,8 @@ twitter = oauth.remote_app('twitter',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
-    consumer_key=constants.twitter_consumer_key,
-    consumer_secret=constants.twitter_consumer_secret
+    consumer_key='PyS083J6ouJcqkNAp6vg',#constants.twitter_consumer_key,
+    consumer_secret='Ra7szis7nGeGTdbEKhguHJYOmJXv37kyTPtMK2MtY'#constants.twitter_consumer_secret
 )
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
 
@@ -78,16 +78,16 @@ def invite(code=None):
     form = InviteCodeForm()
     if invite:
         if invite['recipient']:
-            flash('Sorry, that invite code has already been used.', 'error')
+            flash('Sorry, that invite code has already been used.', 'invite_error')
             return render_template('invite.html', form=form)
         else:
             session['invite_code'] = code
             return render_template('invite.html', sender=invite[0])
     else:
         if code:
-            flash('Sorry, %s is not a valid invite code.' % code, 'error')
+            flash('Sorry, %s is not a valid invite code. Enter a different one?' % code, 'invite_error')
         else:
-            flash('Sorry, but you need an invite code to sign up.', 'error')
+            flash('Sorry, but you need to be invited before you can sign up. Enter an invite code below?', 'invite_error')
         return render_template('invite.html', form=form)
 
 @app.route('/check_invite', methods=['POST'])
@@ -96,7 +96,7 @@ def check_invite():
     if form.validate():
         code = form.code.data
         return redirect(url_for('invite', code=code))
-    flash('Please enter an invite code.', 'error')
+    flash('Please enter an invite code below.', 'invite_error')
     return redirect(request.referrer or url_for('index'))
 
 @app.route('/logout')
@@ -104,7 +104,7 @@ def logout():
     session.pop('vine_user', None)
     session.pop('twitter_user', None)
     session.pop('invite_code', None)
-    flash('You were signed out', 'error')
+    flash('You were signed out', 'success')
     return redirect(url_for('index'))
 
 @twitter.tokengetter
@@ -128,7 +128,7 @@ def clear_bad_oauth_cookies(fn):
 @twitter.authorized_handler
 def oauth_authorized(resp):
     if resp is None:
-        flash(u'You cancelled the Twitter authorization flow.', 'error')
+        flash(u'You cancelled the Twitter authorization flow.', 'failure')
         return redirect(url_for('index'))
     twitter_user = resp['screen_name'].lower()
     s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
@@ -152,7 +152,7 @@ def oauth_authorized(resp):
         db.session.commit()
         if found_user.email:
             session['vine_user'] = twitter_user
-            flash('You were signed in as %s' % twitter_user, 'error')
+            flash('You were signed in as %s' % twitter_user, 'success')
             return redirect(url_for('index'))
         else:
             session['twitter_user'] = twitter_user
@@ -193,7 +193,7 @@ def create_account():
         if found_user:
             if found_user.email:
                 session['vine_user'] = found_user.name
-                flash('You signed in as %s' % found_user.name, 'error')
+                flash('You signed in as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
             if user_used_invite:
                 form = CreateAccountForm()
@@ -207,7 +207,7 @@ def create_account():
                 return render_template('create_account.html', user=found_user.name, form=form)
             return redirect(url_for('invite') + invite_code)
         else:
-            flash('Sorry, first you\'ll need to sign in with Twitter and have a valid invite code!', 'error')
+            flash('Sorry, first you\'ll need to sign in with Twitter and have a valid invite code!', 'failure')
             return redirect(url_for('index'))
     else:
         if found_user and (has_unused_invite or user_used_invite):
@@ -216,7 +216,7 @@ def create_account():
                 try:
                     _register(found_user.name, form.password.data)
                 except xmlrpclib.ProtocolError, e:
-                    flash('There was an error creating your XMPP account.', 'error')
+                    flash('There was an error creating your XMPP account.', 'failure')
                     return redirect(url_for('create_account'))
                 db.session.execute(users.update().\
                                where(users.c.id == found_user.id).\
@@ -226,13 +226,13 @@ def create_account():
                                  values(recipient=found_user.id, used=datetime.datetime.now()))
                 db.session.commit()
                 session['vine_user'] = found_user.name
-                flash('You signed up as %s' % found_user.name, 'error')
+                flash('You signed up as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
             else:
-                flash('There was an error in the form.', 'error')
+                flash('There was an error in the form.', 'failure')
                 return redirect(url_for('create_account'))
         else:        
-            flash('Sorry, that POST request was invalid.', 'error')
+            flash('Sorry, that POST request was invalid.', 'failure')
             return redirect(url_for('index'))
 
 @app.route("/demo/")
@@ -267,7 +267,7 @@ def settings():
         if form.validate():
             db.session.execute(users.update().where(users.c.name == user).values(email=form.email.data))
             db.session.commit()
-            flash('Your email address has been changed.', 'error')
+            flash('Your email address has been changed.', 'success')
     return render_template('settings.html', user=user, form=form)
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
@@ -282,9 +282,9 @@ def change_password():
         if form.validate():
             try:
                 _change_password(user, form.password.data)
-                flash('Your password has been changed.', 'error')
+                flash('Your password has been changed.', 'success')
             except xmlrpclib.ProtocolError, e:
-                flash('There was an error changing your XMPP password.', 'error')
+                flash('There was an error changing your XMPP password.', 'failure')
                 return redirect(url_for('change_password'))
     return render_template('change_password.html', user=user, form=form)
 

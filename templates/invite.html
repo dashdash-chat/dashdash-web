@@ -2,8 +2,8 @@
 {% block body %}
 
     <div class='container invite-container'>
-        {% if errors %}
-            <h2><i>Try a different invite code?</i></h2>
+        {% if invite_error_messages %}
+            <h2><i>{{ invite_error_messages[0] }}</i></h2>
             <form action="{{ url_for('check_invite') }}" method=post>
                 {{ form.hidden_tag() }}
                 {{ form.code }}
