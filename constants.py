@@ -34,3 +34,5 @@ aws_secret_access_key = env_vars.aws_secret_access_key  # if it's broken, regene
 flask_secret_key = env_vars.flask_secret_key
 
 client_port = env_vars.client_port
+
+admin_jids = env_vars.admin_jids

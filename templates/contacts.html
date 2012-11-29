@@ -1,4 +1,30 @@
 {% extends "base.html" %}
 {% block body %}
     <h1>Contacts</h1>
+    <div class='well'>
+        {% if friends %}
+            <p><i>These users can see what conversations you're having, and you can see theirs.</i></p>
+            <ul class='unstyled'>
+                {% for friend in friends %}
+                    <li>{{ friend }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if outgoings %}
+            <p><i>You can see when these users are online, but you can't see each other's conversations.</i></p>
+            <ul class='unstyled'>
+                {% for outgoing in outgoings %}
+                    <li>{{ outgoing }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if incomings %}
+            <p><i>These users can see when you're online, but you can't see each other's conversations.</i></p>
+            <ul class='unstyled'>
+                {% for incoming in incomings %}
+                    <li>{{ incoming }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -14,8 +14,10 @@
                 <legend>Create your account</legend>
                 {{ form.hidden_tag() }}
                 {{ form.email(placeholder="email", class='create_account') }}<br/>
-                {{ form.password(placeholder="password", class='create_account') }}<br/>
-                {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                {% if not account_exists %}
+                    {{ form.password(placeholder="password", class='create_account') }}<br/>
+                    {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                {% endif %}
                 <input type="submit" class='btn btn-success create_account_go' value="Create!">
             </fieldset>
         </form>
