@@ -204,7 +204,7 @@ def create_account():
                 db.session.commit()
                 form = CreateAccountForm()
                 return render_template('create_account.html', user=found_user.name, form=form)
-            return redirect(url_for('invite') + invite_code)
+            return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
         else:
             flash('Sorry, first you\'ll need to sign in with Twitter and have a valid invite code!', 'failure')
             return redirect(url_for('index'))
