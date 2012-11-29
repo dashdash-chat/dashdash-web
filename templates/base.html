@@ -27,49 +27,87 @@
                 </div>
 
                 {% if not user %}
-                <div class='header-banner'>
-                    <p><i>Vine is in private alpha</i></p>
-                    <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
+                    <div class='header-banner'>
+                        <p><i>Vine is in private alpha</i></p>
+                        <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
 
-                    <div class='list-request-container'>
-                        <a href='#' class='list-request'><i class="icon-envelope icon-white"></i> Want to know when we launch?</a>
-                        <div class='hidden-form'>
-                            
-                            <input id='list-request-email' type='text' placeholder='enter your email'/>
-                            <a href='#' class='cancel-request'><i class='icon-remove'></i></a>
-                    
+                        <div class='list-request-container'>
+                            <a href='#' class='list-request'><i class="icon-envelope icon-white"></i> Want to know when we launch?</a>
+                            <div class='hidden-form'>
+                                
+                                <input id='list-request-email' type='text' placeholder='enter your email'/>
+                                <a href='#' class='cancel-request'><i class='icon-remove'></i></a>
+                        
+                            </div>
                         </div>
-                    </div>
-                    <p>Already have an account?</p>
-                    <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
+                        <p>Already have an account?</p>
+                        <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
 
-                </div>
+                    </div>
                 {% endif %}
                 
                 </div> <!-- container -->
             </div>
         </header>
-
         <div class="primary-container">
-            {% with errors = get_flashed_messages(category_filter=['error']) %}
-                {% if errors %}
-                    <div class='flash-container'>
-                        <div class='container'>
-                            <button class="close">&times;</button>
-                            <ul>
-                                {% for msg in errors %}
-                                    <li><b>{{ msg }}</b></li>
-                                {% endfor -%}
-                            </ul>
+            {% with success_messages = get_flashed_messages(category_filter=['success']) %}
+            {% with failure_messages = get_flashed_messages(category_filter=['failure']) %}
+            {% with invite_error_messages = get_flashed_messages(category_filter=['invite_error']) %}
+                <div class='container'>
+                    {% if success_messages %}
+                        <div class='flash-container'>
+                            <div class='container'>
+                                <button class="close">&times;</button>
+                                <ul>
+                                    {% for message in success_messages %}
+                                        <li><b>{{ message }}</b></li>
+                                    {% endfor -%}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-                {% block body scoped %}{% endblock %}
+                    {% endif %}
+                    {% if failure_messages %}
+                        <div class='flash-container'>
+                            <div class='container'>
+                                <button class="close">&times;</button>
+                                <ul>
+                                    {% for message in failure_messages %}
+                                        <li><b>{{ message }}</b></li>
+                                    {% endfor -%}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% block body scoped %}{% endblock %}
+                </div>
+            {% endwith %}    
+            {% endwith %}
             {% endwith %}
         </div>
-        
         <footer>
+<<<<<<< HEAD
 
+=======
+            {% if not user %}
+            <div class='container footer-non-user'>
+                <div class='row'>
+                    <div class='span4'>
+                        <ul class='client-logo-list'>
+                            <li><a href='#'><img src='/static/img/client_logos/adium.png' /></a></li>
+                            <li><a href='#'><img src='/static/img/client_logos/pidgin.png' /></a></li>
+                            <li><a href='#'><img src='/static/img/client_logos/messages.png' /></a></li>
+                            <li><a href='#'><img src='/static/img/client_logos/imoim.png' /></a></li>
+                            <li><a href='#'><img src='/static/img/client_logos/xmpp.png' /></a></li>
+                            <li><a href='#'><img src='/static/img/client_logos/jabber.png' /></a></li>
+                        </ul>
+                    </div>
+                    <div class='span4'>
+                        <p>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
+                    </div>
+                </div><!-- row -->
+            </div> <!-- container -->
+            {% endif %}
+>>>>>>> 7f1c767b9b9f5d33be4b1f3230d68b25f31815ac
             <div class='container footer-links'>
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
@@ -86,13 +124,10 @@
                             <a href='{{ url_for('settings') }}'><b>Settings</b></a>
                         </li>
                     {% endif %}
-
                     <li>&copy; 2012 Vine</li>
-                    
                 </ul>
             </div>
         </footer>
-
         <script type="text/javascript" src="/static/js/jquery.js" ></script>
         <script type="text/javascript" src="/static/js/jquery-ui.js" ></script>
         <script type="text/javascript" src="/static/js/bootstrap.min.js" ></script>

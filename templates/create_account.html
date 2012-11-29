@@ -1,29 +1,23 @@
 {% extends "base.html" %}
 {% block body %}
-
-    <div class='container'>
-
-        {% if errors %}
-            <p>Try a different invite code?
-                <form action="{{ url_for('check_invite') }}" method=post>
-                    {{ form.hidden_tag() }}
-                    {{ form.code }}
-                    <input type="submit" value="Go">
-                </form>
-            </p>
-        {% else %}
-            <form action="{{ url_for('create_account') }}" method=post>
-                <fieldset>
-                    <legend>Create your account</legend>
-                    {{ form.hidden_tag() }}
-                    {{ form.email(placeholder="email", class='create_account') }}<br/>
-                    {{ form.password(placeholder="password", class='create_account') }}<br/>
-                    {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
-                    <input type="submit" class='btn btn-success create_account_go' value="Create!">
-                </fieldset>
+    {% if errors %}
+        <p>Try a different invite code?
+            <form action="{{ url_for('check_invite') }}" method=post>
+                {{ form.hidden_tag() }}
+                {{ form.code }}
+                <input type="submit" value="Go">
             </form>
-        {% endif %}
-
-    </div> <!-- container -->
-
+        </p>
+    {% else %}
+        <form action="{{ url_for('create_account') }}" method=post>
+            <fieldset>
+                <legend>Create your account</legend>
+                {{ form.hidden_tag() }}
+                {{ form.email(placeholder="email", class='create_account') }}<br/>
+                {{ form.password(placeholder="password", class='create_account') }}<br/>
+                {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                <input type="submit" class='btn btn-success create_account_go' value="Create!">
+            </fieldset>
+        </form>
+    {% endif %}
 {% endblock %}
