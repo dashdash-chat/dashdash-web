@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 {% block body %}
-    <div class='row'>
-        <div class='span12'>
-            <div class="vine-chat-bubble vine-chat-bubble-left chat-green">
-                <h1>Settings</h1>
-            </div>
-        </div>
+    <div class="page-header">
+        <h1>settings</h1>
     </div>
     <div>
-        <form action="{{ url_for('settings') }}" method=post>
+        <form action="{{ url_for('settings') }}" method=post class='vine-form'>
             <legend>Email Address</legend>
             {{ form.hidden_tag() }}
             {{ form.email }}
-            <input class='btn btn-info' type="submit" value="Save">
+            <input class='btn btn-success' type="submit" value="Save">
         </form>
         <a href='{{ url_for('change_password') }}'><b>Change password?</b></a>
     </div>

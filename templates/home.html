@@ -19,9 +19,11 @@
                                     <li><b>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</b></li>
                                 {% endfor %}
                             </ul>
+                            {% if used_invites %}
+                                <br>
+                            {% endif %}
                         {% endif %}
                         {% if used_invites %}
-                            <br>
                             <h3>Used invite codes:</h3>
                             <ul class='unstyled'>
                                 {% for invite in used_invites %}

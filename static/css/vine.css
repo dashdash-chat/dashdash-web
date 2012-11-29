@@ -4198,6 +4198,14 @@ a.badge:hover {
 .logo img {
   width: 175px;
 }
+header a:link,
+footer a:link,
+header a:visited,
+footer a:visited,
+header a:active,
+footer a:active {
+  color: rgba(0, 0, 0, 0.5);
+}
 .vine-header .container {
   position: relative;
 }
@@ -4222,6 +4230,9 @@ a.badge:hover {
   line-height: 16px;
   font-size: 1.1em;
 }
+.vine-header .header-banner input {
+  background: #ffd280;
+}
 .vine-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
 }
@@ -4236,8 +4247,30 @@ a.badge:hover {
   display: block;
   width: 0;
 }
-.vine-header .header-banner .vine-sign-in {
-  margin-left: 73px;
+.vine-header .header-banner .center-text {
+  text-align: center;
+}
+.vine-header .header-banner .description {
+  color: maroon;
+}
+.vine-header .header-banner .list-request {
+  margin-bottom: 10px;
+}
+.vine-header .user-greeting {
+  text-align: right;
+  position: absolute;
+  top: 76px;
+  right: 0;
+}
+.vine-header .user-greeting .username {
+  margin-bottom: 27px;
+  font-size: 5em;
+  font-weight: bold;
+  color: white;
+  opacity: 0.35;
+}
+.vine-header .user-greeting .actions {
+  font-size: 1.25em;
 }
 .vine-header .vine-main-logo {
   padding: 40px 0;
@@ -4421,6 +4454,10 @@ h6 {
 }
 p {
   color: #777;
+  text-align: justify;
+}
+.hero-unit {
+  background: transparent;
 }
 .primary-container {
   background: white;
@@ -4567,6 +4604,76 @@ input.create_account {
 }
 input.create_account_go {
   width: 321px;
+}
+.vine-form {
+  margin-left: 20px;
+  width: 321px;
+  position: relative;
+}
+.vine-form input {
+  width: 100%;
+  height: 1.25em;
+  font-size: 2em;
+  display: block;
+}
+#who-we-are .photo {
+  width: 200px;
+  float: left;
+  margin-right: 20px;
+}
+#who-we-are .photo img {
+  opacity: 0.5;
+  transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 1s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 1s;
+  /* Opera */
+
+  margin-bottom: 20px;
+}
+#who-we-are .photo .bio {
+  opacity: 0;
+  transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 1s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 1s;
+  /* Opera */
+
+  width: 420px;
+}
+#who-we-are .photo:hover img {
+  opacity: 1;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
+}
+#who-we-are .photo:hover .bio {
+  opacity: 1;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
 }
 .pull-right {
   float: right;

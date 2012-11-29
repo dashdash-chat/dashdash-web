@@ -22,7 +22,7 @@ $(window).ready(function(){
 	{
 		$('.list-request').click(function(){
 
-			$('.list-request-container .hidden-form').show('blind',{'direction':'vertical'},'fast');
+			$('.list-request-container .hidden-form').toggle('blind',{'direction':'vertical'},'fast');
 			return false;
 		});
 		$('.list-request-container .cancel-request').click(function(){

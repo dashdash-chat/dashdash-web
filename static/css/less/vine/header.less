@@ -19,6 +19,12 @@
 	width: 175px;
 }
 
+header,footer {
+	a:link,a:visited,a:active {
+		color: rgba(0,0,0,0.5);
+	}
+}
+
 .vine-header
 {
 
@@ -48,6 +54,10 @@
 			line-height:16px; 
 			font-size: 1.1em;
 		}
+
+		input {
+			background: lighten(orange,25%);
+		}
 		
 		h2 {
 			text-shadow: 0px -1px 3px black;
@@ -66,11 +76,36 @@
 			//-webkit-filter: drop-shadow( 6px 5px 10px #333);
 		}
 
-		.vine-sign-in
+		.center-text{ text-align: center; }
+
+		.description { color:maroon; }
+
+		.list-request
 		{
-			margin-left: 73px;
+			margin-bottom: 10px;
 		}
 
+	}
+
+	.user-greeting
+	{
+		text-align: right;
+		position: absolute;
+		top: 76px;
+		right: 0;
+
+		.username
+		{
+			margin-bottom: 27px;
+			font-size: 5em;
+			font-weight: bold;
+			color: white;
+			opacity: 0.35;
+		}
+		.actions
+		{
+			font-size: 1.25em;
+		}
 	}
 
 	.vine-main-logo
