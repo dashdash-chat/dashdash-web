@@ -176,13 +176,13 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                             })
     
     def db_fetch_account_invites(self, offset):
-        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
-                                               FROM invites, users as from_user, users as to_user
-                                               WHERE to_user.id = invites.recipient
-                                               AND from_user.id = invites.sender
+        return self.db_execute_and_fetchall("""SELECT first_user.name, second_user.name, NULL
+                                               FROM invites, users as first_user, users as second_user
+                                               WHERE ((first_user.id = invites.sender AND second_user.id = invites.recipient)
+                                                   OR (second_user.id = invites.sender AND first_user.id = invites.recipient))
+                                               AND invites.sender LIKE %(user_id)s
                                                AND invites.used > %(startdate)s
-                                               AND from_user.id LIKE %(user_id)s
-                                               ORDER BY invites.created DESC
+                                               ORDER BY invites.created DESC;
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
