@@ -264,10 +264,10 @@ def demo(token):
         return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
-@app.route("/setup")
-def setup():
+@app.route("/help")
+def help():
     user = session.get('vine_user')
-    return render_template('setup.html', user=user)
+    return render_template('help.html', user=user)
 
 @app.route("/settings")
 def settings():

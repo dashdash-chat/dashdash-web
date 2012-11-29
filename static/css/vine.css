@@ -4265,6 +4265,10 @@ footer a:active {
 .vine-header .user-greeting .actions {
   font-size: 1.25em;
 }
+.vine-header .user-greeting .actions a {
+  padding-right: 6px;
+  color: #387331;
+}
 .vine-header .vine-main-logo {
   padding: 40px 0;
 }
@@ -4559,8 +4563,8 @@ p {
   line-height: 25px;
 }
 .page-section-header {
-  margin-top: 20px;
-  height: 65px;
+  margin-top: 30px;
+  height: 40px;
 }
 .page-section-header h1 {
   float: left;
