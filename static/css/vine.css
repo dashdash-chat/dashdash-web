@@ -4616,6 +4616,65 @@ input.create_account_go {
   font-size: 2em;
   display: block;
 }
+#who-we-are .photo {
+  width: 200px;
+  float: left;
+  margin-right: 20px;
+}
+#who-we-are .photo img {
+  opacity: 0.5;
+  transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 1s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 1s;
+  /* Opera */
+
+  margin-bottom: 20px;
+}
+#who-we-are .photo .bio {
+  opacity: 0;
+  transition: opacity 1s;
+  -moz-transition: opacity 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 1s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 1s;
+  /* Opera */
+
+  width: 420px;
+}
+#who-we-are .photo:hover img {
+  opacity: 1;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
+}
+#who-we-are .photo:hover .bio {
+  opacity: 1;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
+}
 .pull-right {
   float: right;
 }
