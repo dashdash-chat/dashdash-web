@@ -336,12 +336,14 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         # This let's us cycle through the current edges one at a time, to figure out which we need to delete.
         old_edge = self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
                                                    FROM edges, users as from_user, users as to_user
-                                                   WHERE edges.to_id = to_user.id
-                                                   AND edges.from_id = from_user.id
+                                                   WHERE to_user.id = edges.to_id
+                                                   AND from_user.id = edges.from_id
+                                                   AND from_user.id LIKE %(user_id)s
                                                    ORDER BY edges.id DESC
                                                    LIMIT 1
                                                    OFFSET %(old_edge_offset)s
                                                 """, {
+                                                   'user_id': self.user_id if self.user_id else '%',
                                                    'old_edge_offset': self.old_edge_offset
                                                 })
         self.old_edge_offset += 1
