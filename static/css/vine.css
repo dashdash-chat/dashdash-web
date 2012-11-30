@@ -4508,6 +4508,18 @@ footer .footer-links > ul {
   top: 283px;
   left: 430px;
 }
+.table {
+  font-size: 13px;
+  text-align: left;
+}
+.table th {
+  color: #777;
+  font-weight: normal;
+  padding-bottom: 13px;
+}
+.table td {
+  padding-right: 15px;
+}
 .invite-container input {
   font-size: 2em;
   height: 2em;
@@ -4670,18 +4682,6 @@ input.create_account_go {
 legend {
   margin-bottom: 4px;
   border: none;
-}
-.well table {
-  font-size: 13px;
-  text-align: left;
-}
-.well table th {
-  color: #777;
-  font-weight: normal;
-  padding-bottom: 13px;
-}
-.well table td {
-  padding-right: 15px;
 }
 .pull-right {
   float: right;
