@@ -64,6 +64,8 @@ def index():
         s = select([invites.c.code, users.c.name, invites.c.used],
                    and_(invites.c.sender == user_id, invites.c.recipient == users.c.id, ))
         used_invites = db.session.execute(s).fetchall()
+        
+    flash('Sorry, that invite code has already been used.', 'failure')
     return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
 
 @app.route('/login')

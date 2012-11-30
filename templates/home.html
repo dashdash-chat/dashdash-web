@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block body %}
+{% block left_column %}
     {% if user %}
         <div class='row'>
             <div class='span8'>
@@ -53,22 +53,6 @@
                     </div>
                 {% endif %}
             </div>
-            <div class='span4'>
-                <div class='right-col-section'>
-                    <p>Click an icon below for configuration instructions</p>
-                    <ul class='client-logo-list'>
-                        <li><a href='{{ url_for('help') }}#adium'><img src='/static/img/client_logos/adium.png' /></a></li>
-                        <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/pidgin.png' /></a></li>
-                        <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/messages.png' /></a></li>
-                        <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/imoim.png' /></a></li>
-                        <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                        <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/jabber.png' /></a></li>
-                    </ul>
-                    </br>
-                    </br>
-                    <p>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                </div>
-            </div>
         </div>
     {% else %} 
         <div class='vine-intro-convo'>
@@ -81,3 +65,4 @@
         </div>
     {% endif %}
 {% endblock %}
+{% block right_column %}{% endblock %}
