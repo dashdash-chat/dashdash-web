@@ -4328,7 +4328,7 @@ footer .footer-links > ul {
   color: #333;
   min-width: 25%;
   text-align: center;
-  text-shadow: 0px -1px 0px #ffffff;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.65);
   margin-bottom: 25px;
   z-index: 1;
 }
@@ -4336,7 +4336,15 @@ footer .footer-links > ul {
 .vine-chat-bubble h2,
 .vine-chat-bubble h3,
 .vine-chat-bubble h4 {
-  font-weight: 100;
+  font-weight: 400;
+}
+.vine-chat-bubble h1 {
+  padding: 10px;
+  font-size: 35px;
+  font-weight: bold;
+}
+.vine-chat-bubble h3 {
+  font-size: 20px;
 }
 .vine-chat-bubble:after {
   content: "";
@@ -4359,7 +4367,6 @@ footer .footer-links > ul {
 .vine-chat-bubble.vine-chat-bubble-left {
   border-radius: 10px 10px 10px 0;
   float: left;
-  margin-right: 51px;
 }
 .vine-chat-bubble.vine-chat-bubble-left:after {
   left: 0px;
@@ -4372,7 +4379,6 @@ footer .footer-links > ul {
 .vine-chat-bubble.vine-chat-bubble-right {
   border-radius: 10px 10px 0px 10px;
   float: right;
-  margin-left: 50px;
 }
 .vine-chat-bubble.vine-chat-bubble-right:after {
   right: 0px;
@@ -4395,16 +4401,16 @@ footer .footer-links > ul {
   color: white;
 }
 .vine-chat-bubble.chat-blue {
-  background-color: #fdc271;
-  background-image: -moz-linear-gradient(top, #fff8ef, #fdc271);
-  background-image: -ms-linear-gradient(top, #fff8ef, #fdc271);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fff8ef), to(#fdc271));
-  background-image: -webkit-linear-gradient(top, #fff8ef, #fdc271);
-  background-image: -o-linear-gradient(top, #fff8ef, #fdc271);
-  background-image: linear-gradient(top, #fff8ef, #fdc271);
+  background-color: #3399ff;
+  background-image: -moz-linear-gradient(top, #b3d9ff, #3399ff);
+  background-image: -ms-linear-gradient(top, #b3d9ff, #3399ff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b3d9ff), to(#3399ff));
+  background-image: -webkit-linear-gradient(top, #b3d9ff, #3399ff);
+  background-image: -o-linear-gradient(top, #b3d9ff, #3399ff);
+  background-image: linear-gradient(top, #b3d9ff, #3399ff);
 }
 .vine-chat-bubble.chat-blue:after {
-  border-color: #fdc271 transparent;
+  border-color: #3399ff transparent;
 }
 .vine-chat-bubble.chat-green {
   background-color: #a9d26e;
@@ -4431,140 +4437,17 @@ footer .footer-links > ul {
   border-color: #aaaaaa transparent;
 }
 .vine-chat-bubble.chat-orange {
-  background-color: #f89406;
-  background-image: -moz-linear-gradient(top, #fcc982, #f89406);
-  background-image: -ms-linear-gradient(top, #fcc982, #f89406);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fcc982), to(#f89406));
-  background-image: -webkit-linear-gradient(top, #fcc982, #f89406);
-  background-image: -o-linear-gradient(top, #fcc982, #f89406);
-  background-image: linear-gradient(top, #fcc982, #f89406);
+  background-color: #ffa500;
+  background-image: -moz-linear-gradient(top, #ffd280, #ffa500);
+  background-image: -ms-linear-gradient(top, #ffd280, #ffa500);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffd280), to(#ffa500));
+  background-image: -webkit-linear-gradient(top, #ffd280, #ffa500);
+  background-image: -o-linear-gradient(top, #ffd280, #ffa500);
+  background-image: linear-gradient(top, #ffd280, #ffa500);
 }
 .vine-chat-bubble.chat-orange:after {
-  border-color: #f89406 transparent;
+  border-color: #ffa500 transparent;
 }
-body {
-  background: #d1eace;
-  background: -webkit-linear-gradient(0deg, #ffffff, #50a646);
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Helvetica', sans-serif;
-  font-weight: 100;
-}
-p {
-  color: #777;
-  text-align: justify;
-}
-.hero-unit {
-  background: transparent;
-}
-.primary-container {
-  background: white;
-  width: 100%;
-  box-shadow: 0 0 30px;
-  min-height: 350px;
-  padding: 20px 0;
-  position: relative;
-  z-index: 10;
-}
-.vine-intro-convo {
-  min-height: 350px;
-  padding: 10px 0;
-  height: 350px;
-  overflow: hidden;
-  position: relative;
-}
-#bubble-0,
-#bubble-1,
-#bubble-2,
-#bubble-3,
-#bubble-4,
-#bubble-5 {
-  position: absolute;
-}
-#bubble-0 {
-  top: 0px;
-  left: 0px;
-}
-#bubble-1 {
-  display: none;
-  top: 43px;
-  left: 338px;
-}
-#bubble-2 {
-  display: none;
-  top: 118px;
-  left: 0px;
-}
-#bubble-3 {
-  display: none;
-  top: 143px;
-  left: 436px;
-}
-#bubble-4 {
-  display: none;
-  top: 220px;
-  left: 43px;
-}
-#bubble-5 {
-  display: none;
-  top: 250px;
-  left: 300px;
-}
-.client-logo-list {
-  list-style: none;
-  margin: 0;
-  clear: both;
-}
-.client-logo-list li {
-  float: left;
-  padding-right: 10px;
-}
-.client-logo-list li img {
-  max-width: 43px;
-  max-height: 50px;
-}
-.legal-mumbo {
-  text-align: justify;
-  text-justify: inter-word;
-}
-#vine-invite-code-input {
-  width: 137px;
-  float: right;
-  margin-bottom: 0;
-}
-.right-col-section {
-  color: #888;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  font-size: ;
-  line-height: 25px;
-}
-.page-section-header,
-.page-header {
-  height: 45px;
-}
-.page-section-header h1,
-.page-header h1 {
-  height: 25px;
-  line-height: 25px;
-  float: left;
-  font-size: 25px;
-  font-weight: 100;
-  padding-left: 55px;
-  background: url('/static/img/bubble-right-orange.png') no-repeat 0 1px;
-  background-size: 45px;
-}
-.page-header {
-  margin-top: 0px;
-  padding-bottom: 0px;
-}
-/* flash */
 .flash-container {
   color: rgba(0, 0, 0, 0.5);
   padding-bottom: 7px;
@@ -4580,30 +4463,56 @@ p {
   opacity: 0.5;
   padding-right: 5px;
 }
+.vine-intro-convo {
+  width: 940px !important;
+  min-height: 350px;
+  padding: 10px 0;
+  height: 350px;
+  overflow: hidden;
+  position: relative;
+}
+#bubble-0,
+#bubble-1,
+#bubble-2,
+#bubble-3,
+#bubble-4,
+#bubble-5 {
+  position: absolute;
+}
+#bubble-0 {
+  top: 15px;
+  right: 520px;
+}
+#bubble-1 {
+  display: none;
+  top: 70px;
+  left: 430px;
+}
+#bubble-2 {
+  display: none;
+  top: 132px;
+  right: 520px;
+}
+#bubble-3 {
+  display: none;
+  top: 176px;
+  left: 430px;
+}
+#bubble-4 {
+  display: none;
+  top: 237px;
+  right: 520px;
+}
+#bubble-5 {
+  display: none;
+  top: 283px;
+  left: 430px;
+}
 .invite-container input {
   font-size: 2em;
   height: 2em;
   width: 300px;
   margin-top: 6px;
-}
-input.create_account {
-  height: 1.25em;
-  font-size: 2em;
-  width: 321px;
-}
-input.create_account_go {
-  width: 321px;
-}
-.vine-form {
-  margin-left: 20px;
-  width: 321px;
-  position: relative;
-}
-.vine-form input {
-  width: 100%;
-  height: 1.25em;
-  font-size: 2em;
-  display: block;
 }
 #who-we-are .photo {
   width: 200px;
@@ -4663,6 +4572,98 @@ input.create_account_go {
   -o-transition: opacity 0.5s;
   /* Opera */
 
+}
+body {
+  background: #d1eace;
+  background: -webkit-linear-gradient(0deg, #ffffff, #50a646);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Helvetica', sans-serif;
+  font-weight: 100;
+}
+p {
+  color: #777;
+  text-align: justify;
+}
+.hero-unit {
+  background: transparent;
+}
+.primary-container {
+  background: white;
+  width: 100%;
+  box-shadow: 0 0 30px;
+  min-height: 350px;
+  padding: 20px 0;
+  position: relative;
+  z-index: 10;
+}
+.client-logo-list {
+  list-style: none;
+  margin: 0;
+  clear: both;
+}
+.client-logo-list li {
+  float: left;
+  padding-right: 10px;
+}
+.client-logo-list li img {
+  max-width: 43px;
+  max-height: 50px;
+}
+.legal-mumbo {
+  text-align: justify;
+  text-justify: inter-word;
+}
+.right-col-section {
+  color: #888;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  font-size: ;
+  line-height: 25px;
+}
+.page-section-header,
+.page-header {
+  height: 45px;
+}
+.page-section-header h1,
+.page-header h1 {
+  height: 25px;
+  line-height: 25px;
+  float: left;
+  font-size: 25px;
+  font-weight: 100;
+  padding-left: 55px;
+  background: url('/static/img/bubble-right-orange.png') no-repeat 0 1px;
+  background-size: 45px;
+}
+.page-header {
+  margin-top: 0px;
+  padding-bottom: 0px;
+}
+input.create_account {
+  height: 1.25em;
+  font-size: 2em;
+  width: 321px;
+}
+input.create_account_go {
+  width: 321px;
+}
+.vine-form {
+  margin-left: 20px;
+  width: 321px;
+  position: relative;
+}
+.vine-form input {
+  width: 100%;
+  height: 1.25em;
+  font-size: 2em;
+  display: block;
 }
 legend {
   margin-bottom: 4px;
