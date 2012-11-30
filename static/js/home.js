@@ -12,7 +12,7 @@ $(window).ready(function(){
 	if( $('.flash-container').length )
 	{
 		$('.flash-container .close').click(function(){
-			$('.flash-container').hide('blind',{'direction':'vertical'},'slow');
+			$('.flash-container').hide('blind',{'direction':'vertical'},'fast');
 			return false;
 		});
 	}

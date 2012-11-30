@@ -4584,15 +4584,18 @@ p {
 /* flash */
 .flash-container {
   color: rgba(0, 0, 0, 0.5);
-  position: relative;
-  top: -20px;
-  padding: 10px 0 5px;
+  padding-bottom: 7px;
 }
 .flash-container .close {
   float: left;
+  margin-top: -5px;
 }
 .flash-container ul {
-  padding-left: 50px;
+  padding-left: 32px;
+}
+.flash-container ul li i {
+  opacity: 0.5;
+  padding-right: 5px;
 }
 .invite-container input {
   font-size: 2em;
