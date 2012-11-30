@@ -242,7 +242,7 @@ def create_account():
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
                 session.pop('account_exists', None)
-                flash('You signed up as %s' % found_user.name, 'success')
+                flash('You signed up as %s!' % found_user.name, 'success')
                 return redirect(url_for('help'))
             else:
                 flash('There was an error in the form.', 'failure')

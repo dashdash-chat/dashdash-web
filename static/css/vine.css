@@ -1,3 +1,4 @@
+/*  chat bubbles */
 article,
 aside,
 details,
@@ -1474,7 +1475,7 @@ table .span24 {
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("../bootstrap/../bootstrap/../img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -1483,7 +1484,7 @@ table .span24 {
   *margin-left: 0;
 }
 .icon-white {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("../bootstrap/../bootstrap/../img/glyphicons-halflings-white.png");
 }
 .icon-glass {
   background-position: 0      0;
@@ -1995,7 +1996,7 @@ table .span24 {
 .open {
   *z-index: 1000;
 }
-.open > .dropdown-menu {
+.open  > .dropdown-menu {
   display: block;
 }
 .pull-right > .dropdown-menu {
@@ -4235,7 +4236,7 @@ footer a:active {
   color: black;
 }
 .vine-header .header-banner .cancel-request {
-  margin: 5px;
+  margin-left: 5px;
   position: absolute;
 }
 .vine-header .header-banner:after {
@@ -4454,7 +4455,7 @@ footer .footer-links > ul {
 }
 .flash-container .close {
   float: left;
-  margin-top: -5px;
+  margin-top: -3px;
 }
 .flash-container ul {
   padding-left: 32px;
@@ -4462,6 +4463,7 @@ footer .footer-links > ul {
 .flash-container ul li i {
   opacity: 0.5;
   padding-right: 5px;
+  margin-top: 1px;
 }
 .vine-intro-convo {
   width: 940px !important;
