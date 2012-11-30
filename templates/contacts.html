@@ -28,8 +28,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-
-        {% if not friends or not outgoings or not incomings %}
+        {% if not friends and not outgoings and not incomings %}
             <p><i class='icon-time'></i> Determining your contacts. Check back soon!</p>
         {% endif %}
     </div>
