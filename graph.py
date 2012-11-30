@@ -180,7 +180,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                                FROM invites, users as first_user, users as second_user
                                                WHERE ((first_user.id = invites.sender AND second_user.id = invites.recipient)
                                                    OR (second_user.id = invites.sender AND first_user.id = invites.recipient))
-                                               AND invites.sender LIKE %(user_id)s
+                                               AND (invites.recipient LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
                                                AND invites.used > %(startdate)s
                                                ORDER BY invites.created DESC
                                                LIMIT %(pagesize)s
