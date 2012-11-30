@@ -243,7 +243,7 @@ def create_account():
                 session.pop('invite_code', None)
                 session.pop('account_exists', None)
                 flash('You signed up as %s' % found_user.name, 'success')
-                return redirect(url_for('index'))
+                return redirect(url_for('help'))
             else:
                 flash('There was an error in the form.', 'failure')
                 return redirect(url_for('create_account'))
