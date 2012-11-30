@@ -4534,6 +4534,7 @@ footer .footer-links > ul {
   margin-bottom: 20px;
 }
 #who-we-are .photo .bio {
+  display: none;
   opacity: 0;
   transition: opacity 1s;
   -moz-transition: opacity 1s;
@@ -4561,6 +4562,7 @@ footer .footer-links > ul {
 
 }
 #who-we-are .photo:hover .bio {
+  display: block;
   opacity: 1;
   transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
@@ -4597,7 +4599,7 @@ p {
   background: white;
   width: 100%;
   box-shadow: 0 0 30px;
-  min-height: 350px;
+  min-height: 375px;
   padding: 20px 0;
   position: relative;
   z-index: 10;
