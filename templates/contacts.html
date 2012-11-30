@@ -8,7 +8,7 @@
             <p><i>These users can see what conversations you're having, and you can see theirs.</i></p>
             <ul class='unstyled'>
                 {% for friend in friends %}
-                    <li>{{ friend }}</li>
+                    <li><i class='icon-user'></i> {{ friend }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -16,7 +16,7 @@
             <p><i>You can see when these users are online, but you can't see each other's conversations.</i></p>
             <ul class='unstyled'>
                 {% for outgoing in outgoings %}
-                    <li>{{ outgoing }}</li>
+                    <li><i class='icon-eye-close'></i> {{ outgoing }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -24,9 +24,13 @@
             <p><i>These users can see when you're online, but you can't see each other's conversations.</i></p>
             <ul class='unstyled'>
                 {% for incoming in incomings %}
-                    <li>{{ incoming }}</li>
+                    <li><i class='icon-eye-close'></i> {{ incoming }}</li>
                 {% endfor %}
             </ul>
+        {% endif %}
+
+        {% if not friends or not outgoings or not incomings %}
+            <p><i class='icon-time'></i> Determining your contacts. Check back soon!</p>
         {% endif %}
     </div>
 {% endblock %}
