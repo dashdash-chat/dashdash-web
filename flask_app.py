@@ -231,7 +231,7 @@ def create_account():
                                        where(users.c.id == found_user.id).\
                                        values(email=form.email.data))
                 except: #TODO handle the IntegrityError properly!
-                    flash('This email address has already been used – try another?', 'failure')
+                    flash('This email address has already been used - try another?', 'failure')
                     return redirect(url_for('create_account'))
                 if has_unused_invite and session.get('invite_code'):
                     db.session.execute(invites.update().\
@@ -290,7 +290,7 @@ def settings():
                 db.session.commit()
                 flash('Your email address has been changed.', 'success')
             except: #TODO handle the IntegrityError properly!
-                flash('This email address has already been used – try another?', 'failure')
+                flash('This email address has already been used - try another?', 'failure')
         else:    
             flash('Please enter a valid email address.', 'failure')
     return render_template('settings.html', user=user, form=form)
