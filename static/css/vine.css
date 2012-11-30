@@ -4672,6 +4672,18 @@ input.create_account_go {
   /* Opera */
 
 }
+.well table {
+  font-size: 13px;
+  text-align: left;
+}
+.well table th {
+  color: #777;
+  font-weight: normal;
+  padding-bottom: 13px;
+}
+.well table td {
+  padding-right: 15px;
+}
 .pull-right {
   float: right;
 }

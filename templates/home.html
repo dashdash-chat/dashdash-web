@@ -25,11 +25,26 @@
                         {% endif %}
                         {% if used_invites %}
                             <h3>Used invite codes:</h3>
-                            <ul class='unstyled'>
-                                {% for invite in used_invites %}
-                                    <li>http://{{ domain }}{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
-                                {% endfor %}
-                            </ul>
+                            <p>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><i>Invite URL</i></th>
+                                            <th><i>Used by</i></th>
+                                            <th><i>On date</i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for invite in used_invites %}
+                                            <tr>
+                                                <td><strong>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</strong></td>
+                                                <td>{{ invite[1] }}</td>
+                                                <td>{{ invite.used }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </p>
                         {% endif %}
                     </div>
                 {% else %}
