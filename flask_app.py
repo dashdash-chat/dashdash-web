@@ -88,9 +88,9 @@ def invite(code=None):
             return render_template('invite.html', sender=invite[0])
     else:
         if code:
-            flash('Sorry, %s is not a valid invite code. Enter a different one?' % code, 'invite_error')
+            flash('Sorry, \'%s\' is not a valid invite code. Enter a different one?' % code, 'invite_error')
         else:
-            flash('Sorry, but you need to be invited before you can sign up. Enter an invite code below?', 'invite_error')
+            flash('Sorry, but you need to be invited to sign up. Enter an invite code below?', 'invite_error')
         return render_template('invite.html', form=form)
 
 @app.route('/check_invite', methods=['POST'])
