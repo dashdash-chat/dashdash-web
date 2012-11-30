@@ -4455,7 +4455,7 @@ footer .footer-links > ul {
 }
 .flash-container .close {
   float: left;
-  margin-top: -5px;
+  margin-top: -3px;
 }
 .flash-container ul {
   padding-left: 32px;
@@ -4463,6 +4463,7 @@ footer .footer-links > ul {
 .flash-container ul li i {
   opacity: 0.5;
   padding-right: 5px;
+  margin-top: 1px;
 }
 .vine-intro-convo {
   width: 940px !important;
