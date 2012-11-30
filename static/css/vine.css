@@ -4681,6 +4681,10 @@ input.create_account_go {
   /* Opera */
 
 }
+legend {
+  margin-bottom: 4px;
+  border: none;
+}
 .well table {
   font-size: 13px;
   text-align: left;
