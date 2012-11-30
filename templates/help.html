@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block left_column %}
+    <div class='page-header'>
+        <h1>tutorial</h1>
+    </div>
+        <p>
+            For an overview of the basic features, watch this screencast (at 720p in full screen mode).
+        </p>
+        <iframe width="620" height="349" src="https://www.youtube.com/embed/JDsQEMaWjz8?rel=0" frameborder="0" allowfullscreen></iframe>
+        <div class='page-header'>
+            <h1>setup</h1>
+        </div>
+        <h4><a href='#adium'>Adium</a></h4>
+        <ol class=''>
+            <li>
+                <p>Download and install the Adium client from <a href='http://adium.im/' target='blank'>http://adium.im/</a></p>
+            </li>
+            <li>
+                <p>Open Adium and go to File > Preferences. Click the Accounts tab and then click the '+' in the lower left-hand corner of the window to add an account. From the dropdown list, choose XMPP</p>
+                <img src='/static/img/setup/adium/preference-window.png'/>
+            </li>
+            <li>
+                <p>For 'Jabber ID' enter [your-username]@vine.im and your password in the password field.</p>
+                <img src='/static/img/setup/adium/account-details.png'/>
+            </li>
+            <li>
+                <p>Click 'OK'</p>
+            </li>
+            <li>
+                <p>You should automatically land back at the Accounts page and if everything went well, your newly created account should turn green.</p>
+                <img src='/static/img/setup/adium/account-ok.png'/>
+            </li>
+            <li>
+                <p>Close the preferences window and start chatting!</p>
+            </li>
+        </ol>
+    </div>
+{% endblock %}

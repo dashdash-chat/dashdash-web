@@ -25,39 +25,35 @@
                 <div class='vine-main-logo'>
                     <a href="/"><img src='/static/img/logo.png' width='320px'/></a>
                 </div>
-
-
                 {% if user %}
                     <div class='user-greeting'>
                         <div class='username'>{{ user }}</div>
                         <div class='actions'>
+                            <a href='{{ url_for('contacts') }}'>contacts</a>
                             <a href='{{ url_for('settings') }}'>settings</a>
+                            <a href='{{ url_for('help') }}'>help</a>
                             <a href='{{ url_for('logout') }}'>logout</a>
                         </div>
                     </div>
-
                 {% else %}
-                    <div class='header-banner'>
-                        <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                        
-                        <div class='center-text'>
-                            <p><i>Vine is in private alpha</i></p>
-
-                            <div class='list-request-container'>
-                                <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
-                                <div class='hidden-form'>
-                                    
-                                    <input id='list-request-email' type='text' placeholder='enter your email'/>
-                                    <a href='#' class='cancel-request'><button class="close">&times;</button></a>
-                            
+                    {% block header_banner %}
+                        <div class='header-banner'>
+                            <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients. Gchat and others coming soon!</p>
+                            <div class='center-text'>
+                                <p><i><b>Vine is in private alpha.</b></i></p>
+                                <div class='list-request-container'>
+                                    <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
+                                    <div class='hidden-form'>
+                                        <input id='list-request-email' type='text' placeholder='enter your email'/>
+                                        <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
+                                    </div>
                                 </div>
+                                <p><i><b>Already have an account?</b></i></p>
+                                <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
                             </div>
-                            <p><i>Already have an account?</i></p>
-                            <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
                         </div>
-                    </div>
+                    {% endblock %}
                 {% endif %}
-                
                 </div> <!-- container -->
             </div>
         </header>
@@ -66,57 +62,54 @@
             {% with failure_messages = get_flashed_messages(category_filter=['failure']) %}
             {% with invite_error_messages = get_flashed_messages(category_filter=['invite_error']) %}
                 <div class='container'>
-                    {% if success_messages %}
-                        <div class='flash-container'>
-                            <div class='container'>
-                                <button class="close">&times;</button>
-                                <ul>
-                                    {% for message in success_messages %}
-                                        <li><b>{{ message }}</b></li>
-                                    {% endfor -%}
-                                </ul>
-                            </div>
+                    <div class='row'>
+                        <div class='span8'>
+                            {% if success_messages or failure_messages %}
+                                <div class='flash-container container'>
+                                    <button class="close">&times;</button>
+                                    <ul class='unstyled'>
+                                        {% for message in success_messages %}
+                                            <li><b><i class="icon-ok-sign"></i> {{ message }}</b></li>
+                                        {% endfor -%}
+                                        {% for message in failure_messages %}
+                                            <li><b><i class="icon-exclamation-sign"></i> {{ message }}</b></li>
+                                        {% endfor -%}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            {% block left_column scoped %}{% endblock %}
                         </div>
-                    {% endif %}
-                    {% if failure_messages %}
-                        <div class='flash-container'>
-                            <div class='container'>
-                                <button class="close">&times;</button>
-                                <ul>
-                                    {% for message in failure_messages %}
-                                        <li><b>{{ message }}</b></li>
-                                    {% endfor -%}
-                                </ul>
-                            </div>
+                        <div class='span4'>
+                            {% block right_column scoped %}
+                                {% if user %}
+                                    <div class='right-col-section'>
+                                        <p>Click an icon below for configuration instructions</p>
+                                        <ul class='client-logo-list'>
+                                            <li><a href='{{ url_for('help') }}#adium'><img src='/static/img/client_logos/adium.png' /></a></li>
+                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/pidgin.png' /></a></li>
+                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/messages.png' /></a></li>
+                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/imoim.png' /></a></li>
+                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/xmpp.png' /></a></li>
+                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/jabber.png' /></a></li>
+                                        </ul>
+                                        </br>
+                                        </br>
+                                        <p>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
                         </div>
-                    {% endif %}
-                    {% block body scoped %}{% endblock %}
+                    </div>
                 </div>
             {% endwith %}    
             {% endwith %}
             {% endwith %}
         </div>
         <footer>
-
             <div class='container footer-links'>
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
                     <li><a href='{{ url_for('legal') }}'>legal</a></li>
-            
-                    {% if user %}
-                        <li>
-                            <a href='{{ url_for('settings') }}'>settings</a>
-                        </li>
-                         <li>
-                            <a href='{{ url_for('logout') }}'>logout</a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{{ url_for('login') }}">sign in</a> (devs only)
-                        </li>
-                    {% endif %}
-                    </li>
-
                     <li>&copy; 2012 Vine</li>
                 </ul>
             </div>

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% block body %}
-    
+{% block left_column %}
     <div class="page-header">
         <h1>about</h1>
     </div>
@@ -8,24 +7,20 @@
         <div class='photos clearfix'>
             <div href='#' class='photo'>
                 <img src='/static/img/steven.jpg' width='200px'/>
-                <p class='bio'>Steven</p>
+                <p class='bio'><a href="https://twitter.com/lehrblogger">Steven Lehrburger</a> always carries his m[]leskine notebook and walks *very* quickly through the streets of New York. He wants to make the Internet more like the real world, and the real world more like the Internet.</p>
             </div>
             <div href='#' class='photo'>
                 <img src='/static/img/joseph.jpeg' width='200px'/>
-                <p class='bio'>Joseph Bergen is a creative technologist currently based in Cambridge, Massachussets. When he's not looking at a computer he's riding a motorcycle or pwning n00bs on XBox Live.</p>
+                <p class='bio'><a href="https://twitter.com/jbergen">Joseph Bergen</a> is a creative technologist currently based in Cambridge, Massachussets. When he's not looking at a computer he's riding a motorcycle or pwning n00bs on XBox Live.</p>
             </div>
         </div>
-        <div class='bio-content'>
-            
-            
-        </div>
     </div>
-
-    
+{% endblock %}
+{% block right_column %}
     <div class="page-header">
         <h1>contact us</h1>
     </div>
-
     <div><b>Twitter: <a href='http://www.twitter.com/vineIM' target='blank'>@VineIM</a></b></div>
     <div><b>Questions? Email <a href='mailto:info@vine-inc.im' target='blank'>info@vine-inc.im</a></b></div>
 {% endblock %}
+{% block header_banner %}{% endblock %}

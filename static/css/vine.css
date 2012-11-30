@@ -4197,11 +4197,8 @@ a.badge:hover {
 .logo img {
   width: 175px;
 }
-header a:link,
 footer a:link,
-header a:visited,
 footer a:visited,
-header a:active,
 footer a:active {
   color: rgba(0, 0, 0, 0.5);
 }
@@ -4209,7 +4206,6 @@ footer a:active {
   position: relative;
 }
 .vine-header .header-banner {
-  color: white;
   position: absolute;
   right: 0;
   background: orange;
@@ -4225,7 +4221,7 @@ footer a:active {
   text-shadow: 0px 0px 2px white;
 }
 .vine-header .header-banner p {
-  color: white;
+  color: maroon;
   line-height: 16px;
   font-size: 1.1em;
 }
@@ -4256,9 +4252,6 @@ footer a:active {
 .vine-header .header-banner .center-text {
   text-align: center;
 }
-.vine-header .header-banner .description {
-  color: maroon;
-}
 .vine-header .header-banner .list-request {
   margin-bottom: 10px;
 }
@@ -4277,6 +4270,10 @@ footer a:active {
 }
 .vine-header .user-greeting .actions {
   font-size: 1.25em;
+}
+.vine-header .user-greeting .actions a {
+  padding-right: 6px;
+  color: #387331;
 }
 .vine-header .vine-main-logo {
   padding: 40px 0;
@@ -4297,8 +4294,8 @@ footer a:active {
   display: none;
 }
 .vine-header .list-request-container input {
-  height: 1.5em;
-  font-size: 1.5em;
+  height: 1.3em;
+  font-size: 1.3em;
 }
 footer {
   min-height: 50px;
@@ -4548,37 +4545,46 @@ p {
   font-size: ;
   line-height: 25px;
 }
-.page-section-header {
-  margin-top: 20px;
-  height: 65px;
+.page-section-header,
+.page-header {
+  height: 45px;
 }
-.page-section-header h1 {
+.page-section-header h1,
+.page-header h1 {
+  height: 25px;
+  line-height: 25px;
   float: left;
   font-size: 25px;
   font-weight: 100;
+  padding-left: 55px;
+  background: url('/static/img/bubble-right-orange.png') no-repeat 0 1px;
+  background-size: 45px;
 }
-.page-section-header img {
-  float: left;
-  height: 25px;
-  margin-right: 10px;
+.page-header {
+  margin-top: 0px;
+  padding-bottom: 0px;
 }
 /* flash */
 .flash-container {
   color: rgba(0, 0, 0, 0.5);
-  position: relative;
-  top: -20px;
-  padding: 10px 0 5px;
+  padding-bottom: 7px;
 }
 .flash-container .close {
   float: left;
+  margin-top: -5px;
 }
 .flash-container ul {
-  padding-left: 50px;
+  padding-left: 32px;
+}
+.flash-container ul li i {
+  opacity: 0.5;
+  padding-right: 5px;
 }
 .invite-container input {
   font-size: 2em;
   height: 2em;
   width: 300px;
+  margin-top: 6px;
 }
 input.create_account {
   height: 1.25em;
@@ -4657,6 +4663,22 @@ input.create_account_go {
   -o-transition: opacity 0.5s;
   /* Opera */
 
+}
+legend {
+  margin-bottom: 4px;
+  border: none;
+}
+.well table {
+  font-size: 13px;
+  text-align: left;
+}
+.well table th {
+  color: #777;
+  font-weight: normal;
+  padding-bottom: 13px;
+}
+.well table td {
+  padding-right: 15px;
 }
 .pull-right {
   float: right;

@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-{% block body %}
+{% block left_column %}
     {% if user %}
         <div class='row'>
             <div class='span8'>
                 <div class='clearfix'>
                     <div class='page-section-header'>
-                        <img src='/static/img/bubble-right-orange.png'>
-                        <h1>Hello, {{ user }}!</h1>
+                        <h1>hello, {{ user }}!</h1>
                     </div>
                 </div>
                 {% if unused_invites or used_invites %}
@@ -25,11 +24,26 @@
                         {% endif %}
                         {% if used_invites %}
                             <h3>Used invite codes:</h3>
-                            <ul class='unstyled'>
-                                {% for invite in used_invites %}
-                                    <li>http://{{ domain }}{{ url_for('invite', code=invite.code) }} | <strong>{{ invite[1] }}</strong> | {{ invite.used }}</li>
-                                {% endfor %}
-                            </ul>
+                            <p>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><i>Invite URL</i></th>
+                                            <th><i>Used by</i></th>
+                                            <th><i>On date</i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for invite in used_invites %}
+                                            <tr>
+                                                <td><strong>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</strong></td>
+                                                <td>{{ invite[1] }}</td>
+                                                <td>{{ invite.used }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </p>
                         {% endif %}
                     </div>
                 {% else %}
@@ -37,22 +51,6 @@
                         <strong>You don't have any invitations to send out right now.</strong>
                     </div>
                 {% endif %}
-            </div>
-            <div class='span4'>
-                <div class='right-col-section'>
-                    <p>Click an icon below for configuration instructions</p>
-                    <ul class='client-logo-list'>
-                        <li><a href='/setup#adium'><img src='/static/img/client_logos/adium.png' /></a></li>
-                        <li><a href='/setup'><img src='/static/img/client_logos/pidgin.png' /></a></li>
-                        <li><a href='/setup'><img src='/static/img/client_logos/messages.png' /></a></li>
-                        <li><a href='/setup'><img src='/static/img/client_logos/imoim.png' /></a></li>
-                        <li><a href='/setup'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                        <li><a href='/setup'><img src='/static/img/client_logos/jabber.png' /></a></li>
-                    </ul>
-                    </br>
-                    </br>
-                    <p>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
-                </div>
             </div>
         </div>
     {% else %} 
@@ -66,3 +64,4 @@
         </div>
     {% endif %}
 {% endblock %}
+{% block right_column %}{% endblock %}

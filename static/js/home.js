@@ -12,7 +12,7 @@ $(window).ready(function(){
 	if( $('.flash-container').length )
 	{
 		$('.flash-container .close').click(function(){
-			$('.flash-container').hide('blind',{'direction':'vertical'},'slow');
+			$('.flash-container').hide('blind',{'direction':'vertical'},'fast');
 			return false;
 		});
 	}
@@ -27,7 +27,7 @@ $(window).ready(function(){
 		});
 		$('.list-request-container .cancel-request').click(function(){
 			$('.list-request-container input').val('');
-			$('.list-request-container .hidden-form').hide('blind',{'direction':'vertical'},'slow');
+			$('.list-request-container .hidden-form').hide('blind',{'direction':'vertical'},'fast');
 			return false;
 		});
 

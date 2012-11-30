@@ -125,39 +125,41 @@ p {
 	line-height:25px;
 }
 
-.page-section-header
-{
-	margin-top:20px;
-	height: 65px;
+.page-section-header, .page-header {
+    height: 45px;
 	h1 {
+	    height: 25px;
+	    line-height: 25px;
 		float:left;
 		font-size:25px;
 		font-weight:100;
-	}
-
-	img {
-		float:left;
-		height:25px;
-		margin-right:10px;
+        padding-left: 55px;
+        background: url('/static/img/bubble-right-orange.png') no-repeat 0 1px;
+        background-size: 45px; 
 	}
 }
+.page-header {
+    margin-top: 0px;
+    padding-bottom: 0px;
+}
+
 
 /* flash */
 
-.flash-container
-{
-	color: rgba(0,0,0,0.5);
-	position: relative;
-	top: -20px;
-	padding: 10px 0 5px;
-
-	.close {
-		float:left;
-	}
-
-	ul {
-		padding-left:50px;
-	}
+.flash-container {
+    color: rgba(0,0,0,0.5);
+    padding-bottom: 7px;
+    .close {
+        float:left;
+        margin-top: -5px;
+    }
+    ul {
+        padding-left: 32px;
+        li i {
+            opacity: 0.5;
+            padding-right: 5px;
+        }
+    }
 }
 
 .invite-container
@@ -166,6 +168,7 @@ p {
 		font-size: 2em;
 		height: 2em;
 		width: 300px;
+		margin-top: 6px;
 	}
 }
 
@@ -242,4 +245,18 @@ input.create_account_go
 	.bio-content {}
 }
 
+legend {
+    margin-bottom: 4px;
+    border: none;
+}
 
+.well table {
+    font-size: 13px;
+    text-align: left;
+    th {
+        color: #777;
+        font-weight: normal;
+        padding-bottom: 13px;
+    }
+    td { padding-right: 15px; }
+}

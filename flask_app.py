@@ -88,9 +88,9 @@ def invite(code=None):
             return render_template('invite.html', sender=invite[0])
     else:
         if code:
-            flash('Sorry, %s is not a valid invite code. Enter a different one?' % code, 'invite_error')
+            flash('Sorry, \'%s\' is not a valid invite code. Enter a different one?' % code, 'invite_error')
         else:
-            flash('Sorry, but you need to be invited before you can sign up. Enter an invite code below?', 'invite_error')
+            flash('Sorry, but you need to be invited to sign up. Enter an invite code below?', 'invite_error')
         return render_template('invite.html', form=form)
 
 @app.route('/check_invite', methods=['POST'])
@@ -243,7 +243,7 @@ def create_account():
                 session.pop('invite_code', None)
                 session.pop('account_exists', None)
                 flash('You signed up as %s' % found_user.name, 'success')
-                return redirect(url_for('index'))
+                return redirect(url_for('help'))
             else:
                 flash('There was an error in the form.', 'failure')
                 return redirect(url_for('create_account'))
@@ -264,10 +264,10 @@ def demo(token):
         return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
-@app.route("/setup")
-def setup():
+@app.route("/help")
+def help():
     user = session.get('vine_user')
-    return render_template('setup.html', user=user)
+    return render_template('help.html', user=user)
 
 @app.route("/settings")
 def settings():
@@ -345,10 +345,10 @@ def page_not_found(e=None):
     return render_template('500.html'), 500
 
 def _check_account(user):
-   return _xmlrpc_command('check_account', {
+    return _xmlrpc_command('check_account', {
         'user': user,
         'host': constants.domain
-    })
+    })['res'] == 0
 
 def _register(user, password):
     _xmlrpc_command('register', {

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block body %}
+{% block left_column %}
     {% if errors %}
         <p>Try a different invite code?
             <form action="{{ url_for('check_invite') }}" method=post>
@@ -23,3 +23,5 @@
         </form>
     {% endif %}
 {% endblock %}
+{% block right_column %}{% endblock %}
+{% block header_banner %}{% endblock %}

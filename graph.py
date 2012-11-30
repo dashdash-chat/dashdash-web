@@ -176,12 +176,12 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
                                             })
     
     def db_fetch_account_invites(self, offset):
-        return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
-                                               FROM invites, users as from_user, users as to_user
-                                               WHERE to_user.id = invites.recipient
-                                               AND from_user.id = invites.sender
+        return self.db_execute_and_fetchall("""SELECT first_user.name, second_user.name, NULL
+                                               FROM invites, users as first_user, users as second_user
+                                               WHERE ((first_user.id = invites.sender AND second_user.id = invites.recipient)
+                                                   OR (second_user.id = invites.sender AND first_user.id = invites.recipient))
+                                               AND invites.sender LIKE %(user_id)s
                                                AND invites.used > %(startdate)s
-                                               AND from_user.id LIKE %(user_id)s
                                                ORDER BY invites.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
@@ -336,19 +336,21 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         # This let's us cycle through the current edges one at a time, to figure out which we need to delete.
         old_edge = self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
                                                    FROM edges, users as from_user, users as to_user
-                                                   WHERE edges.to_id = to_user.id
-                                                   AND edges.from_id = from_user.id
+                                                   WHERE to_user.id = edges.to_id
+                                                   AND from_user.id = edges.from_id
+                                                   AND from_user.id LIKE %(user_id)s
                                                    ORDER BY edges.id DESC
                                                    LIMIT 1
                                                    OFFSET %(old_edge_offset)s
                                                 """, {
+                                                   'user_id': self.user_id if self.user_id else '%',
                                                    'old_edge_offset': self.old_edge_offset
                                                 })
         self.old_edge_offset += 1
         return old_edge
     
     def db_execute_and_fetchall(self, query, data={}, strip_pairs=False):
-        #self.db_execute(query, data)
+        self.db_execute(query, data)
         fetched = self.cursor.fetchall()
         if fetched and len(fetched) > 0:
             if strip_pairs:
@@ -358,7 +360,7 @@ class EdgeCalculator(sleekxmpp.ClientXMPP):
         return []
     
     def db_execute(self, query, data={}):
-        self.logger.info(query % data)
+        #self.logger.info(query % data)
         if not self.db or not self.cursor:
             self.logger.info("Database connection missing, attempting to reconnect and retry query")
             if self.db:
