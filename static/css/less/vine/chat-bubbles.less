@@ -1,18 +1,14 @@
 /*  chat bubbles */
 
-//green = rgba(80,166,70,1)
-@brandPrimaryColor : rgba(80,166,70,1);
-@brandSecondaryColor : rgba(206,230,191,1);
-
-.bubble-gradient ( @bottomColor, @topColor)
+.bubble-gradient ( @bubble_color )
 {
-	background-color: @bottomColor;
-	background-image: -moz-linear-gradient(top, @topColor, @bottomColor);
-	background-image: -ms-linear-gradient(top, @topColor, @bottomColor);
-	background-image: -webkit-gradient(linear,0 0,0 100%,from( @topColor),to( @bottomColor));
-	background-image: -webkit-linear-gradient(top, @topColor, @bottomColor);
-	background-image: -o-linear-gradient(top, @topColor, @bottomColor);
-	background-image: linear-gradient(top, @topColor, @bottomColor);
+	background-color: @bubble_color;
+	background-image: -moz-linear-gradient(top, lighten(@bubble_color,25%), @bubble_color);
+	background-image: -ms-linear-gradient(top, lighten(@bubble_color,25%), @bubble_color);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from( lighten(@bubble_color,25%)),to( @bubble_color));
+	background-image: -webkit-linear-gradient(top, lighten(@bubble_color,25%), @bubble_color);
+	background-image: -o-linear-gradient(top, lighten(@bubble_color,25%), @bubble_color);
+	background-image: linear-gradient(top, lighten(@bubble_color,25%), @bubble_color);
 }
 
 .vine-chat-bubble
@@ -92,22 +88,22 @@
 
 	&.chat-blue
 	{
-		.bubble-gradient(#FDC271,#FFE5C3);
-		&:after{ border-color:#FDC271 transparent; } 
+		.bubble-gradient(@vineBlue);
+		&:after{ border-color:@vineBlue transparent; } 
 	}
 	&.chat-green
 	{
-		.bubble-gradient(#A9D26E,#D2E6B3);
-		&:after{ border-color:#A9D26E transparent; } 
+		.bubble-gradient(@vineGreen);
+		&:after{ border-color:@vineGreen transparent; } 
 	}
 	&.chat-grey
 	{
-		.bubble-gradient(#AAA,#CCC);
-		&:after{ border-color:#aaa transparent; } 
+		.bubble-gradient(@vineGrey);
+		&:after{ border-color:@vineGrey transparent; } 
 	}
 	&.chat-orange
 	{
-		.bubble-gradient(#F89406,#FBB450);
-		&:after{ border-color:#F89406 transparent; } 
+		.bubble-gradient(@vineOrange);
+		&:after{ border-color:@vineOrange transparent; } 
 	}
 }
