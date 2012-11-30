@@ -245,7 +245,7 @@ def create_account():
                 flash('You signed up as %s!' % found_user.name, 'success')
                 return redirect(url_for('help'))
             else:
-                flash('There was an error in the form.', 'failure')
+                flash('Please be sure to enter a valid email address and matching passwords.', 'failure')
                 return redirect(url_for('create_account'))
         else:        
             flash('Sorry, that POST request was invalid.', 'failure')
@@ -269,7 +269,7 @@ def help():
     user = session.get('vine_user')
     return render_template('help.html', user=user)
 
-@app.route("/settings")
+@app.route("/settings", methods=['GET', 'POST'])
 def settings():
     user = session.get('vine_user')
     if not user:
@@ -284,6 +284,8 @@ def settings():
             db.session.execute(users.update().where(users.c.name == user).values(email=form.email.data))
             db.session.commit()
             flash('Your email address has been changed.', 'success')
+        else:    
+            flash('Please enter a valid email address.', 'failure')
     return render_template('settings.html', user=user, form=form)
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
@@ -302,6 +304,8 @@ def change_password():
             except xmlrpclib.ProtocolError, e:
                 flash('There was an error changing your XMPP password.', 'failure')
                 return redirect(url_for('change_password'))
+        else:
+            flash('Are you sure the two passwords matched? Please try again.', 'failure')
     return render_template('change_password.html', user=user, form=form)
 
 @app.route("/contacts")
