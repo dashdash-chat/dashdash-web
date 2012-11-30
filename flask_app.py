@@ -242,6 +242,7 @@ def create_account():
                                        where(invites.c.recipient == found_user.id).\
                                        values(used=datetime.datetime.now()))
                 db.session.commit()
+                result = score_edges.delay(found_user.id) #TODO keep track of this user's task progress
                 session['vine_user'] = found_user.name
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
