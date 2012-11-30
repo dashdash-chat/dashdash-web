@@ -4236,6 +4236,13 @@ footer a:active {
 .vine-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
 }
+.vine-header .header-banner .list-request-container a:link {
+  color: black;
+}
+.vine-header .header-banner .cancel-request {
+  margin: 5px;
+  position: absolute;
+}
 .vine-header .header-banner:after {
   content: "";
   position: absolute;
