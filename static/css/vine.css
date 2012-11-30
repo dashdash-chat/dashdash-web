@@ -4413,16 +4413,16 @@ footer .footer-links > ul {
   border-color: #3399ff transparent;
 }
 .vine-chat-bubble.chat-green {
-  background-color: #a9d26e;
-  background-image: -moz-linear-gradient(top, #e3f0cf, #a9d26e);
-  background-image: -ms-linear-gradient(top, #e3f0cf, #a9d26e);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e3f0cf), to(#a9d26e));
-  background-image: -webkit-linear-gradient(top, #e3f0cf, #a9d26e);
-  background-image: -o-linear-gradient(top, #e3f0cf, #a9d26e);
-  background-image: linear-gradient(top, #e3f0cf, #a9d26e);
+  background-color: #6cbd62;
+  background-image: -moz-linear-gradient(top, #c0e3bc, #6cbd62);
+  background-image: -ms-linear-gradient(top, #c0e3bc, #6cbd62);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#c0e3bc), to(#6cbd62));
+  background-image: -webkit-linear-gradient(top, #c0e3bc, #6cbd62);
+  background-image: -o-linear-gradient(top, #c0e3bc, #6cbd62);
+  background-image: linear-gradient(top, #c0e3bc, #6cbd62);
 }
 .vine-chat-bubble.chat-green:after {
-  border-color: #a9d26e transparent;
+  border-color: #6cbd62 transparent;
 }
 .vine-chat-bubble.chat-grey {
   background-color: #aaaaaa;
@@ -4588,7 +4588,7 @@ footer .footer-links > ul {
 
 }
 body {
-  background: #d1eace;
+  background: #50a646;
   background: -webkit-linear-gradient(0deg, #ffffff, #50a646);
 }
 h1,
