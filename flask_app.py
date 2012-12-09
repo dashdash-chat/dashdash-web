@@ -56,14 +56,23 @@ def index():
     user = session.get('vine_user')
     unused_invites = None
     used_invites = None
+    user_id = None
     if user:
-        user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id'] # TODO fix indexing
-        s = select([invites.c.code, invites.c.recipient],
-                   and_(invites.c.sender == user_id, invites.c.recipient == None))
-        unused_invites = db.session.execute(s).fetchall()
-        s = select([invites.c.code, users.c.name, invites.c.used],
-                   and_(invites.c.sender == user_id, invites.c.recipient == users.c.id, ))
-        used_invites = db.session.execute(s).fetchall()
+        s = select([users.c.id],
+                   and_(users.c.name == user,
+                        users.c.is_active == True))
+        user_id = db.session.execute(s).fetchone() # TODO fix indexing
+        if user_id:
+            user_id = user_id[0]
+            s = select([invites.c.code, invites.c.recipient],
+                       and_(invites.c.sender == user_id,
+                            invites.c.recipient == None))
+            unused_invites = db.session.execute(s).fetchall()
+            s = select([invites.c.code, users.c.name, invites.c.used],
+                       and_(invites.c.sender == user_id,
+                            invites.c.recipient == users.c.id,
+                            users.c.is_active == True))
+            used_invites = db.session.execute(s).fetchall()
     return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
 
 @app.route('/login')
@@ -77,7 +86,8 @@ def invite(code=None):
     if user:
         return redirect(url_for('index'))
     invite = db.session.execute(select([users.c.name, invites.c.recipient],
-                                and_(users.c.id == invites.c.sender, invites.c.code == code))).fetchone()
+                                and_(users.c.id == invites.c.sender,
+                                     invites.c.code == code))).fetchone()
     form = InviteCodeForm()
     if invite:
         if invite['recipient']:
@@ -112,7 +122,9 @@ def logout():
 
 @twitter.tokengetter
 def get_twitter_token():
-    s = select([users.c.twitter_token, users.c.twitter_secret], users.c.name == session.get('vine_user'))
+    s = select([users.c.twitter_token, users.c.twitter_secret],
+               and_(users.c.name == session.get('vine_user'),
+                    users.c.is_active == True))
     return db.session.execute(s).fetchone()
 
 def clear_bad_oauth_cookies(fn):
@@ -134,8 +146,8 @@ def oauth_authorized(resp):
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
         return redirect(url_for('index'))
     twitter_user = resp['screen_name'].lower()
-    s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret],
-            and_(users.c.name == twitter_user))
+    s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret, users.c.is_active],
+               and_(users.c.name == twitter_user))
     found_user = db.session.execute(s).fetchone()
     if found_user:
         if not found_user.twitter_id == resp['user_id'] or \
@@ -153,11 +165,16 @@ def oauth_authorized(resp):
                                   celery_task_id=result,
                                   celery_task_type='fetch_follows'))
         db.session.commit()
-        if found_user.email:
+        if found_user.email and found_user.is_active:
             session['vine_user'] = twitter_user
             flash('You were signed in as %s' % twitter_user, 'success')
             return redirect(url_for('index'))
         else:
+            if not found_user.is_active:
+                db.session.execute(users.update().\
+                                   where(users.c.name == twitter_user).\
+                                   values(is_active=True))
+                db.session.commit()
             session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
     else:  # still store the user object and tokens, but elsewhere only set the session['vine_user'] if we have an email already!
@@ -182,7 +199,9 @@ def create_account():
     has_unused_invite = None
     user_used_invite = None
     if twitter_user:
-        s = select([users.c.id, users.c.name, users.c.email], and_(users.c.name == twitter_user))
+        s = select([users.c.id, users.c.name, users.c.email],
+                   and_(users.c.name == twitter_user,
+                        users.c.is_active == True))
         found_user = db.session.execute(s).fetchone()
     if invite_code:
         s = select([invites.c.id], and_(invites.c.code == invite_code, invites.c.recipient == None))
@@ -192,12 +211,12 @@ def create_account():
         user_used_invite = db.session.execute(s).fetchone()
     if request.method == 'GET':
         if found_user:
-            if found_user.email:
+            session['account_exists'] = _check_account(found_user.name)
+            if found_user.email and session.get('account_exists'):
                 session['vine_user'] = found_user.name
                 flash('You signed in as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
-            session['account_exists'] = _check_account(found_user.name)
-            if session.get('account_exists'):
+            if session.get('account_exists') and not found_user.email:
                 form = AddEmailForm()
             else:
                 form = CreateAccountForm()
@@ -263,7 +282,9 @@ def no_demo():
 @app.route("/demo/<token>/")
 def demo(token):
     s = select([users.c.name, demos.c.password],
-               and_(users.c.id == demos.c.user_id, demos.c.token == token))
+               and_(users.c.id == demos.c.user_id,
+                    demos.c.token == token,
+                    users.c.is_active == True))
     found_demo = db.session.execute(s).fetchone()
     if found_demo:
         return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
@@ -326,9 +347,15 @@ def contacts():
     user = session.get('vine_user')
     if user:
         user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']
-        s = select([users.c.name], and_(edges.c.from_id == user_id, edges.c.to_id == users.c.id))
+        s = select([users.c.name],
+                   and_(edges.c.from_id == user_id,
+                        edges.c.to_id == users.c.id,
+                        users.c.is_active == True))
         outgoing = filter_admins(db.session.execute(s).fetchall())
-        s = select([users.c.name], and_(edges.c.to_id == user_id, edges.c.from_id == users.c.id))
+        s = select([users.c.name],
+                   and_(edges.c.to_id == user_id,
+                        edges.c.from_id == users.c.id,
+                        users.c.is_active == True))
         incoming = filter_admins(db.session.execute(s).fetchall())
         friends = outgoing.intersection(incoming)
         return render_template('contacts.html', user=user,
