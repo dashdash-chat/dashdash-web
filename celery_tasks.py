@@ -59,7 +59,6 @@ def add(x,y):
         
 @celery.task
 def fetch_follows(user_id, user_twitter_id, token, secret):
-    conn = engine.connect()
     follow_ids = []
     cursor = '-1'
     while cursor != '0':  #LATER split this into separate celery tasks
@@ -70,6 +69,7 @@ def fetch_follows(user_id, user_twitter_id, token, secret):
         cursor = resp.data['next_cursor_str']
         follow_ids.extend(resp.data['ids'])
     new_follow_ids = set(follow_ids)
+    conn = engine.connect()
     s = select([twitter_follows.c.to_twitter_id], twitter_follows.c.from_twitter_id == user_twitter_id)
     old_follow_ids = set([row.to_twitter_id for row in conn.execute(s).fetchall()])
     for follow_id in old_follow_ids.difference(new_follow_ids):
