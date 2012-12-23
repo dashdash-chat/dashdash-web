@@ -6,5 +6,3 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
-depends "nginx", "~> 1.1.2"
