@@ -27,7 +27,7 @@ http {
     
     server {
           listen 80;
-          server_name dev.vine.im;
+          server_name <%= @env_data['server']['domain'] %>;
           
           location / {
               rewrite ^ https://$server_name$request_uri permanent;
