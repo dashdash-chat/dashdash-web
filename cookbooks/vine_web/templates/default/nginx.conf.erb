@@ -1,6 +1,6 @@
-worker_processes 1;
+worker_processes <%= node['nginx']['worker_processes'] %>;
 user vagrant;
-error_log /usr/local/nginx/logs/error.log debug;
+#error_log /usr/local/nginx/logs/error.log debug;
 
 events {
     worker_connections 1024;
@@ -40,13 +40,13 @@ http {
         server_name dev.vine.im;
         keepalive_timeout 70;
         
-        ssl_certificate      /vagrant/web-env/web/shared/vinessl.crt;
-        ssl_certificate_key  /vagrant/web-env/web/shared/vinessl.key;
-        ssl_session_cache    shared:SSL:10m;
-        ssl_session_timeout  10m;
-        ssl_protocols  SSLv2 SSLv3 TLSv1;
-        ssl_ciphers  HIGH:!aNULL:!MD5;
-        ssl_prefer_server_ciphers   on;
+        # ssl_certificate      /vagrant/web-env/web/shared/vinessl.crt;
+        # ssl_certificate_key  /vagrant/web-env/web/shared/vinessl.key;
+        # ssl_session_cache    shared:SSL:10m;
+        # ssl_session_timeout  10m;
+        # ssl_protocols  SSLv2 SSLv3 TLSv1;
+        # ssl_ciphers  HIGH:!aNULL:!MD5;
+        # ssl_prefer_server_ciphers   on;
         
         location ^~ /supervisor/ {
             rewrite ^/supervisor\/(.*)$ /$1 break;
