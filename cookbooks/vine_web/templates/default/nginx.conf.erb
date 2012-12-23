@@ -1,15 +1,18 @@
 worker_processes <%= node['nginx']['worker_processes'] %>;
-user vagrant;
-#error_log /usr/local/nginx/logs/error.log debug;
+user <%= node['nginx']['user'] %><% if node['nginx']['user'] != node['nginx']['group'] %> <%= node['nginx']['group'] %><% end %>;
+error_log  <%= node['nginx']['log_dir'] %>/error.log<% if @env_data['flask']['debug'] %> debug<% end %>;
+pid        <%= node['nginx']['pid'] %>;
 
 events {
-    worker_connections 1024;
+    worker_connections <%= node['nginx']['worker_connections'] %>;
     accept_mutex off; # "on" if nginx worker_processes > 1
-    use epoll; # enable for Linux 2.6+
+    <% if node['nginx']['event'] -%>
+      use <%= node['nginx']['event'] %>;
+    <% end -%>
 }
 
 http {
-    include       mime.types;
+    include       <%= node['nginx']['dir'] %>/mime.types;
     default_type  application/octet-stream;
     
     #sendfile on;  # http://stackoverflow.com/questions/6236078/how-to-clear-the-cache-of-nginx#comment7292717_6236078
@@ -17,6 +20,10 @@ http {
     tcp_nodelay off; # on may be better for some Comet/long-poll stuff
     
     keepalive_timeout 5;
+    
+    <% unless node['nginx']['disable_access_log'] -%>
+    access_log	<%= node['nginx']['log_dir'] %>/access.log;
+    <% end %>
     
     upstream app_server {
         server localhost:8000 max_fails=5 fail_timeout=10;
@@ -37,7 +44,7 @@ http {
     server {
         listen 443 ssl;
         client_max_body_size 4G;
-        server_name dev.vine.im;
+        server_name <%= @env_data['server']['domain'] %>;
         keepalive_timeout 70;
         
         # ssl_certificate      /vagrant/web-env/web/shared/vinessl.crt;
@@ -58,19 +65,19 @@ http {
         }
         
         location = /favicon.ico {
-            alias /vagrant/web-env/web/static/img/favicon.ico;
+            alias <%= node['vine_web']['static_dir'] %>/img/favicon.ico;
         }
         location = /robots.txt {
-            alias /vagrant/web-env/web/static/robots.txt;
+            alias <%= node['vine_web']['static_dir'] %>/robots.txt;
         }
         location ^~ /static/jwchat/config.js {
-            alias /vagrant/jwchat/htdocs.en/config.dev.vine.im.js;
+            alias <%= node['vine_web']['jwchat_dir'] %>/htdocs.en/config.dev.vine.im.js; #TODO templatize jwchat config
         }
         location ^~ /static/jwchat/ {
-            alias /vagrant/jwchat/htdocs.en/;
+            alias <%= node['vine_web']['jwchat_dir'] %>/htdocs.en/;
         }
         location ^~ /static/ {
-            alias /vagrant/web-env/web/static/;
+            alias <%= node['vine_web']['static_dir'] %>;
         }
         
         location / {
