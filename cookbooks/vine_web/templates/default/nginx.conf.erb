@@ -77,7 +77,7 @@ http {
             alias <%= node['vine_web']['jwchat_dir'] %>/htdocs.en/;
         }
         location ^~ /static/ {
-            alias <%= node['vine_web']['static_dir'] %>;
+            alias <%= node['vine_web']['static_dir'] %>/;
         }
         
         location / {
