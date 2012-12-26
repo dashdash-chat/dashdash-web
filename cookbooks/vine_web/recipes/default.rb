@@ -15,7 +15,38 @@ directory "#{node['source_dir']}" do
   mode 0644
   owner "root"
   group "root"
+  recursive true
   action :create
+end
+directory "#{node['source_dir']}/.ssh" do
+  owner "root"
+  group "root"
+  mode 0640
+end
+
+# set up the SSH key for github access
+template "#{node['source_dir']}/.ssh/deploy_key" do
+  source "deploy_key.erb"
+  owner "root"
+  group "root"
+  mode 0600
+  variables({ :deploy_key => env_data["server"]["deploy_key"] })
+end
+# and then set up the SSH wrapper with that key
+template "#{node['source_dir']}/ssh_wrapper.sh" do
+  source "ssh_wrapper.sh.erb"
+  owner "root"
+  group "root"
+  mode 0755
+  variables :deploy_key_path => "#{node['source_dir']}/.ssh/deploy_key"
+end
+
+git "#{node['vine_web']['vine_repo_dir']}" do
+  repository "git@github.com:lehrblogger/vine-web.git"
+  branch "alpha"
+  destination "#{node['vine_web']['vine_repo_dir']}"
+  ssh_wrapper "#{node['source_dir']}/ssh_wrapper.sh"
+  action :sync
 end
 
 template "ssl_web.crt" do
