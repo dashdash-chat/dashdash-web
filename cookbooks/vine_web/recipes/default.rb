@@ -72,6 +72,14 @@ git "#{node['vine_web']['vine_repo_dir']}" do
   ssh_wrapper "#{node['source_dir']}/ssh_wrapper.sh"
   action :sync
 end
+template "constants.py" do
+  path "#{node['vine_web']['vine_repo_dir']}/constants.py"
+  source "constants.py.erb"
+  owner env_data["server"]["user"]
+  group env_data["server"]["group"]
+  mode 0644
+  variables :env_data => env_data
+end
 
 template "ssl_web.crt" do
   path "#{node['source_dir']}/ssl_web.crt"
