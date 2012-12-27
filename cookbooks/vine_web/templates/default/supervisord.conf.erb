@@ -1,15 +1,15 @@
 [unix_http_server]
 file=/tmp/supervisor.sock   ; path to your socket file
 chmod=0777
-chown=vagrant
+chown=<%= @env_data['server']['user'] %>
 
 [inet_http_server]
 port=localhost:9001
-username=admin
-password=password
+username=<%= @env_data['supervisor']['user'] %>
+password=<%= @env_data['supervisor']['password'] %>
 
 [supervisord]
-logfile=/var/log/supervisord/supervisord.log ; supervisord log file
+logfile=<%= @logs_dir %>/supervisord.log ; supervisord log file
 logfile_maxbytes=50MB       ; maximum size of logfile before rotation
 logfile_backups=10          ; number of backed up logfiles
 loglevel=info               ; info, debug, warn, trace
@@ -18,7 +18,7 @@ nodaemon=false              ; run supervisord as a daemon
 minfds=1024                 ; number of startup file descriptors
 minprocs=200                ; number of process descriptors
 user=root                   ; default user
-childlogdir=/var/log/supervisord/            ; where child log files will live
+childlogdir=<%= @logs_dir %>            ; where child log files will live
 
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
@@ -31,38 +31,38 @@ serverurl=unix:///tmp/supervisor.sock ; use unix:// schem for a unix sockets.
 ;files=celeryd.conf
 
 [program:gunicorn]
-command=/vagrant/web-env/bin/gunicorn flask_app:app -b localhost:8000 --workers=4
-directory=/vagrant/web-env/web
-stdout_logfile=/var/log/supervisord/gunicorn.log
-user=vagrant
+command=<%= node['vine_web']['vine_venv_dir'] %>/bin/gunicorn flask_app:app -b localhost:8000 --workers=4
+directory=<%= node['vine_web']['vine_repo_dir'] %>
+stdout_logfile=<%= @logs_dir %>/gunicorn.log
+user=<%= @env_data['server']['user'] %>
 autostart=true
 autorestart=true
 redirect_stderr=True
 priority = 1
 
-[program:celery]
-command=/vagrant/web-env/bin/celeryd --app=celery_tasks --loglevel=INFO
-directory=/vagrant/web-env/web
-user=vagrant
-numprocs=1
-stdout_logfile=/var/log/supervisord/celeryd.log
-stderr_logfile=/var/log/supervisord/celeryd.log
-autostart=false
-autorestart=false
-; Need to wait for currently executing tasks to finish at shutdown.
-; Increase this if you have very long running tasks.
-stopwaitsecs = 300
-priority = 20
-
-[program:celerybeat]
-command=/vagrant/web-env/bin/celerybeat --app=celery_tasks --schedule=/vagrant/web-env/web/celerybeat-schedule --loglevel=INFO
-directory=/vagrant/web-env/web
-user=vagrant
-numprocs=1
-stdout_logfile=/var/log/supervisord/celerybeat.log
-stderr_logfile=/var/log/supervisord/celerybeat.log
-autostart=false
-autorestart=false
-startsecs=10
-stopwaitsecs = 300
-priority = 30
+; [program:celery]
+; command=<%= node['vine_web']['vine_repo_dir'] %>/web-env/bin/celeryd --app=celery_tasks --loglevel=INFO
+; directory=<%= node['vine_web']['vine_repo_dir'] %>/web-env/web
+; user=vagrant
+; numprocs=1
+; stdout_logfile=/var/log/supervisord/celeryd.log
+; stderr_logfile=/var/log/supervisord/celeryd.log
+; autostart=false
+; autorestart=false
+; ; Need to wait for currently executing tasks to finish at shutdown.
+; ; Increase this if you have very long running tasks.
+; stopwaitsecs = 300
+; priority = 20
+; 
+; [program:celerybeat]
+; command=/vagrant/web-env/bin/celerybeat --app=celery_tasks --schedule=/vagrant/web-env/web/celerybeat-schedule --loglevel=INFO
+; directory=/vagrant/web-env/web
+; user=vagrant
+; numprocs=1
+; stdout_logfile=/var/log/supervisord/celerybeat.log
+; stderr_logfile=/var/log/supervisord/celerybeat.log
+; autostart=false
+; autorestart=false
+; startsecs=10
+; stopwaitsecs = 300
+; priority = 30
