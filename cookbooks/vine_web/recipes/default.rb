@@ -12,7 +12,6 @@
 env_data = data_bag_item("dev_data", "dev_data")
 
 # Make sure our directories exist
-
 ["#{node['source_dir']}",
  "#{node['vine_web']['logs_dir']}",
  "#{node['vine_web']['logs_dir']}/supervisord"
@@ -54,10 +53,10 @@ python_virtualenv "#{node['vine_web']['vine_venv_dir']}" do
   group env_data["server"]["group"]
   action :create
 end #NOTE specify version "1.8.2" in recipes/virtualenv.rb in the python cookbook
-[#}"mysql-python", "sqlalchemy", #TODO add these after installing mysql
-  "dnspython", "pyasn1", "pyasn1_modules",
-  "gunicorn", "boto", "celery", "sleekxmpp",
-  "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
+["mysql-python", "sqlalchemy",
+ "dnspython", "pyasn1", "pyasn1_modules",
+ "gunicorn", "boto", "celery", "sleekxmpp",
+ "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
 ].each do |library|
     python_pip "#{library}" do
       virtualenv "#{node['vine_web']['vine_venv_dir']}"
