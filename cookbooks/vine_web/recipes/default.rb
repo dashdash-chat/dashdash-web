@@ -28,6 +28,7 @@ directory "#{node['source_dir']}/.ssh" do
   owner "root"
   group "root"
   mode 0640
+  action :create
 end
 
 # Set up the SSH key for github access
