@@ -70,11 +70,8 @@ http {
         location = /robots.txt {
             alias <%= node['vine_web']['static_dir'] %>/robots.txt;
         }
-        location ^~ /static/jwchat/config.js {
-            alias <%= node['vine_web']['jwchat_dir'] %>/htdocs.en/config.dev.vine.im.js; #TODO templatize jwchat config
-        }
         location ^~ /static/jwchat/ {
-            alias <%= node['vine_web']['jwchat_dir'] %>/htdocs.en/;
+            alias <%= node['vine_web']['jwchat_static_dir'] %>/;
         }
         location ^~ /static/ {
             alias <%= node['vine_web']['static_dir'] %>/;

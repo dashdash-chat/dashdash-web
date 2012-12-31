@@ -119,3 +119,5 @@ template "supervisord.conf" do
   })
   notifies :restart, 'service[supervisor]'
 end
+
+include_recipe "vine_web::jwchat"

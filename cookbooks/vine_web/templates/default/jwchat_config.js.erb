@@ -1,0 +1,37 @@
+var SITENAME = "<%= @env_data['server']['domain'] %>";
+
+var BACKENDS = [
+  {
+    name: "Native Binding",
+    description: "ejabberd's native HTTP Binding backend",
+    httpbase: "https://<%= @env_data['server']['xmpp_domain'] %>:5281/http-bind/",
+    type: "binding",
+    servers_allowed: [SITENAME]
+  },
+  {
+    name: "Native Polling",
+    description: "ejabberd's native HTTP Polling backend",
+    httpbase: "https://<%= @env_data['server']['xmpp_domain'] %>:5281/http-poll/",
+    type: "polling",
+    servers_allowed: [SITENAME]
+  }
+];
+
+var DEFAULTRESOURCE = "jwchat";
+var DEFAULTPRIORITY = "10";
+
+// default values for joingroupchat form
+var DEFAULTCONFERENCEROOM = "talks";
+var DEFAULTCONFERENCESERVER = "conference." + SITENAME;
+
+/* debugging options */
+var DEBUG = <%= @env_data['flask']['debug'] %>;  // turn debugging on
+var DEBUG_LVL = 4;  // debug-level 0..4 (4 = very noisy)
+
+var USE_DEBUGJID = true;  // if true only DEBUGJID gets the debugger
+var DEBUGJID = "<%= @env_data['xmpp']['employee_users'][0] %>@" + SITENAME;  // which user get's debug messages
+
+var timerval = 2000;  // poll frequency in msec
+
+var stylesheet = "jwchat.css";
+var THEMESDIR = "themes";

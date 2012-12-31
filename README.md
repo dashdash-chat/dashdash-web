@@ -49,24 +49,6 @@
      * `../bin/python setup.py install`
      * `cd ..`
   * `cd ..`
-0. Install necessary Perl modules
-  * `sudo yum install cpan`
-  * `cpan` and type `yes` at the prompt to have it configure as much as possible
-  * `o conf urllist`  # Make sure there are valid mirrors, and if not, try adding the following
-  * `o conf urllist push http://cpan.strawberryperl.com/`
-  * `o conf commit`
-  * Control-d to leave the cpan prompt
-0. Download the JWChat code and prepare the static files
-  * `cd /vagrant` or `cd /home/ec2-user`
-  * `git clone git://github.com/lehrblogger/JWChat.git jwchat`
-  * `cd jwchat`
-  * `git checkout --track -b vine origin/vine`
-  * `make` but this will fail because you're missing Perl modules Run `sudo cpan Locale::Maketext::Lexicon` and repeat for any other missing modules. Error messages like "Can't locate Locale/Maketext/Fuzzy.pm in @INC" when running install.sh below mean you should try similar commands
-  * `cd ..`
-  * Optionally get the debugger for JWChat:
-     * `git clone git://github.com/lehrblogger/JSDebugger.git`
-     * `mv JSDebugger/* ./jwchat/htdocs.en`
-     * `perl -pi -e 's/var DEBUG = false;/var DEBUG = true;/g' ./jwchat/htdocs.en/config.dev.vine.im.js`
 0. Download the vine-web code (easier from your local machine) and run the web server (from the VM)
   * `cd /vagrant/web-env` or `cd /home/ec2-user/web-env`
   * `git clone git@github.com:lehrblogger/vine-web.git web`
