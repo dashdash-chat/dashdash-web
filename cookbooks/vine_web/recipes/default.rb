@@ -27,7 +27,7 @@ end
 directory "#{node['source_dir']}/.ssh" do
   owner "root"
   group "root"
-  mode 0640
+  mode 0644
   action :create
 end
 
@@ -36,7 +36,7 @@ template "#{node['source_dir']}/.ssh/deploy_key" do
   source "deploy_key.erb"
   owner "root"
   group "root"
-  mode 0600
+  mode 0644
   variables({ :deploy_key => env_data["server"]["deploy_key"] })
 end
 # And then set up the SSH wrapper with that key
