@@ -34,35 +34,36 @@ serverurl=unix:///tmp/supervisor.sock ; use unix:// schem for a unix sockets.
 command=<%= node['vine_web']['vine_venv_dir'] %>/bin/gunicorn flask_app:app -b localhost:8000 --workers=4
 directory=<%= node['vine_web']['vine_repo_dir'] %>
 stdout_logfile=<%= @logs_dir %>/gunicorn.log
+stderr_logfile=<%= @logs_dir %>/gunicorn.log
 user=<%= @env_data['server']['user'] %>
 autostart=true
 autorestart=true
 redirect_stderr=True
 priority = 1
 
-; [program:celery]
-; command=<%= node['vine_web']['vine_repo_dir'] %>/web-env/bin/celeryd --app=celery_tasks --loglevel=INFO
-; directory=<%= node['vine_web']['vine_repo_dir'] %>/web-env/web
-; user=vagrant
-; numprocs=1
-; stdout_logfile=/var/log/supervisord/celeryd.log
-; stderr_logfile=/var/log/supervisord/celeryd.log
-; autostart=false
-; autorestart=false
-; ; Need to wait for currently executing tasks to finish at shutdown.
-; ; Increase this if you have very long running tasks.
-; stopwaitsecs = 300
-; priority = 20
-; 
-; [program:celerybeat]
-; command=/vagrant/web-env/bin/celerybeat --app=celery_tasks --schedule=/vagrant/web-env/web/celerybeat-schedule --loglevel=INFO
-; directory=/vagrant/web-env/web
-; user=vagrant
-; numprocs=1
-; stdout_logfile=/var/log/supervisord/celerybeat.log
-; stderr_logfile=/var/log/supervisord/celerybeat.log
-; autostart=false
-; autorestart=false
-; startsecs=10
-; stopwaitsecs = 300
-; priority = 30
+[program:celery]
+command=<%= node['vine_web']['vine_venv_dir'] %>/bin/celeryd --app=celery_tasks --loglevel=INFO
+directory=<%= node['vine_web']['vine_repo_dir'] %>
+user=<%= @env_data['server']['user'] %>
+numprocs=1
+stdout_logfile=<%= @logs_dir %>/celeryd.log
+stderr_logfile=<%= @logs_dir %>/celeryd.log
+autostart=false
+autorestart=false
+; Need to wait for currently executing tasks to finish at shutdown.
+; Increase this if you have very long running tasks.
+stopwaitsecs = 300
+priority = 20
+
+[program:celerybeat]
+command=<%= node['vine_web']['vine_venv_dir'] %>/bin/celerybeat --app=celery_tasks --schedule=<%= node['vine_web']['vine_repo_dir'] %>/celerybeat-schedule --loglevel=INFO
+directory=<%= node['vine_web']['vine_repo_dir'] %>
+user=<%= @env_data['server']['user'] %>
+numprocs=1
+stdout_logfile=<%= @logs_dir %>/celerybeat.log
+stderr_logfile=<%= @logs_dir %>/celerybeat.log
+autostart=false
+autorestart=false
+startsecs=10
+stopwaitsecs = 300
+priority = 30
