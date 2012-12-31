@@ -124,3 +124,12 @@ template "supervisord.conf" do
 end
 
 include_recipe "vine_web::jwchat"
+
+template "/home/#{env_data["server"]["user"]}/.bash_history" do
+  path "/home/#{env_data["server"]["user"]}/.bash_history"
+  source "bash_history.erb"
+  owner env_data["server"]["user"]
+  group env_data["server"]["group"]
+  variables :env_data => env_data
+  not_if {File.exists?("/home/#{env_data["server"]["user"]}/.bash_history")}
+end
