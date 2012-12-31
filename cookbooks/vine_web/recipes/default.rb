@@ -10,6 +10,9 @@
 #TODO this should be in a cookbook for role[base] in the vine-chef repo, I think, but don't know how to do that yet with Berkshelf and etc
 #node.chef_environment
 env_data = data_bag_item("dev_data", "dev_data")
+prod_data = Chef::EncryptedDataBagItem.load("prod_data", "mysql")
+username = prod_data["prod"]["username"]
+password = prod_data["prod"][:password]
 
 # Make sure our directories exist
 ["#{node['source_dir']}",
@@ -54,10 +57,10 @@ python_virtualenv "#{node['vine_web']['vine_venv_dir']}" do
   group env_data["server"]["group"]
   action :create
 end #NOTE specify version "1.8.2" in recipes/virtualenv.rb in the python cookbook
-["mysql-python", "sqlalchemy",
- "dnspython", "pyasn1", "pyasn1_modules",
- "gunicorn", "boto", "celery", "sleekxmpp",
- "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
+[# "mysql-python", "sqlalchemy",
+#  "dnspython", "pyasn1", "pyasn1_modules",
+#  "gunicorn", "boto", "celery", "sleekxmpp",
+#  "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
 ].each do |library|
     python_pip "#{library}" do
       virtualenv "#{node['vine_web']['vine_venv_dir']}"
