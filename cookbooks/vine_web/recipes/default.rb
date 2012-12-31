@@ -56,7 +56,7 @@ python_virtualenv "#{node['vine_web']['vine_venv_dir']}" do
   owner env_data["server"]["user"]
   group env_data["server"]["group"]
   action :create
-end #NOTE specify version "1.8.2" in recipes/virtualenv.rb in the python cookbook
+end
 ["mysql-python", "sqlalchemy",
  "dnspython", "pyasn1", "pyasn1_modules",
  "gunicorn", "boto", "celery", "sleekxmpp",
