@@ -34,7 +34,7 @@ serverurl=unix:///tmp/supervisor.sock ; use unix:// schem for a unix sockets.
 command=<%= node['vine_web']['vine_venv_dir'] %>/bin/gunicorn flask_app:app -b localhost:8000 --workers=4
 directory=<%= node['vine_web']['vine_repo_dir'] %>
 stdout_logfile=<%= @logs_dir %>/gunicorn.log
-stderr_logfile=<%= @logs_dir %>/gunicorn.log
+stderr_logfile=<%= @logs_dir %>/gunicorn_error.log
 user=<%= @env_data['server']['user'] %>
 autostart=true
 autorestart=true
@@ -47,7 +47,7 @@ directory=<%= node['vine_web']['vine_repo_dir'] %>
 user=<%= @env_data['server']['user'] %>
 numprocs=1
 stdout_logfile=<%= @logs_dir %>/celeryd.log
-stderr_logfile=<%= @logs_dir %>/celeryd.log
+stderr_logfile=<%= @logs_dir %>/celeryd_error.log
 autostart=false
 autorestart=false
 ; Need to wait for currently executing tasks to finish at shutdown.
@@ -61,7 +61,7 @@ directory=<%= node['vine_web']['vine_repo_dir'] %>
 user=<%= @env_data['server']['user'] %>
 numprocs=1
 stdout_logfile=<%= @logs_dir %>/celerybeat.log
-stderr_logfile=<%= @logs_dir %>/celerybeat.log
+stderr_logfile=<%= @logs_dir %>/celerybeat_error.log
 autostart=false
 autorestart=false
 startsecs=10

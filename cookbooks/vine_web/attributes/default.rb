@@ -4,3 +4,4 @@ default['vine_web']['vine_venv_dir']     = "#{Chef::Environment.load(node.chef_e
 default['vine_web']['vine_repo_dir']     = "#{node['vine_web']['vine_venv_dir']}/web"
 default['vine_web']['static_dir']        = "#{node['vine_web']['vine_repo_dir']}/static"
 default['vine_web']['jwchat_static_dir'] = "#{node['vine_web']['jwchat_repo_dir']}/htdocs.en"
+default['nginx']['log_dir'] = "#{node['vine_web']['logs_dir']}/nginx"
