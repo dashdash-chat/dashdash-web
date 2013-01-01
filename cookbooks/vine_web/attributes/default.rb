@@ -1,6 +1,5 @@
-default['vine_web']['logs_dir']          = "#{Chef::Environment.load(node.chef_environment).default_attributes['source_dir']}/logs"
-default['vine_web']['jwchat_repo_dir']   = "#{Chef::Environment.load(node.chef_environment).default_attributes['source_dir']}/jwchat"
-default['vine_web']['vine_venv_dir']     = "#{Chef::Environment.load(node.chef_environment).default_attributes['source_dir']}/web-env"
+default['vine_web']['jwchat_repo_dir']   = "#{Chef::Environment.load(node.chef_environment).default_attributes['dirs']['source_dir']}/jwchat"
+default['vine_web']['vine_venv_dir']     = "#{Chef::Environment.load(node.chef_environment).default_attributes['dirs']['source_dir']}/web-env"
 default['vine_web']['vine_repo_dir']     = "#{node['vine_web']['vine_venv_dir']}/web"
 default['vine_web']['static_dir']        = "#{node['vine_web']['vine_repo_dir']}/static"
 default['vine_web']['jwchat_static_dir'] = "#{node['vine_web']['jwchat_repo_dir']}/htdocs.en"

@@ -1,0 +1,13 @@
+[program:celeryd]
+command=<%= node['vine_web']['vine_venv_dir'] %>/bin/celeryd --app=celery_tasks --loglevel=INFO
+directory=<%= node['vine_web']['vine_repo_dir'] %>
+user=<%= @env_data['server']['user'] %>
+numprocs=1
+stdout_logfile=<%= @log_dir %>/celeryd.log
+stderr_logfile=<%= @log_dir %>/celeryd_error.log
+autostart=false
+autorestart=false
+; Need to wait for currently executing tasks to finish at shutdown.
+; Increase this if you have very long running tasks.
+stopwaitsecs = 300
+priority = 20

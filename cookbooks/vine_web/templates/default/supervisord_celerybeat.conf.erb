@@ -1,0 +1,12 @@
+[program:celerybeat]
+command=<%= node['vine_web']['vine_venv_dir'] %>/bin/celerybeat --app=celery_tasks --schedule=<%= node['vine_web']['vine_repo_dir'] %>/celerybeat-schedule --loglevel=INFO
+directory=<%= node['vine_web']['vine_repo_dir'] %>
+user=<%= @env_data['server']['user'] %>
+numprocs=1
+stdout_logfile=<%= @log_dir %>/celerybeat.log
+stderr_logfile=<%= @log_dir %>/celerybeat_error.log
+autostart=false
+autorestart=false
+startsecs=10
+stopwaitsecs = 300
+priority = 30

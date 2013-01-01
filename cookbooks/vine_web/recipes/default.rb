@@ -15,10 +15,7 @@ env_data = data_bag_item("dev_data", "dev_data")
 # password = prod_data["prod"][:password]
 
 # Make sure our directories exist
-["#{node['source_dir']}",
- "#{node['vine_web']['logs_dir']}",
- "#{node['vine_web']['logs_dir']}/supervisord"
-].each do |dir|
+["#{node['source_dir']}"].each do |dir|
   directory dir do
     mode 0644
     owner env_data["server"]["user"]
@@ -110,24 +107,29 @@ template "nginx.conf" do
   variables :env_data => env_data
   notifies :reload, 'service[nginx]'
 end
-template "supervisord.conf" do
-  path "/etc/supervisor/supervisord.conf"
-  source "supervisord.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  variables ({
-    :logs_dir => "#{node['vine_web']['logs_dir']}/supervisord",
-    :env_data => env_data
-  })
-  notifies :restart, 'service[supervisor]'
+["gunicorn",
+ "celeryd",
+ "celerybeat"
+].each do |program_name|
+  template "supervisord_#{program_name}.conf" do
+    path "/etc/supervisor/conf.dovisord_#{program_name}.conf"
+    source "supervisord_#{program_name}.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables ({
+      :logs_dir => node['vine_shared']['supervisord_log_dir'],
+      :env_data => env_data
+    })
+    notifies :restart, 'service[supervisor]', :delayed
+  end
 end
 
 include_recipe "vine_web::jwchat"
 
 # Add commonly-used commands to the bash history (env_data['mysql']['root_password'] is nil in prod, which works perfectly)
 ["mysql -u root -p#{env_data['mysql']['root_password']} -h #{env_data['mysql']['host']} -D #{env_data['mysql']['main_name']}",
- "tail -f #{node['vine_web']['logs_dir']}/supervisord/"
+ "tail -f #{node['vine_shared']['supervisord_log_dir']}/"
 ].each do |command|
   ruby_block "append line to history" do
     block do
