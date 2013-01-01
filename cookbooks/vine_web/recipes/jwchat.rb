@@ -1,19 +1,17 @@
 env_data = data_bag_item("dev_data", "dev_data")
 
 git "check out JWChat" do
-  repository "git@github.com:lehrblogger/JWChat.git"
+  repository "https://github.com/lehrblogger/JWChat.git"
   branch "vine"
-  destination "#{node['vine_web']['jwchat_repo_dir']}"
-  ssh_wrapper "#{node['source_dir']}/ssh_wrapper.sh"
+  destination "#{node['vine_web']['jwchat_repo_dir']}"\
   action :sync
 end
 
 if env_data['flask']['debug']
   git "install JSDebugger" do
-    repository "git://github.com/lehrblogger/JSDebugger.git"
+    repository "https://github.com/lehrblogger/JSDebugger.git"
     branch "master"
     destination "#{node['vine_web']['jwchat_static_dir']}"
-    ssh_wrapper "#{node['source_dir']}/ssh_wrapper.sh"
     action :sync
   end
 end

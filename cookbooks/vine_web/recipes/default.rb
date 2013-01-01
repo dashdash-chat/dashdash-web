@@ -14,38 +14,21 @@ env_data = data_bag_item("dev_data", "dev_data")
 # username = prod_data["prod"]["username"]
 # password = prod_data["prod"][:password]
 
-# Make sure our directories exist
-["#{node['source_dir']}"].each do |dir|
-  directory dir do
-    mode 0644
-    owner env_data["server"]["user"]
-    group env_data["server"]["user"]
-    recursive true
-    action :create
-  end
-end
-directory "#{node['source_dir']}/.ssh" do
-  owner "root"
-  group "root"
-  mode 0644
-  action :create
-end
 
-# Set up the SSH key for github access
-template "#{node['source_dir']}/.ssh/deploy_key" do
+# Make the SSH key for github access and create the wrapper script
+template "#{node['dirs']['ssl']}/deploy_key" do
   source "deploy_key.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0600
   variables :deploy_key => env_data["server"]["deploy_key"] 
 end
-# And then set up the SSH wrapper with that key
-template "#{node['source_dir']}/ssh_wrapper.sh" do
+template "#{node['dirs']['ssl']}/ssh_wrapper.sh" do
   source "ssh_wrapper.sh.erb"
   owner "root"
   group "root"
-  mode 0755
-  variables :deploy_key_path => "#{node['source_dir']}/.ssh/deploy_key"
+  mode 0700
+  variables :deploy_key_path => "#{node['dirs']['ssl']}/deploy_key"
 end
 
 # Prepare the virtualenv for the vine-web repo
@@ -65,11 +48,12 @@ end
   end
 end
 
+# Check out the application files and render the python constants template
 git "#{node['vine_web']['vine_repo_dir']}" do
   repository "git@github.com:lehrblogger/vine-web.git"
   branch "alpha"
   destination "#{node['vine_web']['vine_repo_dir']}"
-  ssh_wrapper "#{node['source_dir']}/ssh_wrapper.sh"
+  ssh_wrapper "#{node['dirs']['ssl']}/ssh_wrapper.sh"
   action :sync
 end
 template "constants.py" do
@@ -81,30 +65,13 @@ template "constants.py" do
   variables :env_data => env_data
 end
 
-template "ssl_web.crt" do
-  path "#{node['source_dir']}/ssl_web.crt"
-  source "ssl.crt.erb"
-  owner "root"
-  group "root"
-  variables :ssl_crt => env_data["server"]["web_ssl_crt"]
-  mode 0644
-end
-template "ssl_web.key" do
-  path "#{node['source_dir']}/ssl_web.key"
-  source "ssl.key.erb"
-  owner "root"
-  group "root"
-  variables :ssl_key => env_data["server"]["web_ssl_key"]
-  mode 0644
-end
-
-template "nginx.conf" do
-  path "#{node['nginx']['dir']}/nginx.conf"
-  source "nginx.conf.erb"
+# Render the vine-web's app-specific nginx and supervisord conf templates
+template "nginx_app_locations.conf" do
+  path "#{node['nginx']['dir']}/nginx_app_locations.conf"
+  source "nginx_app_locations.conf.erb"
   owner "root"
   group "root"
   mode 0644
-  variables :env_data => env_data
   notifies :reload, 'service[nginx]'
 end
 ["gunicorn",
@@ -121,10 +88,11 @@ end
       :logs_dir => node['vine_shared']['supervisord_log_dir'],
       :env_data => env_data
     })
-    notifies :restart, 'service[supervisor]', :delayed
+    notifies :reload, 'service[supervisor]', :delayed
   end
 end
 
+# Don't forget JWChat for the web-based demo
 include_recipe "vine_web::jwchat"
 
 # Add commonly-used commands to the bash history (env_data['mysql']['root_password'] is nil in prod, which works perfectly)
