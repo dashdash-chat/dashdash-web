@@ -1,0 +1,12 @@
+location = /favicon.ico {
+    alias <%= node['vine_web']['static_dir'] %>/img/favicon.ico;
+}
+location = /robots.txt {
+    alias <%= node['vine_web']['static_dir'] %>/robots.txt;
+}
+location ^~ /static/jwchat/ {
+    alias <%= node['vine_web']['jwchat_static_dir'] %>/;
+}
+location ^~ /static/ {
+    alias <%= node['vine_web']['static_dir'] %>/;
+}
