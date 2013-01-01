@@ -125,11 +125,15 @@ end
 
 include_recipe "vine_web::jwchat"
 
-template "/home/#{env_data["server"]["user"]}/.bash_history" do
-  path "/home/#{env_data["server"]["user"]}/.bash_history"
-  source "bash_history.erb"
-  owner env_data["server"]["user"]
-  group env_data["server"]["group"]
-  variables :env_data => env_data
-  not_if {File.exists?("/home/#{env_data["server"]["user"]}/.bash_history")}
+# Add commonly-used commands to the bash history (env_data['mysql']['root_password'] is nil in prod, which works perfectly)
+["mysql -u root -p#{env_data['mysql']['root_password']} -h #{env_data['mysql']['host']} -D #{env_data['mysql']['main_name']}",
+ "tail -f #{node['vine_web']['logs_dir']}/supervisord/"
+].each do |command|
+  ruby_block "append line to history" do
+    block do
+      file = Chef::Util::FileEdit.new("/home/#{env_data["server"]["user"]}/.bash_history")
+      file.insert_line_if_no_match("/[^\s\S]/", command)  # regex never matches anything
+      file.write_file
+    end
+  end
 end

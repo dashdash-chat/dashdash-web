@@ -1,2 +1,0 @@
-mysql -u root -p<%= @env_data['mysql']['root_password'] %> -h <%= @env_data['mysql']['host'] %> -D <%= @env_data['mysql']['main_name'] %>
-tail -f <%= node['vine_web']['logs_dir']  %>/supervisord/
