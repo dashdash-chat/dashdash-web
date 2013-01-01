@@ -94,16 +94,3 @@ end
 
 # Don't forget JWChat for the web-based demo
 include_recipe "vine_web::jwchat"
-
-# Add commonly-used commands to the bash history (env_data['mysql']['root_password'] is nil in prod, which works perfectly)
-["mysql -u root -p#{env_data['mysql']['root_password']} -h #{env_data['mysql']['host']} -D #{env_data['mysql']['main_name']}",
- "tail -f #{node['vine_shared']['supervisord_log_dir']}/"
-].each do |command|
-  ruby_block "append line to history" do
-    block do
-      file = Chef::Util::FileEdit.new("/home/#{env_data["server"]["user"]}/.bash_history")
-      file.insert_line_if_no_match("/[^\s\S]/", command)  # regex never matches anything
-      file.write_file
-    end
-  end
-end
