@@ -77,7 +77,7 @@ end
       :logs_dir => node['vine_shared']['supervisord_log_dir'],
       :env_data => env_data
     })
-    notifies :start, 'service[supervisor]', :delayed
+    notifies :reload, 'service[supervisor]', :delayed
   end
 end
 
