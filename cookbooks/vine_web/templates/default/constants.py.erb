@@ -8,8 +8,9 @@ xmlrpc_server = '<%= @env_data['server']['xmpp_domain'] %>'
 xmlrpc_port = <%= @env_data['ports']['xmlrpc'] %>
 web_xmlrpc_user = '<%= @env_data['xmlrpc']['web_user'] %>'
 web_xmlrpc_password = '<%= @env_data['xmlrpc']['web_password'] %>'
+leaves_domain = '<%= @env_data['leaves']['domain_prefix'] %>.<%= @env_data['server']['domain'] %>'
 leaves_jid_user = '<%= @env_data['xmlrpc']['leaves_user'] %>'
-leaves_jid = '%s@%s' % (leaves_jid_user, domain)
+leaves_jid = '%s@%s' % (leaves_jid_user, leaves_domain)
 graph_xmpp_jid = '%s@%s' % ('<%= @env_data['xmlrpc']['graph_user'] %>', domain)
 graph_xmpp_password = '<%= @env_data['xmlrpc']['graph_password'] %>'
 
