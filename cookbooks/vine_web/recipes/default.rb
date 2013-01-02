@@ -32,12 +32,18 @@ end
 end
 
 # Check out the application files and render the python constants template
+deploy_wrapper 'web' do
+    ssh_wrapper_dir node['dirs']['ssl']
+    ssh_key_dir node['dirs']['ssl']
+    ssh_key_data env_data['server']['web_deploy_key']
+    sloppy true
+end
 git "#{node['vine_web']['web_repo_dir']}" do
-  repository "git@github.com:lehrblogger/vine-web.git"
-  branch "alpha"
-  destination "#{node['vine_web']['web_repo_dir']}"
-  ssh_wrapper "#{node['dirs']['ssl']}/ssh_wrapper.sh"
-  action :sync
+    repository "git@github.com:lehrblogger/vine-web.git"
+    branch "alpha"
+    destination "#{node['vine_web']['web_repo_dir']}"
+    ssh_wrapper "#{node['dirs']['ssl']}/web_deploy_wrapper.sh"
+    action :sync
 end
 template "constants.py" do
   path "#{node['vine_web']['web_repo_dir']}/constants.py"
