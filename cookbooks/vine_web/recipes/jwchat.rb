@@ -3,7 +3,7 @@ env_data = data_bag_item("dev_data", "dev_data")
 git "check out JWChat" do
   repository "https://github.com/lehrblogger/JWChat.git"
   branch "vine"
-  destination "#{node['vine_web']['jwchat_repo_dir']}"\
+  destination "#{node['vine_web']['jwchat_repo_dir']}"
   action :sync
 end
 

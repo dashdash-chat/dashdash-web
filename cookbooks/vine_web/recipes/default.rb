@@ -79,7 +79,7 @@ end
  "celerybeat"
 ].each do |program_name|
   template "supervisord_#{program_name}.conf" do
-    path "/etc/supervisor/conf.dovisord_#{program_name}.conf"
+    path "/etc/supervisor/conf.d/supervisord_#{program_name}.conf"
     source "supervisord_#{program_name}.conf.erb"
     owner "root"
     group "root"
