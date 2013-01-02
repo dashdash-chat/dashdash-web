@@ -14,23 +14,6 @@ env_data = data_bag_item("dev_data", "dev_data")
 # username = prod_data["prod"]["username"]
 # password = prod_data["prod"][:password]
 
-
-# Make the SSH key for github access and create the wrapper script
-template "#{node['dirs']['ssl']}/deploy_key" do
-  source "deploy_key.erb"
-  owner "root"
-  group "root"
-  mode 0600
-  variables :deploy_key => env_data["server"]["deploy_key"] 
-end
-template "#{node['dirs']['ssl']}/ssh_wrapper.sh" do
-  source "ssh_wrapper.sh.erb"
-  owner "root"
-  group "root"
-  mode 0700
-  variables :deploy_key_path => "#{node['dirs']['ssl']}/deploy_key"
-end
-
 # Prepare the virtualenv for the vine-web repo
 python_virtualenv "#{node['vine_web']['vine_venv_dir']}" do
   owner env_data["server"]["user"]
