@@ -15,7 +15,7 @@ env_data = data_bag_item("dev_data", "dev_data")
 # password = prod_data["prod"][:password]
 
 # Prepare the virtualenv for the vine-web repo
-python_virtualenv "#{node['vine_web']['vine_venv_dir']}" do
+python_virtualenv "#{node['vine_web']['web_env_dir']}" do
   owner env_data["server"]["user"]
   group env_data["server"]["group"]
   action :create
@@ -26,21 +26,21 @@ end
  "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
 ].each do |library|
   python_pip "#{library}" do
-    virtualenv "#{node['vine_web']['vine_venv_dir']}"
+    virtualenv "#{node['vine_web']['web_env_dir']}"
     action :install
   end
 end
 
 # Check out the application files and render the python constants template
-git "#{node['vine_web']['vine_repo_dir']}" do
+git "#{node['vine_web']['web_repo_dir']}" do
   repository "git@github.com:lehrblogger/vine-web.git"
   branch "alpha"
-  destination "#{node['vine_web']['vine_repo_dir']}"
+  destination "#{node['vine_web']['web_repo_dir']}"
   ssh_wrapper "#{node['dirs']['ssl']}/ssh_wrapper.sh"
   action :sync
 end
 template "constants.py" do
-  path "#{node['vine_web']['vine_repo_dir']}/constants.py"
+  path "#{node['vine_web']['web_repo_dir']}/constants.py"
   source "constants.py.erb"
   owner env_data["server"]["user"]
   group env_data["server"]["group"]

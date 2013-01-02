@@ -1,6 +1,6 @@
 [program:celeryd]
-command=<%= node['vine_web']['vine_venv_dir'] %>/bin/celeryd --app=celery_tasks --loglevel=INFO
-directory=<%= node['vine_web']['vine_repo_dir'] %>
+command=<%= node['vine_web']['web_env_dir'] %>/bin/celeryd --app=celery_tasks --loglevel=INFO
+directory=<%= node['vine_web']['web_repo_dir'] %>
 user=<%= @env_data['server']['user'] %>
 numprocs=1
 stdout_logfile=<%= @log_dir %>/celeryd.log
