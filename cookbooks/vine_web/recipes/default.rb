@@ -54,7 +54,7 @@ template "constants.py" do
   variables :env_data => env_data
 end
 
-# Render the vine-web's app-specific nginx and supervisord conf templates
+# Render the vine-web's app-specific nginx templates
 template "nginx_app_locations.conf" do
   path "#{node['nginx']['dir']}/nginx_app_locations.conf"
   source "nginx_app_locations.conf.erb"
@@ -63,22 +63,46 @@ template "nginx_app_locations.conf" do
   mode 0644
   notifies :reload, 'service[nginx]'
 end
-["gunicorn",
- "celeryd",
- "celerybeat"
-].each do |program_name|
-  template "supervisord_#{program_name}.conf" do
-    path "/etc/supervisor/conf.d/supervisord_#{program_name}.conf"
-    source "supervisord_#{program_name}.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    variables ({
-      :logs_dir => node['vine_shared']['supervisord_log_dir'],
-      :env_data => env_data
-    })
-    notifies :reload, 'service[supervisor]', :delayed
-  end
+
+# Create the supervisor programs
+supervisor_service "gunicorn" do
+  command "#{node['vine_web']['web_env_dir']}/bin/gunicorn flask_app:app -b localhost:8000 --workers=4"
+  directory node['vine_web']['web_repo_dir']
+  user env_data['server']['user']
+  stdout_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
+  stderr_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
+  numprocs 1
+  autostart true
+  autorestart true
+  priority 1
+  action :enable
+end
+supervisor_service "celeryd" do
+  command "#{node['vine_web']['web_env_dir']}/bin/celeryd --app=celery_tasks --loglevel=INFO"
+  directory node['vine_web']['web_repo_dir']
+  user env_data['server']['user']
+  stdout_logfile "#{node['supervisor']['log_dir']}/celery.log"
+  stderr_logfile "#{node['supervisor']['log_dir']}/celery.log"
+  numprocs 1
+  autostart false
+  autorestart false
+  priority 20
+  stopwaitsecs 300
+  action :enable
+end
+supervisor_service "celerybeat" do
+  command "#{node['vine_web']['web_env_dir']}/bin/celerybeat --app=celery_tasks --schedule={node['vine_web']['web_repo_dir']}/celerybeat-schedule --loglevel=INFO"
+  directory node['vine_web']['web_repo_dir']
+  user env_data['server']['user']
+  stdout_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
+  stderr_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
+  numprocs 1
+  autostart false
+  autorestart false
+  priority 30
+  startsecs 10
+  stopwaitsecs 300
+  action :enable
 end
 
 # Don't forget JWChat for the web-based demo
