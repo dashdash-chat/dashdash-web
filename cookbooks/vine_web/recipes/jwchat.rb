@@ -39,6 +39,6 @@ template "#{node['vine_web']['jwchat_static_dir']}/config.js" do
   source "jwchat_config.js.erb"
   owner env_data["server"]["user"]
   group env_data["server"]["group"]
-  mode 0644
+  mode 00644
   variables :env_data => env_data
 end

@@ -50,7 +50,7 @@ template "constants.py" do
   source "constants.py.erb"
   owner env_data["server"]["user"]
   group env_data["server"]["group"]
-  mode 0644
+  mode 00644
   variables :env_data => env_data
 end
 
@@ -60,7 +60,7 @@ template "nginx_app_locations.conf" do
   source "nginx_app_locations.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 00644
   notifies :reload, 'service[nginx]'
 end
 
