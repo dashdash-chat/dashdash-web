@@ -3,6 +3,9 @@ from flask import Flask, flash, render_template, redirect, request, session, url
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
+import foursquare
+import logging
+logging.basicConfig()
 from sqlalchemy import select, and_
 import xmlrpclib
 import constants
@@ -35,6 +38,9 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
+foursquare = foursquare.Foursquare(client_id=constants.foursquare_client_id,
+                                   client_secret=constants.foursquare_client_secret,
+                                   redirect_uri='https://%s/foursquare/oauth_callback' % constants.domain)  #LATER don't use a string for /foursquare/oauth_callback
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
 
 class InviteCodeForm(Form):
@@ -138,10 +144,11 @@ def clear_bad_oauth_cookies(fn):
             else:
                 raise e
     return wrapped
+
 @app.route('/twitter/oauth_callback')
 @clear_bad_oauth_cookies
 @twitter.authorized_handler
-def oauth_authorized(resp):
+def twitter_authorized(resp):
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
         return redirect(url_for('index'))
@@ -336,6 +343,21 @@ def change_password():
         else:
             flash('Are you sure the two passwords matched? Please try again.', 'failure')
     return render_template('change_password.html', user=user, form=form)
+
+@app.route('/foursquare_authorize')
+def foursquare_authorize():
+    return redirect(foursquare.oauth.auth_url())
+
+@app.route('/foursquare/oauth_callback')
+def foursquare_authorized():
+    if request.args.get('access_denied') == '':
+        flash(u'You cancelled the Foursquare authorization flow.', 'failure')
+        return redirect(url_for('settings'))
+    access_token = foursquare.oauth.get_token(request.args.get('code'))
+    foursquare.set_access_token(access_token)
+    logging.warn(access_token)
+    logging.warn(foursquare.users())
+    return redirect(url_for('settings'))
 
 @app.route("/contacts")
 def contacts():

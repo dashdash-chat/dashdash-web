@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block left_column %}
     <div class="page-header">
+        <h1>connected services</h1>
+    </div>
+    <p>
+        <a href='{{ url_for('foursquare_authorize') }}'><img src='/static/img/foursquare-connect-black.png'/></a>
+    </p>
+    <div class="page-header">
         <h1>settings</h1>
     </div>
     <div>

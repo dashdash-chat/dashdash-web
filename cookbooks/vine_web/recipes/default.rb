@@ -23,11 +23,17 @@ end
 ["mysql-python", "sqlalchemy",
  "dnspython", "pyasn1", "pyasn1_modules",
  "gunicorn", "boto", "celery", "sleekxmpp",
- "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
+ "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy", "foursquare"
 ].each do |library|
   python_pip "#{library}" do
     virtualenv "#{node['vine_web']['web_env_dir']}"
     action :install
+  end
+end
+# Fix this SSL issue: http://stackoverflow.com/questions/13321302/python-foursquare-ssl3-certificate-verify-failed
+if node.chef_environment == 'dev'
+  remote_file "#{node['vine_web']['web_env_dir']}/lib/python2.7/site-packages/httplib2/cacerts.txt" do
+    source "http://curl.haxx.se/ca/cacert.pem"
   end
 end
 
