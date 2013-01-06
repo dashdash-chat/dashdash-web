@@ -3,9 +3,15 @@
     <div class="page-header">
         <h1>connected services</h1>
     </div>
-    <p>
-        <a href='{{ url_for('foursquare_authorize') }}'><img src='/static/img/foursquare-connect-black.png'/></a>
-    </p>
+      {% if foursquare_token %}
+          <p>
+              You're connected to Foursquare! To deauthorize Vine, go to <a href="https://foursquare.com/settings/connections">https://foursquare.com/settings/connections</a>.
+          </p>
+      {% else %}
+          <p>
+              <a href='{{ url_for('foursquare_authorize') }}'><img src='/static/img/foursquare-connect-black.png'/></a>
+          </p>
+      {% endif %}
     <div class="page-header">
         <h1>settings</h1>
     </div>

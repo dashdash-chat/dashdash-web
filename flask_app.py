@@ -4,13 +4,13 @@ from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 import foursquare
-import logging
-logging.basicConfig()
+# import logging
+# logging.basicConfig()
 from sqlalchemy import select, and_
 import xmlrpclib
 import constants
 from celery import chain
-from celery_tasks import fetch_follows, score_edges
+from celery_tasks import fetch_twitter_follows, fetch_foursquare_friends, score_edges
 
 app = Flask(__name__)
 app.debug = constants.debug
@@ -30,7 +30,7 @@ invites = db.Table('invites', metadata, autoload=True)
 user_tasks = db.Table('user_tasks', metadata, autoload=True)
 edges = db.Table('edges', metadata, autoload=True)
 oauth = OAuth()
-twitter = oauth.remote_app('twitter',
+twitter_client = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
@@ -38,7 +38,7 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
-foursquare = foursquare.Foursquare(client_id=constants.foursquare_client_id,
+foursquare_client = foursquare.Foursquare(client_id=constants.foursquare_client_id,
                                    client_secret=constants.foursquare_client_secret,
                                    redirect_uri='https://%s/foursquare/oauth_callback' % constants.domain)  #LATER don't use a string for /foursquare/oauth_callback
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
@@ -83,7 +83,7 @@ def index():
 
 @app.route('/login')
 def login():
-    return twitter.authorize()
+    return twitter_client.authorize()
 
 @app.route('/invite/')
 @app.route('/invite/<code>')
@@ -126,7 +126,7 @@ def logout():
     flash('You were signed out', 'success')
     return redirect(url_for('index'))
 
-@twitter.tokengetter
+@twitter_client.tokengetter
 def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret],
                and_(users.c.name == session.get('vine_user'),
@@ -147,7 +147,7 @@ def clear_bad_oauth_cookies(fn):
 
 @app.route('/twitter/oauth_callback')
 @clear_bad_oauth_cookies
-@twitter.authorized_handler
+@twitter_client.authorized_handler
 def twitter_authorized(resp):
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
@@ -165,12 +165,12 @@ def twitter_authorized(resp):
                                values(twitter_id=resp['user_id'],
                                       twitter_token=resp['oauth_token'],
                                       twitter_secret=resp['oauth_token_secret']))
-        result = chain(fetch_follows.s(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret']),
+        result = chain(fetch_twitter_follows.s(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret']),
                        score_edges.s())()
         db.session.execute(user_tasks.insert().\
                            values(user_id=found_user.id,
                                   celery_task_id=result,
-                                  celery_task_type='fetch_follows'))
+                                  celery_task_type='fetch_twitter_follows'))
         db.session.commit()
         if found_user.email and found_user.is_active:
             session['vine_user'] = twitter_user
@@ -308,9 +308,21 @@ def settings():
     if not user:
         return redirect(url_for('index'))
     if request.method == 'GET':
-        user_email = db.session.execute(select([users.c.email], users.c.name == user)).fetchone()
+        user_id, email, foursquare_token = db.session.execute(select([users.c.id, users.c.email, users.c.foursquare_token],
+                                      users.c.name == user)).fetchone()
+        if foursquare_token:
+            foursquare_client.set_access_token(foursquare_token)
+            try:
+                foursquare_client.users()  # just to test
+                fetch_foursquare_friends.delay(user_id, foursquare_token)
+            except foursquare.InvalidAuth:
+                db.session.execute(users.update().\
+                                   where(users.c.name == user).\
+                                   values(foursquare_token=None))
+                db.session.commit()
+                foursquare_token = None
         form = ChangeEmailForm()
-        form.email.data = user_email.email
+        form.email.data = email
     else:
         form = ChangeEmailForm(request.form)
         if form.validate():
@@ -322,7 +334,7 @@ def settings():
                 flash('This email address has already been used - try another?', 'failure')
         else:    
             flash('Please enter a valid email address.', 'failure')
-    return render_template('settings.html', user=user, form=form)
+    return render_template('settings.html', user=user, form=form, foursquare_token=(foursquare_token is not None))
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -346,17 +358,21 @@ def change_password():
 
 @app.route('/foursquare_authorize')
 def foursquare_authorize():
-    return redirect(foursquare.oauth.auth_url())
+    return redirect(foursquare_client.oauth.auth_url())
 
 @app.route('/foursquare/oauth_callback')
 def foursquare_authorized():
+    user = session.get('vine_user')
+    if not user:
+        return redirect(url_for('index'))
     if request.args.get('access_denied') == '':
         flash(u'You cancelled the Foursquare authorization flow.', 'failure')
         return redirect(url_for('settings'))
-    access_token = foursquare.oauth.get_token(request.args.get('code'))
-    foursquare.set_access_token(access_token)
-    logging.warn(access_token)
-    logging.warn(foursquare.users())
+    foursquare_token = foursquare_client.oauth.get_token(request.args.get('code'))
+    db.session.execute(users.update().\
+                       where(users.c.name == user).\
+                       values(foursquare_token=foursquare_token))
+    db.session.commit()
     return redirect(url_for('settings'))
 
 @app.route("/contacts")

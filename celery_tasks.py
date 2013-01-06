@@ -5,6 +5,7 @@ from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 from datetime import datetime, timedelta
 from flask.ext.oauth import OAuth
+import foursquare
 from kombu import Exchange, Queue
 from sqlalchemy import create_engine, select, and_, MetaData, Table
 from time import sleep
@@ -43,8 +44,9 @@ engine = create_engine('mysql+mysqldb://' + constants.celery_mysql_user + ':' + 
 metadata = MetaData()
 metadata.bind = engine
 twitter_follows = Table('twitter_follows', metadata, autoload=True)
+foursquare_friends = Table('foursquare_friends', metadata, autoload=True)
 oauth = OAuth()
-twitter = oauth.remote_app('twitter',
+twitter_client = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
@@ -52,17 +54,19 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
-
+foursquare_client = foursquare.Foursquare(client_id=constants.foursquare_client_id,
+                                   client_secret=constants.foursquare_client_secret,
+                                   redirect_uri='https://%s/foursquare/oauth_callback' % constants.domain)
 @celery.task
 def add(x,y):
     print x+y
         
 @celery.task
-def fetch_follows(user_id, user_twitter_id, token, secret):
+def fetch_twitter_follows(user_id, user_twitter_id, token, secret):
     follow_ids = []
     cursor = '-1'
     while cursor != '0':  #LATER split this into separate celery tasks
-        resp = twitter.get('friends/ids.json', data={'stringify_ids': True, 'cursor': cursor}, token=(token, secret))
+        resp = twitter_client.get('friends/ids.json', data={'stringify_ids': True, 'cursor': cursor}, token=(token, secret))
         if resp.status != 200:
             print "Request failed for cursor %s" % cursor
             return
@@ -87,9 +91,31 @@ def fetch_follows(user_id, user_twitter_id, token, secret):
                             to_twitter_id=follow_id))
     return user_id
 
-@twitter.tokengetter
+@twitter_client.tokengetter
 def split_twitter_token_pair(token_pair):
     return token_pair
+
+@celery.task
+def fetch_foursquare_friends(user_id, foursquare_token):  #LATER don't put tokens in the celery queue?
+    conn = engine.connect()
+    foursquare_client.set_access_token(foursquare_token)
+    s = select([foursquare_friends.c.friend_foursquare_id], foursquare_friends.c.vine_user_id == user_id)
+    old_friend_foursquare_ids = set([row.friend_foursquare_id for row in conn.execute(s).fetchall()])
+    offset = 0
+    while true:  #LATER split this into separate celery tasks
+        friends = foursquare_client.users.friends(params={'limit': 100, 'offset': offset})
+        print friends['friends']['count'], offset
+        if friends and friends['friends']:
+            print friends['friends']['count']
+            for friend in friends['friends']['items']:
+                if friend['id'] not in old_friend_foursquare_ids:
+                    conn.execute(foursquare_friends.insert().\
+                                 values(vine_user_id=user_id,
+                                        friend_foursquare_id=friend['id'],
+                                        friend_twitter_handle=friend['contact']['twitter'] if 'twitter' in friend['contact'] else None))
+        if friends['friends']['count']:
+            return
+        offset = offset + friends['friends']['count']
 
 @celery.task
 def score_edges(user_id=None):
