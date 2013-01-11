@@ -70,7 +70,9 @@ template "nginx_app_locations.conf" do
   notifies :reload, 'service[nginx]'
 end
 
-# Create the supervisor programs
+# Create the supervisor programs. These should be accessible at http://#{domain}/supervisor/
+# Be sure to check on the SQS queue permissions before starting Celery!
+# You'll probably need to give the right AWS IAM user permissions to create queues, since one of them uses the box's name in it.
 supervisor_service "gunicorn" do
   command "#{web_env_dir}/bin/gunicorn flask_app:app -b localhost:8000 --workers=4"
   directory web_repo_dir
@@ -112,7 +114,10 @@ supervisor_service "celerybeat" do
 end
 
 # Add commonly-used commands to the bash history
-["cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}"
+["cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}",
+  "cd #{web_repo_dir} && ../bin/python flask_app.py",  # Flask's built-in server restarts itself for you if any files have changed
+  "cd #{web_repo_dir} && ../bin/gunicorn -b localhost:8000 --workers=4 --log-level=DEBUG",
+  "cd #{web_repo_dir} && ../bin/celery -A celery_tasks worker --loglevel debug"
 ].each do |command|
   ruby_block "append line to history" do
     block do
