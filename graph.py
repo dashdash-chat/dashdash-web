@@ -6,7 +6,7 @@ import json
 import MySQLdb
 from MySQLdb import IntegrityError, OperationalError
 import re
-import sleekxmpp
+from sleekxmpp import ClientXMPP
 import sys
 import constants
 
@@ -47,11 +47,11 @@ class RelationshipScores(object):
         return json.dumps(self._scores, indent=4)
     
 
-class EdgeCalculator(sleekxmpp.ClientXMPP):
+class EdgeCalculator(ClientXMPP):
     def __init__(self, logger, user_id=None):
         self.logger = logger
         self.user_id = user_id
-        sleekxmpp.ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
+        ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         self.old_edge_offset = 0
