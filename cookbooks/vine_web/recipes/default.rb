@@ -7,17 +7,14 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#TODO this should be in a cookbook for role[base] in the vine-chef repo, I think, but don't know how to do that yet with Berkshelf and etc
-#node.chef_environment
-env_data = data_bag_item("dev_data", "dev_data")
-# prod_data = Chef::EncryptedDataBagItem.load("prod_data", "mysql")
-# username = prod_data["prod"]["username"]
-# password = prod_data["prod"][:password]
+web_env_dir = "#{node['dirs']['source']}/web-env"
+web_repo_dir = "#{web_env_dir}/web"
+web_static_dir = "#{web_repo_dir}/static"
 
 # Prepare the virtualenv for the vine-web repo
-python_virtualenv "#{node['vine_web']['web_env_dir']}" do
-  owner env_data["server"]["user"]
-  group env_data["server"]["group"]
+python_virtualenv web_env_dir do
+  owner node.run_state['config']['user']
+  group node.run_state['config']['group']
   action :create
 end
 ["mysql-python", "sqlalchemy",
@@ -25,8 +22,8 @@ end
  "gunicorn", "boto", "celery", "sleekxmpp",
  "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
 ].each do |library|
-  python_pip "#{library}" do
-    virtualenv "#{node['vine_web']['web_env_dir']}"
+  python_pip library do
+    virtualenv web_env_dir
     action :install
   end
 end
@@ -35,24 +32,29 @@ end
 deploy_wrapper 'web' do
     ssh_wrapper_dir node['dirs']['ssl']
     ssh_key_dir node['dirs']['ssl']
-    ssh_key_data env_data['server']['web_deploy_key']
+    ssh_key_data Chef::EncryptedDataBagItem.load(node.chef_environment, "vine_web")['deploy_key']
     sloppy true
 end
-git "#{node['vine_web']['web_repo_dir']}" do
+git web_repo_dir do
     repository "git@github.com:lehrblogger/vine-web.git"
     branch "alpha"
-    destination "#{node['vine_web']['web_repo_dir']}"
+    destination web_repo_dir
     ssh_wrapper "#{node['dirs']['ssl']}/web_deploy_wrapper.sh"
     action :sync
 end
 template "constants.py" do
-  path "#{node['vine_web']['web_repo_dir']}/constants.py"
+  path "#{web_repo_dir}/constants.py"
   source "constants.py.erb"
-  owner env_data["server"]["user"]
-  group env_data["server"]["group"]
+  owner node.run_state['config']['user']
+  group node.run_state['config']['group']
   mode 00644
-  variables :env_data => env_data
 end
+
+# Include JWChat for the web-based demo (run it here, so we have the attribute for the next template)
+include_recipe "vine_web::jwchat"
+#TODO these lines are copy-pasted from vine_web::jwchat, figure out a better way
+jwchat_repo_dir = "#{node['dirs']['source']}/jwchat"
+jwchat_static_dir = "#{jwchat_repo_dir}/htdocs.en"
 
 # Render the vine-web's app-specific nginx templates
 template "nginx_app_locations.conf" do
@@ -61,14 +63,18 @@ template "nginx_app_locations.conf" do
   owner "root"
   group "root"
   mode 00644
+  variables ({
+    :web_static_dir => web_static_dir,
+    :jwchat_static_dir => jwchat_static_dir
+  })
   notifies :reload, 'service[nginx]'
 end
 
 # Create the supervisor programs
 supervisor_service "gunicorn" do
-  command "#{node['vine_web']['web_env_dir']}/bin/gunicorn flask_app:app -b localhost:8000 --workers=4"
-  directory node['vine_web']['web_repo_dir']
-  user env_data['server']['user']
+  command "#{web_env_dir}/bin/gunicorn flask_app:app -b localhost:8000 --workers=4"
+  directory web_repo_dir
+  user node.run_state['config']['user']
   stdout_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
   stderr_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
   numprocs 1
@@ -78,9 +84,9 @@ supervisor_service "gunicorn" do
   action :enable
 end
 supervisor_service "celeryd" do
-  command "#{node['vine_web']['web_env_dir']}/bin/celeryd --app=celery_tasks --loglevel=INFO"
-  directory node['vine_web']['web_repo_dir']
-  user env_data['server']['user']
+  command "#{web_env_dir}/bin/celeryd --app=celery_tasks --loglevel=INFO"
+  directory web_repo_dir
+  user node.run_state['config']['user']
   stdout_logfile "#{node['supervisor']['log_dir']}/celery.log"
   stderr_logfile "#{node['supervisor']['log_dir']}/celery.log"
   numprocs 1
@@ -91,9 +97,9 @@ supervisor_service "celeryd" do
   action :enable
 end
 supervisor_service "celerybeat" do
-  command "#{node['vine_web']['web_env_dir']}/bin/celerybeat --app=celery_tasks --schedule={node['vine_web']['web_repo_dir']}/celerybeat-schedule --loglevel=INFO"
-  directory node['vine_web']['web_repo_dir']
-  user env_data['server']['user']
+  command "#{web_env_dir}/bin/celerybeat --app=celery_tasks --schedule=#{web_repo_dir}/celerybeat-schedule --loglevel=INFO"
+  directory web_repo_dir
+  user node.run_state['config']['user']
   stdout_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
   stderr_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
   numprocs 1
@@ -105,5 +111,14 @@ supervisor_service "celerybeat" do
   action :enable
 end
 
-# Don't forget JWChat for the web-based demo
-include_recipe "vine_web::jwchat"
+# Add commonly-used commands to the bash history
+["cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}"
+].each do |command|
+  ruby_block "append line to history" do
+    block do
+      file = Chef::Util::FileEdit.new("/home/#{node.run_state['config']['user']}/.bash_history")
+      file.insert_line_if_no_match("/[^\s\S]/", command)  # regex never matches anything
+      file.write_file
+    end
+  end
+end

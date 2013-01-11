@@ -1,6 +1,0 @@
-default['vine_web']['jwchat_repo_dir']   = "#{Chef::Environment.load(node.chef_environment).default_attributes['dirs']['source']}/jwchat"
-default['vine_web']['web_env_dir']       = "#{Chef::Environment.load(node.chef_environment).default_attributes['dirs']['source']}/web-env"
-default['vine_web']['web_repo_dir']      = "#{node['vine_web']['web_env_dir']}/web"
-default['vine_web']['static_dir']        = "#{node['vine_web']['web_repo_dir']}/static"
-default['vine_web']['jwchat_static_dir'] = "#{node['vine_web']['jwchat_repo_dir']}/htdocs.en"
-default['nginx']['log_dir']              = "#{node['vine_web']['logs_dir']}/nginx"

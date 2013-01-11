@@ -1,37 +1,37 @@
-debug = '<%= @env_data['flask']['debug'] %>' == 'true'  # grr ruby
-flask_secret_key = '<%= @env_data['flask']['secret_key'] %>'
+debug = '<%= node.chef_environment == 'dev' %>' == 'true'  # grr ruby
+flask_secret_key = '<%= node.run_state['config']['flask']['secret_key'] %>'
 
-domain = '<%= @env_data['server']['domain'] %>'
-server_ip = '<%= @env_data['server']['ip'] %>'
-xmlrpc_server = '<%= @env_data['server']['xmpp_domain'] %>'
+domain = '<%= node.run_state['config']['domain'] %>'
+server_ip = '<%= node.run_state['config']['xmlrpc']['ip'] %>'
+xmlrpc_server = '<%= node.run_state['config']['xmlrpc']['domain'] %>'
 
-xmlrpc_port = <%= @env_data['ports']['xmlrpc'] %>
-web_xmlrpc_user = '<%= @env_data['xmlrpc']['web_user'] %>'
-web_xmlrpc_password = '<%= @env_data['xmlrpc']['web_password'] %>'
-leaves_domain = '<%= @env_data['leaves']['domain_prefix'] %>.<%= @env_data['server']['domain'] %>'
-leaves_jid_user = '<%= @env_data['xmlrpc']['leaves_user'] %>'
+xmlrpc_port = <%= node.run_state['config']['xmlrpc']['port'] %>
+web_xmlrpc_user = '<%= node.run_state['config']['xmlrpc']['web_user'] %>'
+web_xmlrpc_password = '<%= node.run_state['config']['xmlrpc']['web_password'] %>'
+leaves_domain = '<%= node.run_state['config']['leaves']['subdomain'] %>.<%= node.run_state['config']['domain'] %>'
+leaves_jid_user = '<%= node.run_state['config']['xmlrpc']['leaves_user'] %>'
 leaves_jid = '%s@%s' % (leaves_jid_user, leaves_domain)
-graph_xmpp_jid = '%s@%s' % ('<%= @env_data['xmlrpc']['graph_user'] %>', domain)
-graph_xmpp_password = '<%= @env_data['xmlrpc']['graph_password'] %>'
+graph_xmpp_jid = '%s@%s' % ('<%= node.run_state['config']['xmlrpc']['graph_user'] %>', domain)
+graph_xmpp_password = '<%= node.run_state['config']['xmlrpc']['graph_password'] %>'
 
-web_mysql_user = '<%= @env_data['mysql']['web_user'] %>'
-web_mysql_password = '<%= @env_data['mysql']['web_password'] %>'
-graph_mysql_user = '<%= @env_data['mysql']['graph_user'] %>'
-graph_mysql_password = '<%= @env_data['mysql']['graph_password'] %>'
-db_host = '<%= @env_data['mysql']['host'] %>'
-db_name = '<%= @env_data['mysql']['main_name'] %>'
+web_mysql_user = '<%= node.run_state['config']['mysql']['web_user'] %>'
+web_mysql_password = '<%= node.run_state['config']['mysql']['web_password'] %>'
+graph_mysql_user = '<%= node.run_state['config']['mysql']['graph_user'] %>'
+graph_mysql_password = '<%= node.run_state['config']['mysql']['graph_password'] %>'
+db_host = '<%= node.run_state['config']['mysql']['host'] %>'
+db_name = '<%= node.run_state['config']['mysql']['main_name'] %>'
 
-twitter_consumer_key = '<%= @env_data['twitter']['consumer_key'] %>'
-twitter_consumer_secret = '<%= @env_data['twitter']['consumer_secret'] %>'
+twitter_consumer_key = '<%= node.run_state['config']['twitter']['consumer_key'] %>'
+twitter_consumer_secret = '<%= node.run_state['config']['twitter']['consumer_secret'] %>'
 
-celery_mysql_user = '<%= @env_data['mysql']['celery_user'] %>'
-celery_mysql_password = '<%= @env_data['mysql']['celery_password'] %>'
-celery_db_name = '<%= @env_data['mysql']['celery_name'] %>'
+celery_mysql_user = '<%= node.run_state['config']['mysql']['celery_user'] %>'
+celery_mysql_password = '<%= node.run_state['config']['mysql']['celery_password'] %>'
+celery_db_name = '<%= node.run_state['config']['mysql']['celery_name'] %>'
 
-aws_sqs_prefix = '<%= @env_data['aws']['sqs_prefix'] %>'
-aws_access_key_id = '<%= @env_data['aws']['access_key_id'] %>'
-aws_secret_access_key = '<%= @env_data['aws']['secret_access_key'] %>'  # if it's broken, regenerate this until you get one without a "/"
+aws_sqs_prefix = '<%= node.run_state['config']['aws']['sqs_prefix'] %>'
+aws_access_key_id = '<%= node.run_state['config']['aws']['access_key_id'] %>'
+aws_secret_access_key = '<%= node.run_state['config']['aws']['secret_access_key'] %>'  # if it's broken, regenerate this until you get one without a "/"
 
-client_port = <%= @env_data['ports']['client'] %>
+client_port = <%= node.run_state['config']['xmpp_users']['port'] %>
 
-admin_jids = ['%s@%s' % (user, domain) for user in <%= @env_data['xmpp']['admin_users'] %>]
+admin_jids = ['%s@%s' % (user, domain) for user in <%= node.run_state['config']['xmpp_users']['admins'] %>]

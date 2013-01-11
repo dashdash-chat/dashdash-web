@@ -1,17 +1,27 @@
-env_data = data_bag_item("dev_data", "dev_data")
+#
+# Cookbook Name:: vine_web
+# Recipe:: jwchat
+#
+# Copyright 2012, Vine.IM
+#
+# All rights reserved - Do Not Redistribute
+#
+
+jwchat_repo_dir = "#{node['dirs']['source']}/jwchat"
+jwchat_static_dir = "#{jwchat_repo_dir}/htdocs.en"
 
 git "check out JWChat" do
   repository "https://github.com/lehrblogger/JWChat.git"
   branch "vine"
-  destination "#{node['vine_web']['jwchat_repo_dir']}"
+  destination jwchat_repo_dir
   action :sync
 end
 
-if env_data['flask']['debug']
+if node.chef_environment == 'dev'
   git "install JSDebugger" do
     repository "https://github.com/lehrblogger/JSDebugger.git"
     branch "master"
-    destination "#{node['vine_web']['jwchat_static_dir']}"
+    destination jwchat_static_dir
     action :sync
   end
 end
@@ -31,14 +41,13 @@ end
 
 execute "make JWChat" do
   command "make"
-  cwd node['vine_web']['jwchat_repo_dir']
+  cwd jwchat_repo_dir
   action :run
 end
 
-template "#{node['vine_web']['jwchat_static_dir']}/config.js" do
+template "#{jwchat_static_dir}/config.js" do
   source "jwchat_config.js.erb"
-  owner env_data["server"]["user"]
-  group env_data["server"]["group"]
+  owner node.run_state['config']['user']
+  group node.run_state['config']['group']
   mode 00644
-  variables :env_data => env_data
 end

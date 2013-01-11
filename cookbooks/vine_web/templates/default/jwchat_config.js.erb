@@ -1,17 +1,17 @@
-var SITENAME = "<%= @env_data['server']['domain'] %>";
+var SITENAME = "<%= node.run_state['config']['domain'] %>";
 
 var BACKENDS = [
   {
     name: "Native Binding",
     description: "ejabberd's native HTTP Binding backend",
-    httpbase: "https://<%= @env_data['server']['xmpp_domain'] %>:5281/http-bind/",
+    httpbase: "https://<%= node.run_state['config']['xmlrpc']['domain'] %>:5281/http-bind/",
     type: "binding",
     servers_allowed: [SITENAME]
   },
   {
     name: "Native Polling",
     description: "ejabberd's native HTTP Polling backend",
-    httpbase: "https://<%= @env_data['server']['xmpp_domain'] %>:5281/http-poll/",
+    httpbase: "https://<%= node.run_state['config']['xmlrpc']['domain'] %>:5281/http-poll/",
     type: "polling",
     servers_allowed: [SITENAME]
   }
@@ -25,11 +25,11 @@ var DEFAULTCONFERENCEROOM = "talks";
 var DEFAULTCONFERENCESERVER = "conference." + SITENAME;
 
 /* debugging options */
-var DEBUG = <%= @env_data['flask']['debug'] %>;  // turn debugging on
+var DEBUG = <%= node.chef_environment == 'dev' %>;  // turn debugging on
 var DEBUG_LVL = 4;  // debug-level 0..4 (4 = very noisy)
 
 var USE_DEBUGJID = true;  // if true only DEBUGJID gets the debugger
-var DEBUGJID = "<%= @env_data['xmpp']['employee_users'][0] %>@" + SITENAME;  // which user get's debug messages
+var DEBUGJID = "<%= node.run_state['config']['xmpp_users']['employees'][0] %>@" + SITENAME;  // which user get's debug messages
 
 var timerval = 2000;  // poll frequency in msec
 
