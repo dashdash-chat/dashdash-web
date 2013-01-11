@@ -17,6 +17,8 @@
                 {% if not account_exists %}
                     {{ form.password(placeholder="password", class='create_account') }}<br/>
                     {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                {% else %}
+                    You already have an XMPP account. If you need to change your password, you can do so from the settings page after adding an email address.
                 {% endif %}
                 <input type="submit" class='btn btn-success create_account_go' value="Create!">
             </fieldset>
