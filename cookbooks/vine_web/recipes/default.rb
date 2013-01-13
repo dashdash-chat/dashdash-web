@@ -98,14 +98,8 @@ supervisor_service "celeryd" do
   stopwaitsecs 300
   action :enable
 end
-file "#{web_repo_dir}/celerybeat.pid" do
-  owner node.run_state['config']['user']
-  group node.run_state['config']['group']
-  mode 00755
-  action :touch
-end
 supervisor_service "celerybeat" do
-  command "#{web_env_dir}/bin/celerybeat --app=celery_tasks --schedule=#{web_repo_dir}/celerybeat-schedule --loglevel=INFO"
+  command "#{web_env_dir}/bin/celerybeat --app=celery_tasks --schedule=#{node['dirs']['other']}/celerybeat-schedule --pidfile=#{node['dirs']['other']}/celerybeat.pid --loglevel=INFO"
   directory web_repo_dir
   user node.run_state['config']['user']
   stdout_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
