@@ -37,7 +37,7 @@ deploy_wrapper 'web' do
 end
 git web_repo_dir do
     repository "git@github.com:lehrblogger/vine-web.git"
-    branch "alpha"
+    branch "master"
     destination web_repo_dir
     ssh_wrapper "#{node['dirs']['ssl']}/web_deploy_wrapper.sh"
     action :sync
