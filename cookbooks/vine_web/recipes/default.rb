@@ -113,6 +113,11 @@ supervisor_service "celerybeat" do
   action :enable
 end
 
+# Send the Gunicorn and Celery logs to Papertrail
+node.set['papertrail']['watch_files']["#{node['dirs']['log']}/supervisor/gunicorn.log"  ] = 'gunicorn'
+node.set['papertrail']['watch_files']["#{node['dirs']['log']}/supervisor/celery.log"    ] = 'celery'
+node.set['papertrail']['watch_files']["#{node['dirs']['log']}/supervisor/celerybeat.log"] = 'celerybeat'
+
 # Add commonly-used commands to the bash history
 ["cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}",
   "cd #{web_repo_dir} && ../bin/python flask_app.py",  # Flask's built-in server restarts itself for you if any files have changed
