@@ -197,7 +197,7 @@ class EdgeCalculator(ClientXMPP):
                                                FROM twitter_follows, users as from_user, users as to_user
                                                WHERE to_user.twitter_id = twitter_follows.to_twitter_id
                                                AND from_user.twitter_id = twitter_follows.from_twitter_id
-                                               AND from_user.id LIKE %(user_id)s
+                                               AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY twitter_follows.last_updated_on DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
