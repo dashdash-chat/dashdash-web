@@ -9,7 +9,7 @@ xmlrpc_port = <%= node.run_state['config']['xmlrpc']['port'] %>
 web_xmlrpc_user = '<%= node.run_state['config']['xmlrpc']['web_user'] %>'
 web_xmlrpc_password = '<%= node.run_state['config']['xmlrpc']['web_password'] %>'
 leaves_domain = '<%= node.run_state['config']['leaves']['subdomain'] %>.<%= node.run_state['config']['domain'] %>'
-leaves_jid_user = '<%= node.run_state['config']['xmlrpc']['leaves_user'] %>'
+leaves_jid_user = '<%= node.run_state['config']['leaves']['jid_user'] %>'
 leaves_jid = '%s@%s' % (leaves_jid_user, leaves_domain)
 graph_xmpp_jid = '%s@%s' % ('<%= node.run_state['config']['xmlrpc']['graph_user'] %>', domain)
 graph_xmpp_password = '<%= node.run_state['config']['xmlrpc']['graph_password'] %>'
