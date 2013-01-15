@@ -185,6 +185,7 @@ def oauth_authorized(resp):
     else:  # still store the user object and tokens, but elsewhere only set the session['vine_user'] if we have an email already!
         result = db.session.execute(users.insert().\
                                     values(name=twitter_user,
+                                           twitter_id=resp['user_id'],
                                            twitter_token=resp['oauth_token'],
                                            twitter_secret=resp['oauth_token_secret']))
         db.session.commit()
