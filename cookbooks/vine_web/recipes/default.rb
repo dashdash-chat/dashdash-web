@@ -119,10 +119,10 @@ node.set['papertrail']['watch_files']["#{node['dirs']['log']}/supervisor/celery.
 node.set['papertrail']['watch_files']["#{node['dirs']['log']}/supervisor/celerybeat.log"] = 'celerybeat'
 
 # Add commonly-used commands to the bash history
-["cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}",
-  "cd #{web_repo_dir} && ../bin/python flask_app.py",  # Flask's built-in server restarts itself for you if any files have changed
-  "cd #{web_repo_dir} && ../bin/gunicorn -b localhost:8000 --workers=4 --log-level=DEBUG",
-  "cd #{web_repo_dir} && ../bin/celery -A celery_tasks worker --loglevel debug"
+["cd #{web_repo_dir} && ../bin/gunicorn -b localhost:8000 --workers=4 --log-level=DEBUG",
+ "cd #{web_repo_dir} && ../bin/python flask_app.py",  # Flask's built-in server restarts itself for you if any files have changed
+ "cd #{web_repo_dir} && ../bin/celery -A celery_tasks worker --loglevel debug",
+ "cd #{web_env_dir} && source bin/activate && cd #{web_repo_dir}" 
 ].each do |command|
   ruby_block "append line to history" do
     block do
