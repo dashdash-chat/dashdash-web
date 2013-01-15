@@ -303,7 +303,7 @@ def settings():
     if request.method == 'GET':
         user_email = db.session.execute(select([users.c.email], users.c.name == user)).fetchone()
         form = ChangeEmailForm()
-        form.email.data = user_email.email
+        form.email.data = user_email.email if user_email else None
     else:
         form = ChangeEmailForm(request.form)
         if form.validate():
