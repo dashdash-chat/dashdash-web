@@ -138,10 +138,20 @@ def clear_bad_oauth_cookies(fn):
             else:
                 raise e
     return wrapped
+
 @app.route('/twitter/oauth_callback')
 @clear_bad_oauth_cookies
 @twitter.authorized_handler
 def oauth_authorized(resp):
+    def launch_celery_tasks(user_id, user_twitter_id, token, secret):
+        result = chain(fetch_follows.s(user_id, user_twitter_id, token, secret),
+                       score_edges.s())()
+        db.session.execute(user_tasks.insert().\
+                           values(user_id=user_id,
+                                  celery_task_id=result,
+                                  celery_task_type='fetch_follows'))
+        db.session.commit()
+    
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
         return redirect(url_for('index'))
@@ -158,13 +168,8 @@ def oauth_authorized(resp):
                                values(twitter_id=resp['user_id'],
                                       twitter_token=resp['oauth_token'],
                                       twitter_secret=resp['oauth_token_secret']))
-        result = chain(fetch_follows.s(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret']),
-                       score_edges.s())()
-        db.session.execute(user_tasks.insert().\
-                           values(user_id=found_user.id,
-                                  celery_task_id=result,
-                                  celery_task_type='fetch_follows'))
-        db.session.commit()
+            db.session.commit()  # commit before we kick off the celery task, just in case
+        launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
         if found_user.email and found_user.is_active:
             session['vine_user'] = twitter_user
             flash('You were signed in as %s' % twitter_user, 'success')
@@ -178,12 +183,13 @@ def oauth_authorized(resp):
             session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
     else:  # still store the user object and tokens, but elsewhere only set the session['vine_user'] if we have an email already!
-        db.session.execute(users.insert().\
-                           values(name=twitter_user,
-                                  twitter_token=resp['oauth_token'],
-                                  twitter_secret=resp['oauth_token_secret']))
+        result = db.session.execute(users.insert().\
+                                    values(name=twitter_user,
+                                           twitter_token=resp['oauth_token'],
+                                           twitter_secret=resp['oauth_token_secret']))
         db.session.commit()
         if session.get('invite_code'):
+            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
         else:
@@ -261,7 +267,7 @@ def create_account():
                                        where(invites.c.recipient == found_user.id).\
                                        values(used=datetime.datetime.now()))
                 db.session.commit()
-                result = score_edges.delay(found_user.id) #TODO keep track of this user's task progress
+                result = score_edges.delay(found_user.id)  # Score edges again after the invites have been updated  #TODO keep track of this user's task progress
                 session['vine_user'] = found_user.name
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
