@@ -1,3 +1,4 @@
+/*  chat bubbles */
 article,
 aside,
 details,
@@ -1474,7 +1475,7 @@ table .span24 {
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url("../img/glyphicons-halflings.png");
+  background-image: url("../bootstrap/../bootstrap/../img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
 }
@@ -1483,7 +1484,7 @@ table .span24 {
   *margin-left: 0;
 }
 .icon-white {
-  background-image: url("../img/glyphicons-halflings-white.png");
+  background-image: url("../bootstrap/../bootstrap/../img/glyphicons-halflings-white.png");
 }
 .icon-glass {
   background-position: 0      0;
@@ -1995,7 +1996,7 @@ table .span24 {
 .open {
   *z-index: 1000;
 }
-.open > .dropdown-menu {
+.open  > .dropdown-menu {
   display: block;
 }
 .pull-right > .dropdown-menu {
@@ -4624,11 +4625,14 @@ p {
 }
 .client-logo-list li {
   float: left;
-  padding-right: 10px;
+  padding-right: 9px;
 }
 .client-logo-list li img {
   max-width: 43px;
-  max-height: 50px;
+  max-height: 43px;
+}
+.client-name-list {
+  padding-top: 56px;
 }
 .legal-mumbo {
   text-align: justify;

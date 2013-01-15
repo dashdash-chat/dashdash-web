@@ -83,18 +83,21 @@
                             {% block right_column scoped %}
                                 {% if user %}
                                     <div class='right-col-section'>
-                                        <p>Click an icon below for configuration instructions</p>
+                                        <p>Vine works with XMPP/Jabber clients. <a href='{{ url_for('help') }}'>Need help?</a></p>
                                         <ul class='client-logo-list'>
-                                            <li><a href='{{ url_for('help') }}#adium'><img src='/static/img/client_logos/adium.png' /></a></li>
-                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/pidgin.png' /></a></li>
-                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/messages.png' /></a></li>
-                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/imoim.png' /></a></li>
-                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                                            <li><a href='{{ url_for('help') }}'><img src='/static/img/client_logos/jabber.png' /></a></li>
+                                            <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'><img src='/static/img/client_logos/im-plus.png' /></a></li>  
+                                            <li><a href='https://itunes.apple.com/us/app/imo-messenger/id336435697'><img src='/static/img/client_logos/imo.png' /></a></li>
+                                            <li><a href='http://adium.im/'><img src='/static/img/client_logos/adium.png' /></a></li>
+                                            <li><a href='https://www.apple.com/osx/apps/#messages'><img src='/static/img/client_logos/messages.png' /></a></li>
+                                            <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/xmpp.png' /></a></li>
+                                            <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/jabber.png' /></a></li>
                                         </ul>
-                                        </br>
-                                        </br>
-                                        <p>Vine works with <a href='http://adium.im/' target='blank'>Adium</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, Messages, <a href='https://imo.im/' target='blank'>imo.im</a>, and many other XMPP/Jabber clients (Gchat coming soon!)</p>
+                                        <ul class='client-name-list'>
+                                            <li>iPhone/iPad: <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>, <a href="https://itunes.apple.com/us/app/imo-messenger/id336435697">imo</a></li>
+                                            <li>Mac: <a href='http://adium.im/' target='blank'>Adium</a>, <a href='https://www.apple.com/osx/apps/#messages'>Messages/iChat</a></li>
+                                            <li>Web: <a href='https://imo.im/' target='blank'>imo.im</a></li>
+                                            <li>Windows: <a href='http://www.pidgin.im/' target='blank'>Pidgin</a></li>
+                                        </ul>
                                     </div>
                                 {% endif %}
                             {% endblock %}
