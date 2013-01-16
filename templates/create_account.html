@@ -9,21 +9,39 @@
             </form>
         </p>
     {% else %}
-        <form action="{{ url_for('create_account') }}" method=post>
+        <form class="vine-form" action="{{ url_for('create_account') }}" method=post>
             <fieldset>
-                <legend>Create your account</legend>
+                <legend>You're almost there!</legend>
                 {{ form.hidden_tag() }}
                 {{ form.email(placeholder="email", class='create_account') }}<br/>
                 {% if not account_exists %}
                     {{ form.password(placeholder="password", class='create_account') }}<br/>
                     {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                    <input class='btn btn-success create_account_go' type='submit' value='create account'>
+                    <p class="centered">
+                        <strong>or</strong>
+                    </p>
+                    <input class='btn btn-success create_account_go' type='submit' onClick='launchDemoClient("{{ user }}", $("#password").val());' value='create account and launch demo'>
+                    <p>
+                        This opens a new window, so have <strong>popups enabled</strong>.
+                    </p>
+                    <p>
+                        (<a href="https://github.com/lehrblogger/JWChat">JWChat</a> is an open source project that works out-of-the-box with XMPP services like Vine, so it was easy to get working. We'll build a proper web client soon!)
+                    </p
+                    
                 {% else %}
                     You already have an XMPP account. If you need to change your password, you can do so from the settings page after adding an email address.
+                    <input type="submit" class='btn btn-success create_account_go' value="create account">
                 {% endif %}
-                <input type="submit" class='btn btn-success create_account_go' value="Create!">
             </fieldset>
         </form>
     {% endif %}
 {% endblock %}
 {% block right_column %}{% endblock %}
 {% block header_banner %}{% endblock %}
+{% block script %}
+    <script src="/static/jwchat/config.js" language="JavaScript1.2"></script>
+    <script src="/static/jwchat/browsercheck.js" language="JavaScript1.2"></script>
+    <script src="/static/jwchat/shared.js" language="JavaScript1.2"></script>
+    <script src="/static/js/demo.js" language="JavaScript"></script>
+{% endblock %}
