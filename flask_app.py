@@ -300,6 +300,8 @@ def demo(token):
 @app.route("/help")
 def help():
     user = session.get('vine_user')
+    if not user:
+        return redirect(url_for('index'))
     return render_template('help.html', user=user)
 
 @app.route("/settings", methods=['GET', 'POST'])
