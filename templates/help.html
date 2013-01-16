@@ -1,19 +1,27 @@
 {% extends "base.html" %}
 {% block left_column %}
     <div class='page-header'>
-        <h1>tutorial</h1>
+        <h1>getting started</h1>
     </div>
+    <p>
+        To use Vine, sign in using one of the mobile/web/desktop apps listed on the right <i class="icon-hand-right"></i>,
+    </p>
+    <p>
+        by adding a new XMPP/Jabber account with <strong>{{ user }}@vine.im</strong> and your password.
+    </p>
+    <p>
+        After connecting, you'll see a new group in your buddy list with your Vine contacts. Enjoy!
+    </p>
     <p>
         For an overview of the basic features, watch this screencast (best viewed at 720p in full screen mode).
     </p>
-    <p>    
+    <p>
         <iframe width="620" height="349" src="https://www.youtube.com/embed/JDsQEMaWjz8?rel=0" frameborder="0" allowfullscreen></iframe>
     </p>
     <br>
     <div class='page-header'>
-        <h1>setup</h1>
+        <a name='adium'></a><h1>adium setup</h1>
     </div>
-    <h4><a href='#adium'>Adium</a></h4>
     <ol class=''>
         <li>
             <p>Download and install the Adium client from <a href='http://adium.im/' target='blank'>http://adium.im/</a></p>
@@ -23,7 +31,7 @@
             <img src='/static/img/setup/adium/preference-window.png'/>
         </li>
         <li>
-            <p>For 'Jabber ID' enter [your-username]@vine.im and your password in the password field.</p>
+            <p>For 'Jabber ID' enter {{ user }}@vine.im and your password in the password field.</p>
             <img src='/static/img/setup/adium/account-details.png'/>
         </li>
         <li>
