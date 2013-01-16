@@ -211,7 +211,7 @@ def create_account():
                         users.c.is_active == True))
         found_user = db.session.execute(s).fetchone()
     if invite_code:
-        s = select([invites.c.id], and_(invites.c.code == invite_code, invites.c.recipient == None))
+        s = select([invites.c.id], and_(invites.c.code == invite_code, invites.c.sender != found_user.id, invites.c.recipient == None))
         has_unused_invite = db.session.execute(s).fetchone()
     if found_user:
         s = select([invites], and_(invites.c.recipient == found_user.id))
