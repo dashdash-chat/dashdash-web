@@ -66,7 +66,8 @@ def index():
             user_id = user_id[0]
             s = select([invites.c.code, invites.c.recipient],
                        and_(invites.c.sender == user_id,
-                            invites.c.recipient == None))
+                            invites.c.recipient == None,
+                            invites.c.visible == True))
             unused_invites = db.session.execute(s).fetchall()
             s = select([invites.c.code, users.c.name, invites.c.used],
                        and_(invites.c.sender == user_id,
