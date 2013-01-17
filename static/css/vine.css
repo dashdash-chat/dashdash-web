@@ -4473,12 +4473,17 @@ footer .footer-links > ul {
   overflow: hidden;
   position: relative;
 }
+.vine-intro-convo.invite-container {
+  min-height: 401px;
+  height: 401px;
+}
 #bubble-0,
 #bubble-1,
 #bubble-2,
 #bubble-3,
 #bubble-4,
-#bubble-5 {
+#bubble-5,
+#bubble-6 {
   position: absolute;
 }
 #bubble-0 {
@@ -4487,28 +4492,33 @@ footer .footer-links > ul {
 }
 #bubble-1 {
   display: none;
-  top: 70px;
+  top: 91px;
   left: 430px;
 }
 #bubble-2 {
   display: none;
-  top: 132px;
+  top: 138px;
   right: 520px;
 }
 #bubble-3 {
   display: none;
-  top: 176px;
+  top: 185px;
   left: 430px;
 }
 #bubble-4 {
   display: none;
-  top: 237px;
+  top: 232px;
   right: 520px;
 }
 #bubble-5 {
   display: none;
-  top: 283px;
+  top: 279px;
   left: 430px;
+}
+#bubble-6 {
+  display: none;
+  top: 326px;
+  left: 58px;
 }
 .table {
   font-size: 13px;

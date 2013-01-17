@@ -7,6 +7,7 @@ $(window).ready(function(){
 	setTimeout(function(){ puff(kids[3]); },2500);
 	setTimeout(function(){ puff(kids[4]); },3000);
 	setTimeout(function(){ puff(kids[5]); },3250);
+	setTimeout(function(){ puff(kids[6]); },3500);
 
 	// if a flash container is present then make it closable
 	if( $('.flash-container').length )
