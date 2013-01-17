@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block left_column %}
     <div class="page-header">
-        <h1>about</h1>
+        <h1>team</h1>
     </div>
     <div id='who-we-are'>
         <div class='photos clearfix'>
@@ -18,9 +18,28 @@
 {% endblock %}
 {% block right_column %}
     <div class="page-header">
-        <h1>contact us</h1>
+        <h1>about</h1>
     </div>
-    <div><b>Twitter: <a href='http://www.twitter.com/vineIM' target='blank'>@VineIM</a></b></div>
-    <div><b>Questions? Email <a href='mailto:info@vine-inc.im' target='blank'>info@vine-inc.im</a></b></div>
+    <p>
+        Vine.IM<span class="trademark">&trade;</span> aims to help users socialize online more like they do in the real world. We're starting with a cross-platform instant messaging product that feels half like mingling at a cocktail party, and half like chatting with your friends at your favorite coffeeshop. If you're passionate about the future of communication, get in touch!
+    </p>    
+    <br/>
+    <div class="page-header">
+        <h1>contact</h1>
+    </div>
+    <div class="row">
+        <div class="span1">
+            <img src='/static/img/logo-square.png'> 
+        </div>
+        <div class="span3">
+            <p class="questions">
+                <b>Questions? <a href='mailto:info@vine-inc.im' target='blank'>info@vine-inc.im</a></b>
+            </p>      
+            <p>
+                <a href="https://twitter.com/VineIM" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @VineIM</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </p>
+        </div>
+    </div>
 {% endblock %}
 {% block header_banner %}{% endblock %}
