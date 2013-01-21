@@ -165,7 +165,7 @@ class EdgeCalculator(ClientXMPP):
                                                FROM artificial_follows, users as from_user, users as to_user
                                                WHERE to_user.id = artificial_follows.to_user_id
                                                AND from_user.id = artificial_follows.from_user_id
-                                               AND from_user.id LIKE %(user_id)s
+                                               AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY artificial_follows.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
