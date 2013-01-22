@@ -1004,6 +1004,18 @@ select:focus:required:invalid:focus {
   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.025);
 }
+input::-webkit-input-placeholder {
+  color: #cccccc;
+}
+input:-moz-placeholder {
+  color: #cccccc;
+}
+textarea::-webkit-input-placeholder {
+  color: #cccccc;
+}
+textarea:-moz-placeholder {
+  color: #cccccc;
+}
 :-moz-placeholder {
   color: #999999;
 }
@@ -3091,6 +3103,18 @@ input[type="submit"].btn.btn-mini {
   -o-transition: none;
   transition: none;
 }
+.navbar-search .search-query input::-webkit-input-placeholder {
+  color: #cccccc;
+}
+.navbar-search .search-query input:-moz-placeholder {
+  color: #cccccc;
+}
+.navbar-search .search-query textarea::-webkit-input-placeholder {
+  color: #cccccc;
+}
+.navbar-search .search-query textarea:-moz-placeholder {
+  color: #cccccc;
+}
 .navbar-search .search-query:-moz-placeholder {
   color: #cccccc;
 }
@@ -4232,11 +4256,20 @@ footer a:active {
 .vine-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
 }
+.vine-header .header-banner .btn-mini {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  line-height: 25px;
+  font-size: 13px;
+}
+.vine-header .header-banner .btn-mini i {
+  background-position-y: 1px;
+}
 .vine-header .header-banner .list-request-container a:link {
   color: black;
 }
 .vine-header .header-banner .cancel-request {
-  margin-left: 5px;
+  margin: 3px 0 0 5px;
   position: absolute;
 }
 .vine-header .header-banner:after {
@@ -4295,8 +4328,31 @@ footer a:active {
   display: none;
 }
 .vine-header .list-request-container input {
-  height: 1.3em;
-  font-size: 1.3em;
+  border-color: maroon;
+  color: #333;
+  height: 30px;
+  font-size: 1.2em;
+}
+.vine-header .list-request-container input input::-webkit-input-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input input:-moz-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input textarea::-webkit-input-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input textarea:-moz-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input:-moz-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input:-ms-input-placeholder {
+  color: #800000;
+}
+.vine-header .list-request-container input::-webkit-input-placeholder {
+  color: #800000;
 }
 footer {
   min-height: 50px;
@@ -4481,8 +4537,9 @@ footer .footer-links > ul {
   position: relative;
 }
 .vine-intro-convo.invite-container {
-  min-height: 401px;
-  height: 401px;
+  min-height: 421px;
+  height: 421px;
+  overflow: visible;
 }
 #bubble-0,
 #bubble-1,
@@ -4525,7 +4582,15 @@ footer .footer-links > ul {
 #bubble-6 {
   display: none;
   top: 326px;
-  left: 58px;
+  right: 520px;
+  white-space: nowrap;
+}
+#bubble-6 .legal {
+  padding-bottom: 8px;
+}
+#bubble-6 .legal a {
+  color: #333;
+  text-decoration: underline;
 }
 .table {
   font-size: 13px;

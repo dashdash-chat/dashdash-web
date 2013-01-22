@@ -60,12 +60,22 @@ footer {
 			text-shadow: 0px -1px 3px black;
 		}
 		
+		.btn-mini {
+			i {
+				background-position-y: 1px;
+			}
+			font-family: @sansFontFamily;
+			font-weight: 500;
+			line-height: 25px;
+			font-size: 13px;
+		}
+		
 		.list-request-container a:link {
 			color: black;
 		}
 
 		.cancel-request {
-			margin-left: 5px;
+			margin: 3px 0 0 5px;
 			position: absolute;
 		}
 
@@ -145,8 +155,11 @@ footer {
 			display:none;
 		}
 		input {
-			height:1.3em;
-			font-size: 1.3em;
+			border-color: maroon;
+			.placeholder(maroon);
+			color: #333;
+			height: 30px;
+			font-size: 1.2em;
 		}
 	}
 }

@@ -39,7 +39,7 @@
                 {% else %}
                     {% block header_banner %}
                         <div class='header-banner'>
-                            <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients. Gchat and others coming soon!</p>
+                            <p class='description'>Vine works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients.</p>
                             <div class='center-text'>
                                 <p><i><b>Vine is in private alpha.</b></i></p>
                                 <div class='list-request-container'>
@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                                 <p><i><b>Already have an account?</b></i></p>
-                                <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-d.png' /></a>
+                                <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
                             </div>
                         </div>
                     {% endblock %}
@@ -113,7 +113,8 @@
             <div class='container footer-links'>
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
-                    <li><a href='{{ url_for('legal') }}'>legal</a></li>
+                    <li><a href='{{ url_for('terms') }}'>terms of service</a></li>
+                    <li><a href='{{ url_for('privacy') }}'>privacy policy</a></li>
                     <li>&copy; 2012 Vine.IM</li>
                 </ul>
             </div>

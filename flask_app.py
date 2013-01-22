@@ -54,6 +54,7 @@ class ChangePasswordForm(Form):
 @app.route("/")
 def index():
     user = session.get('vine_user')
+    session.pop('invite_code', None)  # pop the invite code so the user can't accidentally sign up from the sign in button
     unused_invites = None
     used_invites = None
     user_id = None
@@ -183,14 +184,14 @@ def oauth_authorized(resp):
                 db.session.commit()
             session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
-    else:  # still store the user object and tokens, but elsewhere only set the session['vine_user'] if we have an email already!
-        result = db.session.execute(users.insert().\
-                                    values(name=twitter_user,
-                                           twitter_id=resp['user_id'],
-                                           twitter_token=resp['oauth_token'],
-                                           twitter_secret=resp['oauth_token_secret']))
-        db.session.commit()
+    else:
         if session.get('invite_code'):
+            result = db.session.execute(users.insert().\
+                                        values(name=twitter_user,
+                                               twitter_id=resp['user_id'],
+                                               twitter_token=resp['oauth_token'],
+                                               twitter_secret=resp['oauth_token_secret']))
+            db.session.commit()
             launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             session['twitter_user'] = twitter_user
             return redirect(url_for('create_account'))
@@ -260,9 +261,9 @@ def create_account():
                 except: #TODO handle the IntegrityError properly!
                     flash('This email address has already been used - try another?', 'failure')
                     return redirect(url_for('create_account'))
-                if has_unused_invite and session.get('invite_code'):
+                if has_unused_invite and invite_code:
                     db.session.execute(invites.update().\
-                                       where(invites.c.code == session.get('invite_code')).\
+                                       where(invites.c.code == invite_code).\
                                        values(recipient=found_user.id, used=datetime.datetime.now()))
                 elif user_used_invite: 
                     db.session.execute(invites.update().\
@@ -379,10 +380,15 @@ def about():
     user = session.get('vine_user')
     return render_template('about.html', user=user)
 
-@app.route("/legal")
-def legal():
+@app.route("/terms")
+def terms():
     user = session.get('vine_user')
-    return render_template('legal.html', user=user)
+    return render_template('legal_terms.html', user=user)
+
+@app.route("/privacy")
+def privacy():
+    user = session.get('vine_user')
+    return render_template('legal_privacy.html', user=user)
 
 @app.errorhandler(404)
 def page_not_found(e=None):
@@ -405,12 +411,14 @@ def _register(user, password):
         'host': constants.domain,
         'password': password
     })
+
 def _change_password(user, password):
     _xmlrpc_command('change_password', {
         'user': user,
         'host': constants.domain,
         'newpass': password
     })
+    
 def _xmlrpc_command(command, data):
     fn = getattr(xmlrpc_server, command)
     return fn({
