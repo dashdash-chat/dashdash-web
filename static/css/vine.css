@@ -4730,9 +4730,12 @@ p.centered {
 .client-name-list {
   padding-top: 56px;
 }
-.legal-mumbo {
+.legal-body {
   text-align: justify;
   text-justify: inter-word;
+}
+.legal-body li li {
+  list-style-type: lower-alpha;
 }
 .right-col-section {
   color: #888;
