@@ -21,7 +21,7 @@
                     <p class="centered">
                         <strong>or</strong>
                     </p>
-                    <input class='btn btn-success create_account_go' type='submit' onClick='launchDemoClient("{{ user }}", $("#password").val());' value='create account and launch demo'>
+                    <input class='btn btn-success create_account_go' type='submit' onClick='return launchDemoClient("{{ user }}", $("#password").val(), $("#confirm").val());' value='create account and launch demo'>
                     <p>
                         This opens a new window, so have <strong>popups enabled</strong>.
                     </p>

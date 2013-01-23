@@ -3,14 +3,20 @@ var jwchats = new Array();
 var JABBERSERVER;
 var HTTPBASE;
 var BACKEND_TYPE;
-function launchDemoClient(username, password) {
+function launchDemoClient(username, password, confirm) {
+    if (password != confirm || password == '') {
+        return false;
+    }
     jid = username + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
     pass = password;
     register = false;
     prio = DEFAULTPRIORITY;
     connect_secure = false;
     jwchats[jid] = window.open("/static/jwchat/jwchat.html",makeWindowName(jid),'width=320,height=390,resizable=yes');
-    return true;
+    $(jwchats[jid]).load(function() {
+      $('form.vine-form').submit();
+    });
+    return false;
 }
 function init() {
     var servers_allowed = BACKENDS[0].servers_allowed,
