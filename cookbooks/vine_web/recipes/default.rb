@@ -93,7 +93,7 @@ supervisor_service "celeryd" do
   stderr_logfile "#{node['supervisor']['log_dir']}/celery.log"
   numprocs 1
   autostart false
-  autorestart false
+  autorestart true
   priority 20
   stopwaitsecs 300
   action :enable
@@ -106,7 +106,7 @@ supervisor_service "celerybeat" do
   stderr_logfile "#{node['supervisor']['log_dir']}/celerybeat.log"
   numprocs 1
   autostart false
-  autorestart false
+  autorestart true
   priority 30
   startsecs 10
   stopwaitsecs 300
