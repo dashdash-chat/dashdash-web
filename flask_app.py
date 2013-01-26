@@ -352,9 +352,7 @@ def change_password():
 def contacts():
     def filter_admins(user_rows):
         users = [user_row.name for user_row in user_rows]
-        jids_to_filter = constants.admin_jids + [constants.leaves_jid, constants.graph_xmpp_jid]
-        users_to_filter = [jid.split('@')[0] for jid in jids_to_filter] + [constants.web_xmlrpc_user]
-        return set(users).difference(users_to_filter)
+        return set(users).difference(constants.protected_users)
     user = session.get('vine_user')
     if user:
         user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']

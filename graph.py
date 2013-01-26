@@ -26,7 +26,9 @@ class RelationshipScores(object):
                 del self._scores[sender]
     
     def adjust_score(self, sender, recipient, amount):
-        self._scores[sender][recipient] += amount
+        if sender not in constants.protected_users and recipient not in constants.protected_users:
+            # Don't update relationships for admins! It would be more efficient to not even fetch these results from the database, but also much more verbose.
+            self._scores[sender][recipient] += amount
     
     def check_score(self, sender, recipient):
         if sender in self._scores and recipient in self._scores[sender]:
@@ -51,7 +53,7 @@ class EdgeCalculator(ClientXMPP):
     def __init__(self, logger, user_id=None):
         self.logger = logger
         self.user_id = user_id
-        ClientXMPP.__init__(self, constants.graph_xmpp_jid, constants.graph_xmpp_password)
+        ClientXMPP.__init__(self, constants.graph_jid, constants.graph_xmpp_password)
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         self.old_edge_offset = 0
