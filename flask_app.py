@@ -152,6 +152,12 @@ def oauth_authorized(resp):
                            values(user_id=user_id,
                                   celery_task_id=result,
                                   celery_task_type='fetch_follows'))
+        for minute_countdown in [10, 30, 90, 180, 360]:
+            result = score_edges.apply_async(args=[user_id], countdown=(minute_countdown * 60))
+            db.session.execute(user_tasks.insert().\
+                               values(user_id=user_id,
+                                      celery_task_id=result,
+                                      celery_task_type='fetch_follows'))
         db.session.commit()
     
     if resp is None:
