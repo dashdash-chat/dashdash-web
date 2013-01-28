@@ -164,7 +164,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_artificial_follows(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
-                                               FROM artificial_follows, users as from_user, users as to_user
+                                               FROM artificial_follows, users AS from_user, users AS to_user
                                                WHERE to_user.id = artificial_follows.to_user_id
                                                AND from_user.id = artificial_follows.from_user_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
@@ -179,7 +179,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_account_invites(self, offset):
         return self.db_execute_and_fetchall("""SELECT first_user.name, second_user.name, NULL
-                                               FROM invites, users as first_user, users as second_user
+                                               FROM invites, users AS first_user, users AS second_user
                                                WHERE ((first_user.id = invites.sender AND second_user.id = invites.recipient)
                                                    OR (second_user.id = invites.sender AND first_user.id = invites.recipient))
                                                AND (invites.recipient LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
@@ -196,7 +196,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_twitter_follows(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
-                                               FROM twitter_follows, users as from_user, users as to_user
+                                               FROM twitter_follows, users AS from_user, users AS to_user
                                                WHERE to_user.twitter_id = twitter_follows.to_twitter_id
                                                AND from_user.twitter_id = twitter_follows.from_twitter_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
@@ -211,7 +211,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_messages(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
-                                               FROM messages, recipients, users as sender, users as recipient
+                                               FROM messages, recipients, users AS sender, users AS recipient
                                                WHERE messages.id = recipients.message_id
                                                AND messages.parent_command_id IS NULL
                                                AND messages.sender_id IS NOT NULL
@@ -230,7 +230,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_topics(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, commands.string
-                                               FROM commands, messages, recipients, users as sender, users as recipient
+                                               FROM commands, messages, recipients, users AS sender, users AS recipient
                                                WHERE commands.command_name = 'topic'
                                                AND commands.sender_id = sender.id
                                                AND commands.id = messages.parent_command_id
@@ -251,7 +251,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_whispers(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
-                                               FROM commands, messages, recipients, users as sender, users as recipient
+                                               FROM commands, messages, recipients, users AS sender, users AS recipient
                                                WHERE commands.command_name = 'whisper'
                                                AND messages.id = recipients.message_id
                                                AND messages.sender_id IS NOT NULL
@@ -323,7 +323,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_blocks(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
-                                               FROM blocks, users as from_user, users as to_user
+                                               FROM blocks, users AS from_user, users AS to_user
                                                WHERE to_user.id = blocks.to_user_id
                                                AND from_user.id = blocks.from_user_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
@@ -339,7 +339,7 @@ class EdgeCalculator(ClientXMPP):
     def db_fetch_next_old_edge(self):
         # This let's us cycle through the current edges one at a time, to figure out which we need to delete.
         old_edge = self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name
-                                                   FROM edges, users as from_user, users as to_user
+                                                   FROM edges, users AS from_user, users AS to_user
                                                    WHERE to_user.id = edges.to_id
                                                    AND from_user.id = edges.from_id
                                                    AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
