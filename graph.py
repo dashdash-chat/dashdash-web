@@ -218,7 +218,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND sender.id = messages.sender_id
                                                AND recipient.id = recipients.recipient_id
                                                AND messages.sent_on > %(startdate)s
-                                               AND sender.id LIKE %(user_id)s
+                                               AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -239,7 +239,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND sender.id != recipients.recipient_id
                                                AND commands.string IS NOT NULL
                                                AND commands.sent_on > %(startdate)s
-                                               AND sender.id LIKE %(user_id)s
+                                               AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -259,7 +259,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND recipient.id = recipients.recipient_id
                                                AND commands.id = messages.parent_command_id
                                                AND commands.sent_on > %(startdate)s
-                                               AND sender.id LIKE %(user_id)s
+                                               AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -271,10 +271,11 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_invites(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, commands.token, messages.body
-                                               FROM commands, messages, recipients, users as sender
+                                               FROM commands, messages, recipients, users AS sender, users AS target
                                                WHERE commands.command_name = 'invite'
                                                AND commands.sender_id IS NOT NULL
                                                AND sender.id = commands.sender_id
+                                               AND commands.sent_on > %(startdate)s
                                                AND commands.is_valid IS TRUE
                                                AND messages.sender_id IS NULL
                                                AND messages.parent_message_id IS NULL
@@ -284,8 +285,8 @@ class EdgeCalculator(ClientXMPP):
                                                # there was an ExecutionError, and all other responses indicate a successful command.
                                                AND messages.id = recipients.message_id
                                                AND recipients.recipient_id = sender.id
-                                               AND commands.sent_on > %(startdate)s
-                                               AND sender.id LIKE %(user_id)s
+                                               AND target.name = commands.token
+                                               AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -297,7 +298,7 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_kicks(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, commands.token, messages.body
-                                               FROM commands, messages, recipients, users as sender
+                                               FROM commands, messages, recipients, users AS sender, users AS target
                                                WHERE commands.sender_id IS NOT NULL
                                                AND sender.id = commands.sender_id
                                                AND commands.sent_on > %(startdate)s
@@ -309,7 +310,8 @@ class EdgeCalculator(ClientXMPP):
                                                AND messages.body NOT LIKE 'Sorry, %%'
                                                AND messages.id = recipients.message_id
                                                AND recipients.recipient_id = sender.id
-                                               AND sender.id LIKE %(user_id)s
+                                               AND target.name = commands.token
+                                               AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -324,7 +326,7 @@ class EdgeCalculator(ClientXMPP):
                                                FROM blocks, users as from_user, users as to_user
                                                WHERE to_user.id = blocks.to_user_id
                                                AND from_user.id = blocks.from_user_id
-                                               AND from_user.id LIKE %(user_id)s
+                                               AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY blocks.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
@@ -340,7 +342,7 @@ class EdgeCalculator(ClientXMPP):
                                                    FROM edges, users as from_user, users as to_user
                                                    WHERE to_user.id = edges.to_id
                                                    AND from_user.id = edges.from_id
-                                                   AND from_user.id LIKE %(user_id)s
+                                                   AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                    ORDER BY edges.id DESC
                                                    LIMIT 1
                                                    OFFSET %(old_edge_offset)s
