@@ -103,7 +103,7 @@ class EdgeCalculator(ClientXMPP):
         old_edge = self.db_fetch_next_old_edge()
         if old_edge:
             sender, recipient = old_edge[0]
-            self.logger.info('in update_next_old_edge for %s, %s' % (sender, recipient))
+            self.logger.info('In update_next_old_edge for %s, %s' % (sender, recipient))
             if self.scores.check_score(sender, recipient):
                 # this edge should continue to exist, so remove it from scores so we don't try to add it again later
                 self.scores.delete_score(sender, recipient)
@@ -118,7 +118,7 @@ class EdgeCalculator(ClientXMPP):
     def update_next_new_edge(self):
         sender, recipient = self.scores.get_user_pair()
         if sender and recipient:
-            self.logger.info('in update_next_new_edge for %s, %s' % (sender, recipient))
+            self.logger.info('In update_next_new_edge for %s, %s' % (sender, recipient))
             if self.scores.check_score(sender, recipient):
                 # this is an edge that now does meet the threshold and didn't before, so create the vinebot (and, after receiving a response, the edge)
                 self.scores.delete_score(sender, recipient)

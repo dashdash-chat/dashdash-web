@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from celery import Celery
 from celery.schedules import crontab
-from celery.utils.log import get_task_logger
+from celery.utils.log import get_logger
 from datetime import datetime, timedelta
 from flask.ext.oauth import OAuth
 from kombu import Exchange, Queue
@@ -11,7 +11,7 @@ from time import sleep
 import constants
 from graph import EdgeCalculator
 
-logger = get_task_logger(__name__)
+logger = get_logger(__name__)
 celery = Celery('tasks')
 celery.conf.update(
     CELERY_CREATE_MISSING_QUEUES = False,
