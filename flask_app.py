@@ -145,21 +145,20 @@ def clear_bad_oauth_cookies(fn):
 @clear_bad_oauth_cookies
 @twitter.authorized_handler
 def oauth_authorized(resp):
-    def launch_celery_tasks(user_id, user_twitter_id, token, secret):
+    def launch_celery_tasks(user_id, user_twitter_id, token, secret, future_scorings=[]):
         result = chain(fetch_follows.s(user_id, user_twitter_id, token, secret),
                        score_edges.s())()
         db.session.execute(user_tasks.insert().\
                            values(user_id=user_id,
                                   celery_task_id=result,
                                   celery_task_type='fetch_follows'))
-        for minute_countdown in [10, 30, 90, 180, 360]:
+        for minute_countdown in future_scorings:
             result = score_edges.apply_async(args=[user_id], countdown=(minute_countdown * 60))
             db.session.execute(user_tasks.insert().\
                                values(user_id=user_id,
                                       celery_task_id=result,
                                       celery_task_type='fetch_follows'))
         db.session.commit()
-    
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
         return redirect(url_for('index'))
@@ -177,10 +176,10 @@ def oauth_authorized(resp):
                                       twitter_token=resp['oauth_token'],
                                       twitter_secret=resp['oauth_token_secret']))
             db.session.commit()  # commit before we kick off the celery task, just in case
-        launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
         if found_user.email and found_user.is_active:
             session['vine_user'] = twitter_user
             flash('You were signed in as %s' % twitter_user, 'success')
+            launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             return redirect(url_for('index'))
         else:
             if not found_user.is_active:
@@ -189,6 +188,7 @@ def oauth_authorized(resp):
                                    values(is_active=True))
                 db.session.commit()
             session['twitter_user'] = twitter_user
+            launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
             return redirect(url_for('create_account'))
     else:
         if session.get('invite_code'):
@@ -198,8 +198,8 @@ def oauth_authorized(resp):
                                                twitter_token=resp['oauth_token'],
                                                twitter_secret=resp['oauth_token_secret']))
             db.session.commit()
-            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             session['twitter_user'] = twitter_user
+            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
             return redirect(url_for('create_account'))
         else:
             return redirect(url_for('invite'))
