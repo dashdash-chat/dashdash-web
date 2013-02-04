@@ -98,6 +98,7 @@ class EdgeCalculator(ClientXMPP):
             for block in blocks:
                 sender, recipient = block
                 self.scores.delete_score(sender, recipient)
+                self.scores.delete_score(recipient, sender)
     
     def update_next_old_edge(self):
         old_edge = self.db_fetch_next_old_edge()
