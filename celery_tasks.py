@@ -53,11 +53,11 @@ twitter = oauth.remote_app('twitter',
     consumer_secret=constants.twitter_consumer_secret
 )
 
-@celery.task
+@celery.task(name='celery_tasks.add')
 def add(x,y):
     print x+y
         
-@celery.task
+@celery.task(name='celery_tasks.fetch_follows')
 def fetch_follows(user_id, user_twitter_id, token, secret):
     follow_ids = []
     cursor = '-1'
@@ -91,7 +91,7 @@ def fetch_follows(user_id, user_twitter_id, token, secret):
 def split_twitter_token_pair(token_pair):
     return token_pair
 
-@celery.task
+@celery.task(name='celery_tasks.score_edges')
 def score_edges(user_id=None):
     calculator = EdgeCalculator(logger, user_id)
     calculator.register_plugin('xep_0030') # Service Discovery
