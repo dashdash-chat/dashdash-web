@@ -1,26 +1,34 @@
 {% extends "base.html" %}
 {% block left_column %}
-    {% if invite_error_messages %}
-        <h2><i>{{ invite_error_messages[0] }}</i></h2>
-        <form class='invite-container' action='{{ url_for('check_invite') }}' method=post>
-            {{ form.hidden_tag() }}
-            {{ form.code }}
-            {{ form.submit }}
-        </form>
-    {% else %}
-        <div class='vine-intro-convo invite-container'>
-            <div id='bubble-0' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h1><i>Hello!</i></h1></div>
-            <div id='bubble-1' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>Vine.IM<span class="trademark">&trade;</span> is a cocktail party on the Internet</h3></div>
-            <div id='bubble-2' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h3>You can see that your friends are chatting</h3></div>
-            <div id='bubble-3' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>But not what they're saying</h3></div>
-            <div id='bubble-4' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h3>Unless you join their conversation</h3></div>
-            <div id='bubble-5' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>…just like you could at a party in real life!</h3></div>
-            <div id='bubble-6' class="vine-chat-bubble vine-chat-bubble-right chat-green">
-                <h3>You've been invited by <b>{{ sender }}!</b></h3>
-                <h5 class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</h5>
-                <a href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+    <div class='invite-container'>
+        {% if invite_error_messages or (sender and recipient) %}
+            <i class='invite-error-message'>{% 
+                if invite_error_messages 
+                    %}{{ invite_error_messages[0] }}{% 
+                else
+                    %}Are you <strong>{{ recipient }}</strong>? If not, you need another invite code:{%
+                endif %}</i>
+            <form class='invite-container' action='{{ url_for('check_invite') }}' method=post>
+                {{ form.hidden_tag() }}
+                {{ form.code(placeholder='abcd1234') }}
+                {{ form.submit }}
+            </form>
+        {% endif %}
+        {% if not invite_error_messages and sender %}
+            <div class='vine-intro-convo'>
+                <div id='bubble-0' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h1><i>Hello!</i></h1></div>
+                <div id='bubble-1' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>Vine.IM<span class="trademark">&trade;</span> is a cocktail party on the Internet</h3></div>
+                <div id='bubble-2' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h3>You can see that your friends are chatting</h3></div>
+                <div id='bubble-3' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>But not what they're saying</h3></div>
+                <div id='bubble-4' class="vine-chat-bubble vine-chat-bubble-right chat-green"><h3>Unless you join their conversation</h3></div>
+                <div id='bubble-5' class="vine-chat-bubble vine-chat-bubble-left chat-blue"><h3>…just like you could at a party in real life!</h3></div>
+                <div id='bubble-6' class="vine-chat-bubble vine-chat-bubble-right chat-green">
+                    <h3>You've been invited by <strong>{{ sender }}!</strong></h3>
+                    <h5 class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</h5>
+                    <a href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}
 {% block header_banner %}{% endblock %}

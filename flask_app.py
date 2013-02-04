@@ -93,16 +93,17 @@ def invite(code=None):
     form = InviteCodeForm()
     if invite:
         if invite['recipient']:
-            flash('Sorry, that invite code has already been used.', 'invite_error')
-            return render_template('invite.html', form=form)
+            recipient = db.session.execute(select([users.c.name],
+                                           and_(users.c.id == invite['recipient']))).fetchone()
+            return render_template('invite.html', form=form, sender=invite[0], recipient=recipient.name)
         else:
             session['invite_code'] = code
             return render_template('invite.html', sender=invite[0])
     else:
         if code:
-            flash('Sorry, \'%s\' is not a valid invite code. Enter a different one?' % code, 'invite_error')
+            flash('Sorry, \'%s\' is not a valid invite code. Try another?' % code, 'invite_error')
         else:
-            flash('Sorry, but you need to be invited to sign up. Enter an invite code below?', 'invite_error')
+            flash('Sorry, you need an invite code to sign up:', 'invite_error')
         return render_template('invite.html', form=form)
 
 @app.route('/check_invite', methods=['POST'])

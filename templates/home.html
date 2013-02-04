@@ -38,7 +38,7 @@
                                         <tr>
                                             <td><strong>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</strong></td>
                                             <td>{{ invite[1] }}</td>
-                                            <td>{{ invite.used }}</td>
+                                            <td>{% if invite.used %}{{ invite.used }}{% else %}pending{% endif %}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
