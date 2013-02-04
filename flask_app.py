@@ -81,6 +81,11 @@ def index():
 def login():
     return twitter.authorize()
 
+@app.route('/signup')
+def signup():
+    session['terms_accepted'] = True
+    return twitter.authorize()
+
 @app.route('/invite/')
 @app.route('/invite/<code>')
 def invite(code=None):
@@ -120,6 +125,7 @@ def logout():
     session.pop('vine_user', None)
     session.pop('twitter_user', None)
     session.pop('invite_code', None)
+    session.pop('terms_accepted', None)
     flash('You were signed out', 'success')
     return redirect(url_for('index'))
 
@@ -188,11 +194,19 @@ def oauth_authorized(resp):
                                    where(users.c.name == twitter_user).\
                                    values(is_active=True))
                 db.session.commit()
+            if not session.get('terms_accepted'):
+                invite = db.session.execute(select([invites.c.code, invites.c.used],
+                                            and_(invites.c.recipient == found_user.id))).fetchone()
+                return redirect(url_for('invite', code=invite.code))
+            session.pop('terms_accepted', None)
             session['twitter_user'] = twitter_user
             launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
             return redirect(url_for('create_account'))
     else:
         if session.get('invite_code'):
+            if not session.get('terms_accepted'):
+                return redirect(url_for('invite', code=session.get('invite_code')))
+            session.pop('terms_accepted', None)
             result = db.session.execute(users.insert().\
                                         values(name=twitter_user,
                                                twitter_id=resp['user_id'],
