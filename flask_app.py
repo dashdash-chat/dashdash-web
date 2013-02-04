@@ -26,6 +26,7 @@ users = db.Table('users', metadata, autoload=True)
 invites = db.Table('invites', metadata, autoload=True)
 user_tasks = db.Table('user_tasks', metadata, autoload=True)
 edges = db.Table('edges', metadata, autoload=True)
+blocks = db.Table('blocks', metadata, autoload=True)
 oauth = OAuth()
 twitter = oauth.remote_app('twitter',
     base_url='https://api.twitter.com/1/',
@@ -388,10 +389,16 @@ def contacts():
                         users.c.is_active == True))
         incoming = filter_admins(db.session.execute(s).fetchall())
         friends = outgoing.intersection(incoming)
+        s = select([users.c.name],
+                   and_(blocks.c.from_user_id == user_id,
+                        blocks.c.to_user_id == users.c.id,
+                        users.c.is_active == True))
+        blockees = filter_admins(db.session.execute(s).fetchall())
         return render_template('contacts.html', user=user,
                                                 friends=friends,
                                                 incomings=incoming.difference(outgoing),
-                                                outgoings=outgoing.difference(incoming))
+                                                outgoings=outgoing.difference(incoming),
+                                                blockees=blockees)
     return redirect(url_for('index'))
 
 @app.route("/about")

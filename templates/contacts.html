@@ -8,26 +8,34 @@
     </p>
     <div class='well'>
         {% if friends %}
-            <p><i>These users can see what conversations you're having, and you can see theirs.</i></p>
+            <p><i>These users can see what conversations you're having, and you can see theirs:</i></p>
             <ul class='unstyled'>
                 {% for friend in friends %}
-                    <li><i class='icon-user'></i> {{ friend }}</li>
+                    <li><i class=' icon-resize-small'></i> {{ friend }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
         {% if outgoings %}
-            <p><i>You can see when these users are online, but you can't see each other's conversations.</i></p>
+            <p><i>You can see when these users are online, but you can't see each other's conversations:</i></p>
             <ul class='unstyled'>
                 {% for outgoing in outgoings %}
-                    <li><i class='icon-eye-close'></i> {{ outgoing }}</li>
+                    <li><i class='icon-arrow-right'></i> {{ outgoing }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
         {% if incomings %}
-            <p><i>These users can see when you're online, but you can't see each other's conversations.</i></p>
+            <p><i>These users can see when you're online, but you can't see each other's conversations:</i></p>
             <ul class='unstyled'>
                 {% for incoming in incomings %}
-                    <li><i class='icon-eye-close'></i> {{ incoming }}</li>
+                    <li><i class='icon-arrow-left'></i> {{ incoming }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if blockees %}
+            <p><i>You've blocked these users:</i></p>
+            <ul class='unstyled'>
+                {% for blockee in blockees %}
+                    <li><i class='icon-eye-close'></i> {{ blockee }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
