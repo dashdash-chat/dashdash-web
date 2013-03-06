@@ -3,7 +3,7 @@ from flask import Flask, flash, render_template, redirect, request, session, url
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, desc
 import xmlrpclib
 import constants
 from celery import chain
@@ -75,7 +75,7 @@ def index():
                        and_(invites.c.sender == user_id,
                             invites.c.recipient == users.c.id,
                             users.c.is_active == True))
-            used_invites = db.session.execute(s).fetchall()
+            used_invites = db.session.execute(s.order_by(desc(invites.c.used))).fetchall()
     return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
 
 @app.route('/login')
