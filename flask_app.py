@@ -24,6 +24,7 @@ metadata = db.MetaData(bind = db.engine)
 demos = db.Table('demos', metadata, autoload=True)
 users = db.Table('users', metadata, autoload=True)
 invites = db.Table('invites', metadata, autoload=True)
+invitees = db.Table('invitees', metadata, autoload=True)
 user_tasks = db.Table('user_tasks', metadata, autoload=True)
 edges = db.Table('edges', metadata, autoload=True)
 blocks = db.Table('blocks', metadata, autoload=True)
@@ -66,16 +67,20 @@ def index():
         user_id = db.session.execute(s).fetchone() # TODO fix indexing
         if user_id:
             user_id = user_id[0]
-            s = select([invites.c.code, invites.c.recipient],
-                       and_(invites.c.sender == user_id,
-                            invites.c.recipient == None,
-                            invites.c.visible == True))
-            unused_invites = db.session.execute(s).fetchall()
-            s = select([invites.c.code, users.c.name, invites.c.used],
-                       and_(invites.c.sender == user_id,
-                            invites.c.recipient == users.c.id,
-                            users.c.is_active == True))
-            used_invites = db.session.execute(s.order_by(desc(invites.c.used))).fetchall()
+            q = db.session.query(invites.c.code).\
+                           outerjoin(invitees).\
+                           filter(invitees.c.invite_id == None,
+                                  invites.c.sender == user_id,
+                                  invites.c.visible == True,
+                                  invites.c.max_uses == 1)
+            unused_invites = q.all()
+            q = db.session.query(invites.c.code, users.c.name, invitees.c.used).\
+                           filter(invitees.c.invite_id == invites.c.id,
+                                  invitees.c.invitee_id == users.c.id,
+                                  invites.c.sender == user_id,
+                                  users.c.is_active == True).\
+                           order_by(desc(invitees.c.used))
+            used_invites = q.all()
     return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
 
 @app.route('/login')
