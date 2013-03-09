@@ -180,11 +180,12 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_account_invites(self, offset):
         return self.db_execute_and_fetchall("""SELECT first_user.name, second_user.name, NULL
-                                               FROM invites, users AS first_user, users AS second_user
-                                               WHERE ((first_user.id = invites.sender AND second_user.id = invites.recipient)
-                                                   OR (second_user.id = invites.sender AND first_user.id = invites.recipient))
-                                               AND (invites.recipient LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
-                                               AND invites.used > %(startdate)s
+                                               FROM invitees, invites, users AS first_user, users AS second_user
+                                               WHERE invites.id = invitees.invite_id
+                                               AND ((first_user.id = invites.sender AND second_user.id = invitees.invitee_id)
+                                                OR (second_user.id = invites.sender AND first_user.id = invitees.invitee_id))
+                                               AND (invitees.invitee_id LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
+                                               AND invitees.used > %(startdate)s
                                                ORDER BY invites.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s

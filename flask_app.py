@@ -4,6 +4,7 @@ from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
 from sqlalchemy import select, and_, desc
+from sqlalchemy.orm.exc import NoResultFound
 import xmlrpclib
 import constants
 from celery import chain
@@ -74,6 +75,7 @@ def index():
                                   invites.c.visible == True,
                                   invites.c.max_uses == 1)
             unused_invites = q.all()
+            #TODO fetch and render multi-use invites that haven't been used up
             q = db.session.query(invites.c.code, users.c.name, invitees.c.used).\
                            filter(invitees.c.invite_id == invites.c.id,
                                   invitees.c.invitee_id == users.c.id,
@@ -98,24 +100,30 @@ def invite(code=None):
     user = session.get('vine_user')
     if user:
         return redirect(url_for('index'))
-    invite = db.session.execute(select([users.c.name, invites.c.recipient],
-                                and_(users.c.id == invites.c.sender,
-                                     invites.c.code == code))).fetchone()
     form = InviteCodeForm()
-    if invite:
-        if invite['recipient']:
-            recipient = db.session.execute(select([users.c.name],
-                                           and_(users.c.id == invite['recipient']))).fetchone()
-            return render_template('invite.html', form=form, sender=invite[0], recipient=recipient.name)
-        else:
-            session['invite_code'] = code
-            return render_template('invite.html', sender=invite[0])
-    else:
-        if code:
-            flash('Sorry, \'%s\' is not a valid invite code. Try another?' % code, 'invite_error')
-        else:
-            flash('Sorry, you need an invite code to sign up:', 'invite_error')
+    if not code:
+        flash('Sorry, you need an invite code to sign up:', 'invite_error')
         return render_template('invite.html', form=form)
+    try:
+        q = db.session.query(invites.c.id, users.c.name, invites.c.max_uses).\
+                       filter(invites.c.sender == users.c.id,
+                              invites.c.code == code)
+        invite_id, sender_name, max_uses = q.one()
+    except NoResultFound:
+        flash('Sorry, \'%s\' is not a valid invite code. Try another?' % code, 'invite_error')
+        return render_template('invite.html', form=form)
+    q = db.session.query(users.c.name).\
+                   outerjoin(invitees).\
+                   filter(invitees.c.invite_id == invite_id)
+    recipients = [r.name for r in q.all()]
+    if len(recipients) >= max_uses:
+        flash('Sorry, this invite can\'t be used again. Try another?', 'invite_error')
+        return render_template('invite.html', form=form)
+    elif len(recipients) == 1:
+        return render_template('invite.html', form=form, sender=sender, recipient=recipients[0])
+    else:
+        session['invite_code'] = code
+        return render_template('invite.html', sender=sender)
 
 @app.route('/check_invite', methods=['POST'])
 def check_invite():
@@ -201,8 +209,10 @@ def oauth_authorized(resp):
                                    values(is_active=True))
                 db.session.commit()
             if not session.get('terms_accepted'):
-                invite = db.session.execute(select([invites.c.code, invites.c.used],
-                                            and_(invites.c.recipient == found_user.id))).fetchone()
+                invite = db.session.query(invites.c.code).\
+                                    outerjoin(invitees).\
+                                    filter(invitees.c.invitee_id == found_user.id).\
+                                    one()
                 return redirect(url_for('invite', code=invite.code))
             session.pop('terms_accepted', None)
             session['twitter_user'] = twitter_user
@@ -240,11 +250,25 @@ def create_account():
                         users.c.is_active == True))
         found_user = db.session.execute(s).fetchone()
     if invite_code:
-        s = select([invites.c.id], and_(invites.c.code == invite_code, invites.c.sender != found_user.id, invites.c.recipient == None))
-        has_unused_invite = db.session.execute(s).fetchone()
+        try:
+            q = db.session.query(invites.c.id, invites.c.max_uses).\
+                           filter(invites.c.code == code,
+                                  invites.c.sender != found_user.id if found_user else None)
+            has_unused_invite = q.one()
+            q = db.session.query(invitees).\
+                           filter(invitees.c.invite_id == has_unused_invite.id)
+            if q.count() >= has_unused_invite.max_uses:
+                has_unused_invite = None
+        except NoResultFound:
+            has_unused_invite = None
     if found_user:
-        s = select([invites], and_(invites.c.recipient == found_user.id))
-        user_used_invite = db.session.execute(s).fetchone()
+        try:
+            q = db.session.query(invites).\
+                           outerjoin(invitees).\
+                           filter(invitees.c.invitee_id == found_user.id)
+            user_used_invite = q.one()
+        except NoResultFound:
+            user_used_invite = None
     if request.method == 'GET':
         if found_user:
             session['account_exists'] = _check_account(found_user.name)
@@ -259,9 +283,10 @@ def create_account():
             if user_used_invite:
                 return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             if has_unused_invite:
-                db.session.execute(invites.update().\
-                               where(invites.c.id == has_unused_invite.id).\
-                               values(recipient=found_user.id, used=datetime.datetime.now()))
+                db.session.execute(invitees.insert().\
+                                   values(invite_id=has_unused_invite.id,
+                                          invitee_id=found_user.id,
+                                          used=datetime.datetime.now()))
                 db.session.commit()
                 return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
@@ -289,12 +314,13 @@ def create_account():
                     flash('This email address has already been used - try another?', 'failure')
                     return redirect(url_for('create_account'))
                 if has_unused_invite and invite_code:
-                    db.session.execute(invites.update().\
-                                       where(invites.c.code == invite_code).\
-                                       values(recipient=found_user.id, used=datetime.datetime.now()))
+                    db.session.execute(invitees.insert().\
+                                       values(invite_id=has_unused_invite.id,
+                                              invitee_id=found_user.id,
+                                              used=datetime.datetime.now()))
                 elif user_used_invite: 
-                    db.session.execute(invites.update().\
-                                       where(invites.c.recipient == found_user.id).\
+                    db.session.execute(invitees.update().\
+                                       where(invitees.c.invitee_id == found_user.id).\
                                        values(used=datetime.datetime.now()))
                 db.session.commit()
                 result = score_edges.delay(found_user.id)  # Score edges again after the invites have been updated  #TODO keep track of this user's task progress
@@ -449,7 +475,7 @@ def _change_password(user, password):
         'host': constants.domain,
         'newpass': password
     })
-    
+
 def _xmlrpc_command(command, data):
     fn = getattr(xmlrpc_server, command)
     return fn({
