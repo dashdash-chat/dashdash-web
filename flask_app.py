@@ -318,10 +318,6 @@ def create_account():
                                        values(invite_id=has_unused_invite.id,
                                               invitee_id=found_user.id,
                                               used=datetime.datetime.now()))
-                elif user_used_invite: 
-                    db.session.execute(invitees.update().\
-                                       where(invitees.c.invitee_id == found_user.id).\
-                                       values(used=datetime.datetime.now()))
                 db.session.commit()
                 result = score_edges.delay(found_user.id)  # Score edges again after the invites have been updated  #TODO keep track of this user's task progress
                 session['vine_user'] = found_user.name
