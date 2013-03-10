@@ -116,14 +116,14 @@ def invite(code=None):
                    outerjoin(invitees).\
                    filter(invitees.c.invite_id == invite_id)
     recipients = [r.name for r in q.all()]
-    if len(recipients) >= max_uses:
+    if len(recipients) == 1 and max_uses == 1:
+        return render_template('invite.html', form=form, sender=sender_name, recipient=recipients[0])
+    elif len(recipients) >= max_uses:
         flash('Sorry, this invite can\'t be used again. Try another?', 'invite_error')
         return render_template('invite.html', form=form)
-    elif len(recipients) == 1:
-        return render_template('invite.html', form=form, sender=sender, recipient=recipients[0])
     else:
         session['invite_code'] = code
-        return render_template('invite.html', sender=sender)
+        return render_template('invite.html', sender=sender_name)
 
 @app.route('/check_invite', methods=['POST'])
 def check_invite():
