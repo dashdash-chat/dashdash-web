@@ -252,7 +252,7 @@ def create_account():
     if invite_code:
         try:
             q = db.session.query(invites.c.id, invites.c.max_uses).\
-                           filter(invites.c.code == code,
+                           filter(invites.c.code == invite_code,
                                   invites.c.sender != found_user.id if found_user else None)
             has_unused_invite = q.one()
             q = db.session.query(invitees).\
