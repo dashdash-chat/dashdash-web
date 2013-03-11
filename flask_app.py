@@ -59,6 +59,7 @@ def index():
     user = session.get('vine_user')
     session.pop('invite_code', None)  # pop the invite code so the user can't accidentally sign up from the sign in button
     unused_invites = None
+    multi_invites = None
     used_invites = None
     user_id = None
     if user:
