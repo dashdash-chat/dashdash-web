@@ -3,7 +3,7 @@ from flask import Flask, flash, render_template, redirect, request, session, url
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
-from sqlalchemy import select, and_, desc
+from sqlalchemy import select, and_, desc, func
 from sqlalchemy.orm.exc import NoResultFound
 import xmlrpclib
 import constants
@@ -75,7 +75,17 @@ def index():
                                   invites.c.visible == True,
                                   invites.c.max_uses == 1)
             unused_invites = q.all()
-            #TODO fetch and render multi-use invites that haven't been used up
+            def count_uses(invite_id):  # UGH I hate doing this query here, but SQLAlchemy is incomprehensible and I can't make the subquery work
+                subq = db.session.query(func.count('*')).\
+                                  filter(invitees.c.invite_id == invite_id)
+                return subq.scalar()
+            q = db.session.query(invites.c.id, invites.c.code, invites.c.max_uses).\
+                           outerjoin(invitees).\
+                           filter(invites.c.sender == user_id,
+                                  invites.c.visible == True,
+                                  invites.c.max_uses > 1).\
+                           group_by(invites.c.id)
+            multi_invites = filter(lambda invite_pair: invite_pair[1] > 0, [(invite.code, invite.max_uses - count_uses(invite.id)) for invite in q.all()])
             q = db.session.query(invites.c.code, users.c.name, invitees.c.used).\
                            filter(invitees.c.invite_id == invites.c.id,
                                   invitees.c.invitee_id == users.c.id,
@@ -83,7 +93,7 @@ def index():
                                   users.c.is_active == True).\
                            order_by(desc(invitees.c.used))
             used_invites = q.all()
-    return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, used_invites=used_invites)
+    return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, multi_invites=multi_invites, used_invites=used_invites)
 
 @app.route('/login')
 def login():

@@ -10,12 +10,15 @@
                 </div>
                 {% if unused_invites or used_invites %}
                     <div class='well'>
-                        {% if unused_invites %}
+                        {% if unused_invites or multi_invites %}
                             <h3>Unused invite codes:</h3>
                             <p><i>Each invite code only works once, so send them privately to the friends you chat with most on IM.</i></p>
                             <ul class='unstyled'>
                                 {% for invite in unused_invites %}
                                     <li><b>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</b></li>
+                                {% endfor %}
+                                {% for invite in multi_invites %}
+                                    <li><b>http://{{ domain }}{{ url_for('invite', code=invite[0]) }}</b> ({{ invite[1] }} uses left)</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
