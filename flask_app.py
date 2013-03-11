@@ -325,10 +325,13 @@ def create_account():
                     flash('This email address has already been used - try another?', 'failure')
                     return redirect(url_for('create_account'))
                 if has_unused_invite and invite_code:
-                    db.session.execute(invitees.insert().\
-                                       values(invite_id=has_unused_invite.id,
-                                              invitee_id=found_user.id,
-                                              used=datetime.datetime.now()))
+                    try:
+                        db.session.execute(invitees.insert().\
+                                           values(invite_id=has_unused_invite.id,
+                                                  invitee_id=found_user.id,
+                                                  used=datetime.datetime.now()))
+                    except: #TODO handle the IntegrityError properly!
+                        pass
                 db.session.commit()
                 result = score_edges.delay(found_user.id)  # Score edges again after the invites have been updated  #TODO keep track of this user's task progress
                 session['vine_user'] = found_user.name
