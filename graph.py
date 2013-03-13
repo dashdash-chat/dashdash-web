@@ -80,9 +80,10 @@ class EdgeCalculator(ClientXMPP):
                 for row in rows:
                     sender, recipient, content = row
                     self.scores.adjust_score(sender, recipient, multiplier_fn(content))
-        process_log_type(self.db_fetch_artificial_follows, lambda s: 10000)
-        process_log_type(self.db_fetch_account_invites,    lambda s: 10000)
-        process_log_type(self.db_fetch_twitter_follows,    lambda s: 300)
+        process_log_type(self.db_fetch_artificial_follows,      lambda s: 10000)
+        process_log_type(self.db_fetch_account_invites,         lambda s: 10000)
+        process_log_type(self.db_fetch_multiuse_invite_signups, lambda s: 1000)
+        process_log_type(self.db_fetch_twitter_follows,         lambda s: 300)
         process_log_type(self.db_fetch_messages, lambda s: len(s))
         process_log_type(self.db_fetch_topics,   lambda s: len(s))
         process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
@@ -186,6 +187,27 @@ class EdgeCalculator(ClientXMPP):
                                                 OR (second_user.id = invites.sender AND first_user.id = invitees.invitee_id))
                                                AND (invitees.invitee_id LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
                                                AND invitees.used > %(startdate)s
+                                               ORDER BY invites.created DESC
+                                               LIMIT %(pagesize)s
+                                               OFFSET %(offset)s
+                                            """, {
+                                               'startdate': self.start_time - timedelta(days=NUM_DAYS),
+                                               'user_id': self.user_id if self.user_id else '%',
+                                               'pagesize': PAGESIZE,
+                                               'offset': offset
+                                            })
+    
+    def db_fetch_multiuse_invite_signups(self, offset):
+        return self.db_execute_and_fetchall("""SELECT first_user.name, second_user.name, NULL
+                                               FROM invitees AS first_invitees, invitees AS second_invitees, invites, users AS first_user, users AS second_user
+                                               WHERE first_invitees.invite_id = invites.id
+                                               AND first_invitees.invite_id = second_invitees.invite_id
+                                               AND first_invitees.invitee_id != second_invitees.invitee_id
+                                               AND first_user.id = first_invitees.invitee_id
+                                               AND second_user.id = second_invitees.invitee_id
+                                               AND (first_user.id LIKE %(user_id)s OR second_user.id LIKE %(user_id)s)
+                                               AND first_invitees.used > %(startdate)s
+                                               AND second_invitees.used > %(startdate)s
                                                ORDER BY invites.created DESC
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
