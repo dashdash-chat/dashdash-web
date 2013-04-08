@@ -6,14 +6,18 @@ server_ip = '<%= node.run_state['config']['xmlrpc']['ip'] %>'
 xmlrpc_server = '<%= node.run_state['config']['xmlrpc']['domain'] %>'
 
 xmlrpc_port = <%= node.run_state['config']['xmlrpc']['port'] %>
+leaves_xmlrpc_user = '<%= node.run_state['config']['xmlrpc']['leaves_user'] %>'
 web_xmlrpc_user = '<%= node.run_state['config']['xmlrpc']['web_user'] %>'
 web_xmlrpc_password = '<%= node.run_state['config']['xmlrpc']['web_password'] %>'
+helpbot_xmlrpc_user = '<%= node.run_state['config']['xmlrpc']['helpbot_user'] %>'
 leaves_domain = '<%= node.run_state['config']['leaves']['subdomain'] %>.<%= node.run_state['config']['domain'] %>'
 leaves_jid_user = '<%= node.run_state['config']['leaves']['jid_user'] %>'
 leaves_jid = '%s@%s' % (leaves_jid_user, leaves_domain)
 graph_jid_user = '<%= node.run_state['config']['xmlrpc']['graph_user'] %>'
 graph_jid = '%s@%s' % (graph_jid_user, domain)
 graph_xmpp_password = '<%= node.run_state['config']['xmlrpc']['graph_password'] %>'
+
+helpbot_jid_user = '<%= node.run_state['config']['xmpp_users']['helpbot_user'] %>'
 
 web_mysql_user = '<%= node.run_state['config']['mysql']['web_user'] %>'
 web_mysql_password = '<%= node.run_state['config']['mysql']['web_password'] %>'
@@ -35,5 +39,5 @@ aws_secret_access_key = '<%= node.run_state['config']['aws']['secret_access_key'
 
 client_port = <%= node.run_state['config']['xmpp_users']['port'] %>
 
-protected_users = <%= node.run_state['config']['xmpp_users']['admins'] %> + [web_xmlrpc_user, leaves_jid_user, graph_jid_user]
+protected_users = <%= node.run_state['config']['xmpp_users']['admins'] %> + [web_xmlrpc_user, leaves_xmlrpc_user, helpbot_xmlrpc_user, leaves_jid_user, graph_jid_user]
 admin_jids = ['%s@%s' % (user, domain) for user in <%= node.run_state['config']['xmpp_users']['admins'] %>]

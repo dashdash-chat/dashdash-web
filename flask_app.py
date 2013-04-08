@@ -238,7 +238,8 @@ def oauth_authorized(resp):
                                         values(name=twitter_user,
                                                twitter_id=resp['user_id'],
                                                twitter_token=resp['oauth_token'],
-                                               twitter_secret=resp['oauth_token_secret']))
+                                               twitter_secret=resp['oauth_token_secret'],
+                                               stage='welcome'))
             db.session.commit()
             session['twitter_user'] = twitter_user
             launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])

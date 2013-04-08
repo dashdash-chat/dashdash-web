@@ -80,6 +80,7 @@ class EdgeCalculator(ClientXMPP):
                 for row in rows:
                     sender, recipient, content = row
                     self.scores.adjust_score(sender, recipient, multiplier_fn(content))
+        process_log_type(self.db_fetch_edges_for_new_users,     lambda s: 20000)
         process_log_type(self.db_fetch_artificial_follows,      lambda s: 10000)
         process_log_type(self.db_fetch_account_invites,         lambda s: 10000)
         process_log_type(self.db_fetch_multiuse_invite_signups, lambda s: 1000)
@@ -163,6 +164,30 @@ class EdgeCalculator(ClientXMPP):
         msg['body'] = body
         msg.send()
         self.logger.info("SENT %s" % body)
+    
+    def db_fetch_edges_for_new_users(self, offset):
+        # Fetch all users that haven't sent a message to a group conversation
+        usernames = self.db_execute_and_fetchall("""SELECT users.name
+                                                    FROM users
+                                                    WHERE (SELECT COUNT(*)
+                                                           FROM messages
+                                                           WHERE messages.sender_id = users.id
+                                                           AND (SELECT COUNT(*)
+                                                                FROM recipients
+                                                                WHERE messages.id = recipients.message_id
+                                                               ) >= 2
+                                                          ) = 0
+                                                    GROUP BY users.name
+                                                    ORDER BY users.created DESC
+                                                    LIMIT %(pagesize)s
+                                                    OFFSET %(offset)s
+                                                 """, {
+                                                    'user_id': self.user_id if self.user_id else '%',
+                                                    'pagesize': PAGESIZE,
+                                                    'offset': offset
+                                                 }, strip_pairs=True)
+        return [(constants.helpbot_jid_user, username, None) for username in usernames] + \
+               [(username, constants.helpbot_jid_user, None) for username in usernames]
     
     def db_fetch_artificial_follows(self, offset):
         return self.db_execute_and_fetchall("""SELECT from_user.name, to_user.name, NULL
@@ -305,7 +330,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND messages.parent_message_id IS NULL
                                                AND messages.parent_command_id = commands.id
                                                AND messages.body NOT LIKE 'Sorry, %%'
-                                               #TODO fix this ugly hack, which assumes that if a response to a command begins with 'Sorry', 
+                                               #TODO fix this ugly hack, which assumes that if a response to a command begins with 'Sorry',
                                                # there was an ExecutionError, and all other responses indicate a successful command.
                                                AND messages.id = recipients.message_id
                                                AND recipients.recipient_id = sender.id
