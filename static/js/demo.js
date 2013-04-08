@@ -5,7 +5,7 @@ var HTTPBASE;
 var BACKEND_TYPE;
 function launchDemoClient(username, password, confirm) {
     if (password != confirm || password == '') {
-        return false;
+        return true;
     }
     jid = username + "@" + JABBERSERVER + "/" + DEFAULTRESOURCE + Math.round(Math.random()*1000);
     pass = password;
@@ -16,7 +16,7 @@ function launchDemoClient(username, password, confirm) {
     $(jwchats[jid]).load(function() {
       $('form.vine-form').submit();
     });
-    return false;
+    return true;
 }
 function init() {
     var servers_allowed = BACKENDS[0].servers_allowed,

@@ -409,7 +409,7 @@ def change_password():
                 flash('There was an error changing your XMPP password.', 'failure')
                 return redirect(url_for('change_password'))
         else:
-            flash('Are you sure the two passwords matched? Please try again.', 'failure')
+            flash('Are you sure you entered the same valid password twice? Please try again.', 'failure')
     return render_template('change_password.html', user=user, form=form)
 
 @app.route("/contacts")
