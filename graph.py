@@ -11,7 +11,8 @@ import sys
 import constants
 
 PAGESIZE = 100
-NUM_DAYS = 90
+NUM_DAYS = 180
+sys.setrecursionlimit(5000)
 
 class RelationshipScores(object):
     def __init__(self, threshold=0):
