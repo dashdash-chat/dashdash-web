@@ -15,14 +15,14 @@
                 })();
             }
         </script>
-        <title>{% block title %}Vine.IM{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/vine.css" />
+        <title>{% block title %}Dashdash{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/dashdash.css" />
     </head>
     <body>
         <header>
-            <div class='vine-header'>
+            <div class='dashdash-header'>
                 <div class='container'>
-                <div class='vine-main-logo'>
+                <div class='dashdash-main-logo'>
                     <a href="/"><img src='/static/img/logo.png' width='320px'/></a>
                 </div>
                 {% if user %}
@@ -39,9 +39,9 @@
                 {% else %}
                     {% block header_banner %}
                         <div class='header-banner'>
-                            <p class='description'>Vine.IM works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients.</p>
+                            <p class='description'>Dashdash works with Adium, Pidgin, Messages, imo.im, and many other XMPP/Jabber clients.</p>
                             <div class='center-text'>
-                                <p><i><b>Vine.IM is in private alpha.</b></i></p>
+                                <p><i><b>Dashdash is in private alpha.</b></i></p>
                                 <div class='list-request-container'>
                                     <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
                                     <div class='hidden-form'>
@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                                 <p><i><b>Already have an account?</b></i></p>
-                                <a class='vine-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+                                <a class='dashdash-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
                             </div>
                         </div>
                     {% endblock %}
@@ -84,7 +84,7 @@
                             {% block right_column scoped %}
                                 {% if user %}
                                     <div class='right-col-section'>
-                                        <p>Vine.IM works with existing XMPP/Jabber clients.<br/>If you're lost, <a href="mailto:lost-and-found@vine-inc.im">email us</a>! Or visit <a href='{{ url_for('help') }}'>getting started</a>.</p>
+                                        <p>Dashdash works with existing XMPP/Jabber clients.<br/>If you're lost, <a href="mailto:lost-and-found@dashdashinc.com">email us</a>! Or visit <a href='{{ url_for('help') }}'>getting started</a>.</p>
                                         <ul class='client-logo-list'>
                                             <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'><img src='/static/img/client_logos/im-plus.png' /></a></li>  
                                             <li><a href='https://itunes.apple.com/us/app/imo-messenger/id336435697'><img src='/static/img/client_logos/imo.png' /></a></li>
@@ -115,7 +115,7 @@
                     <li><a href='{{ url_for('about') }}'>about</a></li>
                     <li><a href='{{ url_for('terms') }}'>terms of service</a></li>
                     <li><a href='{{ url_for('privacy') }}'>privacy policy</a></li>
-                    <li>&copy; 2013 Vine.IM</li>
+                    <li>&copy; 2013 Dashdash, Inc.</li>
                 </ul>
             </div>
         </footer>
@@ -126,7 +126,7 @@
         {% block script scoped %}{% endblock %}
         <script type="text/javascript">
             if (document.domain != 'dev.vine.im') {
-                var _sf_async_config = { uid: 2156, domain: 'vine.im' };
+                var _sf_async_config = { uid: 2156, domain: 'dashdash.com' };
                 (function() {
                     function loadChartbeat() {
                         window._sf_endpt = (new Date()).getTime();

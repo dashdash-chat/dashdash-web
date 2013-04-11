@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 		less: {
 			main: {
 				files: {
-					'static/css/vine.css' : 'static/css/less/vine/*.less'
+					'static/css/dashdash.css' : 'static/css/less/dashdash/*.less'
 				}
 			}
 		},
@@ -74,5 +74,5 @@ module.exports = function(grunt) {
         },
 	});
 
-	grunt.registerTask('vine', 'less')
+	grunt.registerTask('dashdash', 'less')
 };

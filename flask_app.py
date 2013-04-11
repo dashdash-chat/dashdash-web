@@ -56,7 +56,7 @@ class ChangePasswordForm(Form):
 
 @app.route("/")
 def index():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     session.pop('invite_code', None)  # pop the invite code so the user can't accidentally sign up from the sign in button
     unused_invites = None
     multi_invites = None
@@ -108,7 +108,7 @@ def signup():
 @app.route('/invite/')
 @app.route('/invite/<code>')
 def invite(code=None):
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     if user:
         return redirect(url_for('index'))
     form = InviteCodeForm()
@@ -147,7 +147,7 @@ def check_invite():
 
 @app.route('/logout')
 def logout():
-    session.pop('vine_user', None)
+    session.pop('dashdash_user', None)
     session.pop('twitter_user', None)
     session.pop('invite_code', None)
     session.pop('terms_accepted', None)
@@ -157,7 +157,7 @@ def logout():
 @twitter.tokengetter
 def get_twitter_token():
     s = select([users.c.twitter_token, users.c.twitter_secret],
-               and_(users.c.name == session.get('vine_user'),
+               and_(users.c.name == session.get('dashdash_user'),
                     users.c.is_active == True))
     return db.session.execute(s).fetchone()
 
@@ -167,7 +167,7 @@ def clear_bad_oauth_cookies(fn):
             return fn()
         except OAuthException, e:
             if e.message == 'Invalid response from twitter':
-                session.pop('vine_user', None)
+                session.pop('dashdash_user', None)
                 return fn()
             else:
                 raise e
@@ -209,7 +209,7 @@ def oauth_authorized(resp):
                                       twitter_secret=resp['oauth_token_secret']))
             db.session.commit()  # commit before we kick off the celery task, just in case
         if found_user.email and found_user.is_active:
-            session['vine_user'] = twitter_user
+            session['dashdash_user'] = twitter_user
             flash('You were signed in as %s' % twitter_user, 'success')
             launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             return redirect(url_for('index'))
@@ -249,7 +249,7 @@ def oauth_authorized(resp):
 
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():    
-    if session.get('vine_user'):
+    if session.get('dashdash_user'):
         return redirect(url_for('settings'))
     twitter_user = session.get('twitter_user')
     invite_code = session.get('invite_code')
@@ -285,7 +285,7 @@ def create_account():
         if found_user:
             session['account_exists'] = _check_account(found_user.name)
             if found_user.email and session.get('account_exists'):
-                session['vine_user'] = found_user.name
+                session['dashdash_user'] = found_user.name
                 flash('You signed in as %s' % found_user.name, 'success')
                 return redirect(url_for('index'))
             if session.get('account_exists') and not found_user.email:
@@ -335,7 +335,7 @@ def create_account():
                         pass
                 db.session.commit()
                 result = score_edges.delay(found_user.id)  # Score edges again after the invites have been updated  #TODO keep track of this user's task progress
-                session['vine_user'] = found_user.name
+                session['dashdash_user'] = found_user.name
                 session.pop('twitter_user', None)
                 session.pop('invite_code', None)
                 session.pop('account_exists', None)
@@ -365,14 +365,14 @@ def demo(token):
 
 @app.route("/help")
 def help():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
     return render_template('help.html', user=user)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
     if request.method == 'GET':
@@ -394,7 +394,7 @@ def settings():
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
 def change_password():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
     if request.method == 'GET':
@@ -417,7 +417,7 @@ def contacts():
     def filter_admins(user_rows):
         users = [user_row.name for user_row in user_rows]
         return set(users).difference(constants.protected_users)
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     if user:
         user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']
         s = select([users.c.name],
@@ -445,17 +445,17 @@ def contacts():
 
 @app.route("/about")
 def about():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     return render_template('about.html', user=user)
 
 @app.route("/terms")
 def terms():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     return render_template('legal_terms.html', user=user)
 
 @app.route("/privacy")
 def privacy():
-    user = session.get('vine_user')
+    user = session.get('dashdash_user')
     return render_template('legal_privacy.html', user=user)
 
 @app.errorhandler(404)

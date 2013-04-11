@@ -4227,10 +4227,10 @@ footer a:visited,
 footer a:active {
   color: rgba(0, 0, 0, 0.5);
 }
-.vine-header .container {
+.dashdash-header .container {
   position: relative;
 }
-.vine-header .header-banner {
+.dashdash-header .header-banner {
   position: absolute;
   right: 0;
   background: orange;
@@ -4242,37 +4242,37 @@ footer a:active {
   width: 300px;
   z-index: 20;
 }
-.vine-header .header-banner a {
+.dashdash-header .header-banner a {
   text-shadow: 0px 0px 2px white;
 }
-.vine-header .header-banner p {
+.dashdash-header .header-banner p {
   color: maroon;
   line-height: 16px;
   font-size: 1.1em;
 }
-.vine-header .header-banner input {
+.dashdash-header .header-banner input {
   background: #ffd280;
 }
-.vine-header .header-banner h2 {
+.dashdash-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
 }
-.vine-header .header-banner .btn-mini {
+.dashdash-header .header-banner .btn-mini {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 25px;
   font-size: 13px;
 }
-.vine-header .header-banner .btn-mini i {
+.dashdash-header .header-banner .btn-mini i {
   background-position-y: 1px;
 }
-.vine-header .header-banner .list-request-container a:link {
+.dashdash-header .header-banner .list-request-container a:link {
   color: black;
 }
-.vine-header .header-banner .cancel-request {
+.dashdash-header .header-banner .cancel-request {
   margin: 3px 0 0 5px;
   position: absolute;
 }
-.vine-header .header-banner:after {
+.dashdash-header .header-banner:after {
   content: "";
   position: absolute;
   bottom: -15px;
@@ -4283,75 +4283,75 @@ footer a:active {
   display: block;
   width: 0;
 }
-.vine-header .header-banner .center-text {
+.dashdash-header .header-banner .center-text {
   text-align: center;
 }
-.vine-header .header-banner .list-request {
+.dashdash-header .header-banner .list-request {
   margin-bottom: 10px;
 }
-.vine-header .user-greeting {
+.dashdash-header .user-greeting {
   text-align: right;
   position: absolute;
   top: 76px;
   right: 0;
 }
-.vine-header .user-greeting .username {
+.dashdash-header .user-greeting .username {
   margin-bottom: 27px;
   font-size: 5em;
   font-weight: bold;
   color: white;
   opacity: 0.35;
 }
-.vine-header .user-greeting .actions {
+.dashdash-header .user-greeting .actions {
   font-size: 1.25em;
 }
-.vine-header .user-greeting .actions a {
+.dashdash-header .user-greeting .actions a {
   padding-right: 6px;
   color: #387331;
 }
-.vine-header .vine-main-logo {
+.dashdash-header .dashdash-main-logo {
   padding: 40px 0;
 }
-.vine-header .header-right-link-list {
+.dashdash-header .header-right-link-list {
   float: right;
 }
-.vine-header .header-right-link-list ul {
+.dashdash-header .header-right-link-list ul {
   margin: 0;
   list-style: none;
 }
-.vine-header .header-right-link-list ul li {
+.dashdash-header .header-right-link-list ul li {
   float: left;
   display: block;
   margin-left: 10px;
 }
-.vine-header .list-request-container .hidden-form {
+.dashdash-header .list-request-container .hidden-form {
   display: none;
 }
-.vine-header .list-request-container input {
+.dashdash-header .list-request-container input {
   border-color: maroon;
   color: #333;
   height: 30px;
   font-size: 1.2em;
 }
-.vine-header .list-request-container input input::-webkit-input-placeholder {
+.dashdash-header .list-request-container input input::-webkit-input-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input input:-moz-placeholder {
+.dashdash-header .list-request-container input input:-moz-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input textarea::-webkit-input-placeholder {
+.dashdash-header .list-request-container input textarea::-webkit-input-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input textarea:-moz-placeholder {
+.dashdash-header .list-request-container input textarea:-moz-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input:-moz-placeholder {
+.dashdash-header .list-request-container input:-moz-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input:-ms-input-placeholder {
+.dashdash-header .list-request-container input:-ms-input-placeholder {
   color: #800000;
 }
-.vine-header .list-request-container input::-webkit-input-placeholder {
+.dashdash-header .list-request-container input::-webkit-input-placeholder {
   color: #800000;
 }
 footer {
@@ -4366,7 +4366,7 @@ footer .footer-content-list li {
   float: left;
   margin-right: 10px;
 }
-footer .vine-sign-in img {
+footer .dashdash-sign-in img {
   width: 300px;
 }
 footer .footer-non-user {
@@ -4376,7 +4376,7 @@ footer .footer-links > ul {
   float: right;
 }
 /*  chat bubbles */
-.vine-chat-bubble {
+.dashdash-chat-bubble {
   background: orange;
   box-shadow: 5px 5px 10px #ddd;
   clear: both;
@@ -4389,21 +4389,21 @@ footer .footer-links > ul {
   margin-bottom: 25px;
   z-index: 1;
 }
-.vine-chat-bubble h1,
-.vine-chat-bubble h2,
-.vine-chat-bubble h3,
-.vine-chat-bubble h4 {
+.dashdash-chat-bubble h1,
+.dashdash-chat-bubble h2,
+.dashdash-chat-bubble h3,
+.dashdash-chat-bubble h4 {
   font-weight: 400;
 }
-.vine-chat-bubble h1 {
+.dashdash-chat-bubble h1 {
   padding: 10px;
   font-size: 35px;
   font-weight: bold;
 }
-.vine-chat-bubble h3 {
+.dashdash-chat-bubble h3 {
   font-size: 20px;
 }
-.vine-chat-bubble:after {
+.dashdash-chat-bubble:after {
   content: "";
   position: absolute;
   bottom: -20px;
@@ -4421,11 +4421,11 @@ footer .footer-links > ul {
   -o-filter: drop-shadow(5px 5px 10px #dddddd);
   filter: drop-shadow(5px 5px 10px #dddddd);
 }
-.vine-chat-bubble.vine-chat-bubble-left {
+.dashdash-chat-bubble.dashdash-chat-bubble-left {
   border-radius: 10px 10px 10px 0;
   float: left;
 }
-.vine-chat-bubble.vine-chat-bubble-left:after {
+.dashdash-chat-bubble.dashdash-chat-bubble-left:after {
   left: 0px;
   /* controls horizontal position */
 
@@ -4433,11 +4433,11 @@ footer .footer-links > ul {
   /* vary these values to change the angle of the vertex */
 
 }
-.vine-chat-bubble.vine-chat-bubble-right {
+.dashdash-chat-bubble.dashdash-chat-bubble-right {
   border-radius: 10px 10px 0px 10px;
   float: right;
 }
-.vine-chat-bubble.vine-chat-bubble-right:after {
+.dashdash-chat-bubble.dashdash-chat-bubble-right:after {
   right: 0px;
   /* controls horizontal position */
 
@@ -4445,19 +4445,19 @@ footer .footer-links > ul {
   /* vary these values to change the angle of the vertex */
 
 }
-.vine-chat-bubble.vine-chat-bubble-compact {
+.dashdash-chat-bubble.dashdash-chat-bubble-compact {
   padding: 10px 25px;
   margin: 0;
   float: none;
   margin-bottom: 20px;
 }
-.vine-chat-bubble a:link,
-.vine-chat-bubble a:hover,
-.vine-chat-bubble a:active,
-.vine-chat-bubble a:visited {
+.dashdash-chat-bubble a:link,
+.dashdash-chat-bubble a:hover,
+.dashdash-chat-bubble a:active,
+.dashdash-chat-bubble a:visited {
   color: white;
 }
-.vine-chat-bubble.chat-blue {
+.dashdash-chat-bubble.chat-blue {
   background-color: #3399ff;
   background-image: -moz-linear-gradient(top, #b3d9ff, #3399ff);
   background-image: -ms-linear-gradient(top, #b3d9ff, #3399ff);
@@ -4466,10 +4466,10 @@ footer .footer-links > ul {
   background-image: -o-linear-gradient(top, #b3d9ff, #3399ff);
   background-image: linear-gradient(top, #b3d9ff, #3399ff);
 }
-.vine-chat-bubble.chat-blue:after {
+.dashdash-chat-bubble.chat-blue:after {
   border-color: #3399ff transparent;
 }
-.vine-chat-bubble.chat-green {
+.dashdash-chat-bubble.chat-green {
   background-color: #6cbd62;
   background-image: -moz-linear-gradient(top, #c0e3bc, #6cbd62);
   background-image: -ms-linear-gradient(top, #c0e3bc, #6cbd62);
@@ -4478,10 +4478,10 @@ footer .footer-links > ul {
   background-image: -o-linear-gradient(top, #c0e3bc, #6cbd62);
   background-image: linear-gradient(top, #c0e3bc, #6cbd62);
 }
-.vine-chat-bubble.chat-green:after {
+.dashdash-chat-bubble.chat-green:after {
   border-color: #6cbd62 transparent;
 }
-.vine-chat-bubble.chat-grey {
+.dashdash-chat-bubble.chat-grey {
   background-color: #aaaaaa;
   background-image: -moz-linear-gradient(top, #eaeaea, #aaaaaa);
   background-image: -ms-linear-gradient(top, #eaeaea, #aaaaaa);
@@ -4490,10 +4490,10 @@ footer .footer-links > ul {
   background-image: -o-linear-gradient(top, #eaeaea, #aaaaaa);
   background-image: linear-gradient(top, #eaeaea, #aaaaaa);
 }
-.vine-chat-bubble.chat-grey:after {
+.dashdash-chat-bubble.chat-grey:after {
   border-color: #aaaaaa transparent;
 }
-.vine-chat-bubble.chat-orange {
+.dashdash-chat-bubble.chat-orange {
   background-color: #ffa500;
   background-image: -moz-linear-gradient(top, #ffd280, #ffa500);
   background-image: -ms-linear-gradient(top, #ffd280, #ffa500);
@@ -4502,7 +4502,7 @@ footer .footer-links > ul {
   background-image: -o-linear-gradient(top, #ffd280, #ffa500);
   background-image: linear-gradient(top, #ffd280, #ffa500);
 }
-.vine-chat-bubble.chat-orange:after {
+.dashdash-chat-bubble.chat-orange:after {
   border-color: #ffa500 transparent;
 }
 .flash-container {
@@ -4521,7 +4521,7 @@ footer .footer-links > ul {
   padding-right: 5px;
   margin-top: 1px;
 }
-.vine-intro-convo {
+.dashdash-intro-convo {
   width: 940px !important;
   min-height: 350px;
   padding: 10px 0;
@@ -4529,14 +4529,14 @@ footer .footer-links > ul {
   overflow: hidden;
   position: relative;
 }
-.vine-intro-convo .trademark {
+.dashdash-intro-convo .trademark {
   font-size: 12px;
   line-height: 0px;
   vertical-align: baseline;
   top: -7px;
   position: relative;
 }
-.invite-container .vine-intro-convo {
+.invite-container .dashdash-intro-convo {
   min-height: 421px;
   height: 421px;
   overflow: visible;
@@ -4780,11 +4780,11 @@ input.create_account {
 input.create_account_go {
   width: 321px;
 }
-.vine-form {
+.dashdash-form {
   width: 321px;
   position: relative;
 }
-.vine-form input {
+.dashdash-form input {
   width: 100%;
   height: 2em;
   font-size: 1.25em;

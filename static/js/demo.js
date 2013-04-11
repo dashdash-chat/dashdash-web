@@ -14,7 +14,7 @@ function launchDemoClient(username, password, confirm) {
     connect_secure = false;
     jwchats[jid] = window.open("/static/jwchat/jwchat.html",makeWindowName(jid),'width=320,height=390,resizable=yes');
     $(jwchats[jid]).load(function() {
-      $('form.vine-form').submit();
+      $('form.dashdash-form').submit();
     });
     return true;
 }

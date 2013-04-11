@@ -1,6 +1,6 @@
 $(window).ready(function(){
 	
-	var kids = $('.vine-intro-convo').children('.vine-chat-bubble');
+	var kids = $('.dashdash-intro-convo').children('.dashdash-chat-bubble');
 	//setTimeout(function(){ chatLeft(kids[0]); },1000);
 	setTimeout(function(){ puff(kids[1]); },1000);
 	setTimeout(function(){ puff(kids[2]); },2000);
