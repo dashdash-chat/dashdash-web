@@ -11,7 +11,7 @@
 }
 
 .dashdash-chat-bubble {
-    background: orange;
+    background: @brandSecondaryColor;
     box-shadow: 5px 5px 10px #ddd;
     clear: both;
     padding: 10px 20px;
@@ -47,7 +47,7 @@
         width: 0;
         z-index: 0;
         border-width: 20px 20px 0px 0px;
-        border-color: orange transparent;
+        border-color: @brandPrimaryColor transparent;
         -webkit-filter: drop-shadow(5px 5px 10px #ddd);
         -moz-filter: drop-shadow(5px 5px 10px #ddd);
         -ms-filter: drop-shadow(5px 5px 10px #ddd);
@@ -86,28 +86,17 @@
         color: white;
     }
     
+    
     &.chat-blue {
-        .bubble-gradient(@dashdashBlue);
+        .bubble-gradient(lighten(@brandPrimaryColor, 5%));
         &:after {
-            border-color: @dashdashBlue transparent;
+            border-color: lighten(@brandPrimaryColor, 5%) transparent;
         }
     }
-    &.chat-green {
-        .bubble-gradient(@dashdashGreen);
+    &.chat-magenta {
+        .bubble-gradient(lighten(@brandSecondaryColor, 5%));
         &:after {
-            border-color: @dashdashGreen transparent;
-        }
-    }
-    &.chat-grey {
-        .bubble-gradient(@dashdashGrey);
-        &:after{
-            border-color: @dashdashGrey transparent;
-        }
-    }
-    &.chat-orange {
-        .bubble-gradient(@dashdashOrange);
-        &:after {
-            border-color: @dashdashOrange transparent;
+            border-color: lighten(@brandSecondaryColor, 5%) transparent;
         }
     }
 }

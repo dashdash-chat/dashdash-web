@@ -23,14 +23,6 @@
     width: 175px;
 }
 
-footer {
-    a:link,
-    a:visited,
-    a:active {
-        color: rgba(0,0,0,0.5);
-    }
-}
-
 .dashdash-header {
     .container {
         position: relative;
@@ -39,7 +31,7 @@ footer {
     .header-banner {
         position: absolute;
         right: 0;
-        background: orange;
+        background: @brandTertiaryColor;
         line-height: 2em;
         padding: 20px;
         top: 0;
@@ -52,12 +44,13 @@ footer {
             text-shadow: 0px 0px 2px white;
         }
         p {
-            color: maroon;
+            color: white;
             line-height: 16px;
             font-size: 1.1em;
         }
         input {
-            background: lighten(orange,25%);
+            color: @brandTertiaryColor;
+            background: lighten(@brandTertiaryColor,80%);
         }
         h2 {
             text-shadow: 0px -1px 3px black;
@@ -72,9 +65,13 @@ footer {
             font-size: 13px;
         }
         .list-request-container a:link {
-            color: black;
+            color: white;
         }
         .cancel-request {
+            .close {
+                color: white;
+                opacity: 0.8;
+            }
             margin: 3px 0 0 5px;
             position: absolute;
         }
@@ -85,7 +82,7 @@ footer {
             left: 0px;
             border-width: 15px 0 0 340px;
             border-style: solid;
-            border-color: orange transparent;
+            border-color: @brandTertiaryColor transparent;
             display: block;
             width: 0;
             //-webkit-filter: drop-shadow( 6px 5px 10px #333);
@@ -107,20 +104,20 @@ footer {
             margin-bottom: 27px;
             font-size: 5em;
             font-weight: bold;
-            color: white;
-            opacity: 0.35;
+            color: @brandTertiaryColor;
+            opacity: 0.65;
         }
         .actions {
             font-size: 1.25em;
             a {
                 padding-right: 6px;
-                color: #387331;
+                color: @brandPrimaryColor;
             }
         }
     }
     
     .dashdash-main-logo {
-        padding: 40px 0;
+        padding: 30px 0;
     }
     
     .header-right-link-list {
@@ -141,9 +138,9 @@ footer {
             display: none;
         }
         input {
-            border-color: maroon;
-            .placeholder(maroon);
-            color: #333;
+            border-color: white;
+            .placeholder(@brandTertiaryColor);
+            color: @brandTertiaryColor;
             height: 30px;
             font-size: 1.2em;
         }

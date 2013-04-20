@@ -132,11 +132,11 @@ body {
   background-color: #ffffff;
 }
 a {
-  color: #50a646;
+  color: #00adee;
   text-decoration: none;
 }
 a:hover {
-  color: #36702f;
+  color: #0075a2;
   text-decoration: underline;
 }
 .row {
@@ -1098,8 +1098,8 @@ textarea:-moz-placeholder {
 }
 .input-prepend .active,
 .input-append .active {
-  background-color: #afdbaa;
-  border-color: #50a646;
+  background-color: #88dfff;
+  border-color: #00adee;
 }
 .input-prepend .add-on,
 .input-prepend .btn {
@@ -2003,7 +2003,7 @@ table .span24 {
 .dropdown-menu .active > a:hover {
   color: #ffffff;
   text-decoration: none;
-  background-color: #50a646;
+  background-color: #00adee;
 }
 .open {
   *z-index: 1000;
@@ -2260,18 +2260,18 @@ button.close {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 .btn-primary {
-  background-color: #4ca64c;
-  background-image: -moz-linear-gradient(top, #50a646, #46a654);
-  background-image: -ms-linear-gradient(top, #50a646, #46a654);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#50a646), to(#46a654));
-  background-image: -webkit-linear-gradient(top, #50a646, #46a654);
-  background-image: -o-linear-gradient(top, #50a646, #46a654);
-  background-image: linear-gradient(top, #50a646, #46a654);
+  background-color: #0095ee;
+  background-image: -moz-linear-gradient(top, #00adee, #0072ee);
+  background-image: -ms-linear-gradient(top, #00adee, #0072ee);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00adee), to(#0072ee));
+  background-image: -webkit-linear-gradient(top, #00adee, #0072ee);
+  background-image: -o-linear-gradient(top, #00adee, #0072ee);
+  background-image: linear-gradient(top, #00adee, #0072ee);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#50a646', endColorstr='#46a654', GradientType=0);
-  border-color: #46a654 #46a654 #2f7039;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0072ee', GradientType=0);
+  border-color: #0072ee #0072ee #004da2;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #46a654;
+  *background-color: #0072ee;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -2281,12 +2281,12 @@ button.close {
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #46a654;
-  *background-color: #3e944b;
+  background-color: #0072ee;
+  *background-color: #0065d5;
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #378242 \9;
+  background-color: #0059bb \9;
 }
 .btn-warning {
   background-color: #faa732;
@@ -2573,7 +2573,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #e6e6e6;
 }
 .btn-group.open .btn-primary.dropdown-toggle {
-  background-color: #46a654;
+  background-color: #0072ee;
 }
 .btn-group.open .btn-warning.dropdown-toggle {
   background-color: #f89406;
@@ -2719,7 +2719,7 @@ input[type="submit"].btn.btn-mini {
 .nav-list > .active > a:hover {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  background-color: #50a646;
+  background-color: #00adee;
 }
 .nav-list [class^="icon-"] {
   margin-right: 2px;
@@ -2797,7 +2797,7 @@ input[type="submit"].btn.btn-mini {
 .nav-pills > .active > a,
 .nav-pills > .active > a:hover {
   color: #ffffff;
-  background-color: #50a646;
+  background-color: #00adee;
 }
 .nav-stacked > li {
   float: none;
@@ -2846,14 +2846,14 @@ input[type="submit"].btn.btn-mini {
 }
 .nav-tabs .dropdown-toggle .caret,
 .nav-pills .dropdown-toggle .caret {
-  border-top-color: #50a646;
-  border-bottom-color: #50a646;
+  border-top-color: #00adee;
+  border-bottom-color: #00adee;
   margin-top: 6px;
 }
 .nav-tabs .dropdown-toggle:hover .caret,
 .nav-pills .dropdown-toggle:hover .caret {
-  border-top-color: #36702f;
-  border-bottom-color: #36702f;
+  border-top-color: #0075a2;
+  border-bottom-color: #0075a2;
 }
 .nav-tabs .active .dropdown-toggle .caret,
 .nav-pills .active .dropdown-toggle .caret {
@@ -3786,7 +3786,7 @@ input[type="submit"].btn.btn-mini {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 a.thumbnail:hover {
-  border-color: #50a646;
+  border-color: #00adee;
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
@@ -4217,15 +4217,10 @@ a.badge:hover {
 .dropdown-menu li > a:hover,
 .dropdown-menu .active > a,
 .dropdown-menu .active > a:hover {
-  background-color: #50a646;
+  background-color: #00adee;
 }
 .logo img {
   width: 175px;
-}
-footer a:link,
-footer a:visited,
-footer a:active {
-  color: rgba(0, 0, 0, 0.5);
 }
 .dashdash-header .container {
   position: relative;
@@ -4233,7 +4228,7 @@ footer a:active {
 .dashdash-header .header-banner {
   position: absolute;
   right: 0;
-  background: orange;
+  background: #001c73;
   line-height: 2em;
   padding: 20px;
   top: 0;
@@ -4246,12 +4241,13 @@ footer a:active {
   text-shadow: 0px 0px 2px white;
 }
 .dashdash-header .header-banner p {
-  color: maroon;
+  color: white;
   line-height: 16px;
   font-size: 1.1em;
 }
 .dashdash-header .header-banner input {
-  background: #ffd280;
+  color: #001c73;
+  background: #ffffff;
 }
 .dashdash-header .header-banner h2 {
   text-shadow: 0px -1px 3px #000000;
@@ -4266,11 +4262,15 @@ footer a:active {
   background-position-y: 1px;
 }
 .dashdash-header .header-banner .list-request-container a:link {
-  color: black;
+  color: white;
 }
 .dashdash-header .header-banner .cancel-request {
   margin: 3px 0 0 5px;
   position: absolute;
+}
+.dashdash-header .header-banner .cancel-request .close {
+  color: white;
+  opacity: 0.8;
 }
 .dashdash-header .header-banner:after {
   content: "";
@@ -4279,7 +4279,7 @@ footer a:active {
   left: 0px;
   border-width: 15px 0 0 340px;
   border-style: solid;
-  border-color: orange transparent;
+  border-color: #001c73 transparent;
   display: block;
   width: 0;
 }
@@ -4299,18 +4299,18 @@ footer a:active {
   margin-bottom: 27px;
   font-size: 5em;
   font-weight: bold;
-  color: white;
-  opacity: 0.35;
+  color: #001c73;
+  opacity: 0.65;
 }
 .dashdash-header .user-greeting .actions {
   font-size: 1.25em;
 }
 .dashdash-header .user-greeting .actions a {
   padding-right: 6px;
-  color: #387331;
+  color: #00adee;
 }
 .dashdash-header .dashdash-main-logo {
-  padding: 40px 0;
+  padding: 30px 0;
 }
 .dashdash-header .header-right-link-list {
   float: right;
@@ -4328,35 +4328,40 @@ footer a:active {
   display: none;
 }
 .dashdash-header .list-request-container input {
-  border-color: maroon;
-  color: #333;
+  border-color: white;
+  color: #001c73;
   height: 30px;
   font-size: 1.2em;
 }
 .dashdash-header .list-request-container input input::-webkit-input-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input input:-moz-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input textarea::-webkit-input-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input textarea:-moz-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input:-moz-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input:-ms-input-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 .dashdash-header .list-request-container input::-webkit-input-placeholder {
-  color: #800000;
+  color: #001c73;
 }
 footer {
   min-height: 50px;
   padding: 20px 0;
+}
+footer a:link,
+footer a:visited,
+footer a:active {
+  color: #00adee;
 }
 footer .footer-content-list {
   list-style: none;
@@ -4377,7 +4382,7 @@ footer .footer-links > ul {
 }
 /*  chat bubbles */
 .dashdash-chat-bubble {
-  background: orange;
+  background: #ec297b;
   box-shadow: 5px 5px 10px #ddd;
   clear: both;
   padding: 10px 20px;
@@ -4414,7 +4419,7 @@ footer .footer-links > ul {
   width: 0;
   z-index: 0;
   border-width: 20px 20px 0px 0px;
-  border-color: orange transparent;
+  border-color: #00adee transparent;
   -webkit-filter: drop-shadow(5px 5px 10px #dddddd);
   -moz-filter: drop-shadow(5px 5px 10px #dddddd);
   -ms-filter: drop-shadow(5px 5px 10px #dddddd);
@@ -4458,52 +4463,28 @@ footer .footer-links > ul {
   color: white;
 }
 .dashdash-chat-bubble.chat-blue {
-  background-color: #3399ff;
-  background-image: -moz-linear-gradient(top, #b3d9ff, #3399ff);
-  background-image: -ms-linear-gradient(top, #b3d9ff, #3399ff);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b3d9ff), to(#3399ff));
-  background-image: -webkit-linear-gradient(top, #b3d9ff, #3399ff);
-  background-image: -o-linear-gradient(top, #b3d9ff, #3399ff);
-  background-image: linear-gradient(top, #b3d9ff, #3399ff);
+  background-color: #09bcff;
+  background-image: -moz-linear-gradient(top, #88dfff, #09bcff);
+  background-image: -ms-linear-gradient(top, #88dfff, #09bcff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#88dfff), to(#09bcff));
+  background-image: -webkit-linear-gradient(top, #88dfff, #09bcff);
+  background-image: -o-linear-gradient(top, #88dfff, #09bcff);
+  background-image: linear-gradient(top, #88dfff, #09bcff);
 }
 .dashdash-chat-bubble.chat-blue:after {
-  border-color: #3399ff transparent;
+  border-color: #09bcff transparent;
 }
-.dashdash-chat-bubble.chat-green {
-  background-color: #6cbd62;
-  background-image: -moz-linear-gradient(top, #c0e3bc, #6cbd62);
-  background-image: -ms-linear-gradient(top, #c0e3bc, #6cbd62);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#c0e3bc), to(#6cbd62));
-  background-image: -webkit-linear-gradient(top, #c0e3bc, #6cbd62);
-  background-image: -o-linear-gradient(top, #c0e3bc, #6cbd62);
-  background-image: linear-gradient(top, #c0e3bc, #6cbd62);
+.dashdash-chat-bubble.chat-magenta {
+  background-color: #ee4089;
+  background-image: -moz-linear-gradient(top, #f8b6d2, #ee4089);
+  background-image: -ms-linear-gradient(top, #f8b6d2, #ee4089);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f8b6d2), to(#ee4089));
+  background-image: -webkit-linear-gradient(top, #f8b6d2, #ee4089);
+  background-image: -o-linear-gradient(top, #f8b6d2, #ee4089);
+  background-image: linear-gradient(top, #f8b6d2, #ee4089);
 }
-.dashdash-chat-bubble.chat-green:after {
-  border-color: #6cbd62 transparent;
-}
-.dashdash-chat-bubble.chat-grey {
-  background-color: #aaaaaa;
-  background-image: -moz-linear-gradient(top, #eaeaea, #aaaaaa);
-  background-image: -ms-linear-gradient(top, #eaeaea, #aaaaaa);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eaeaea), to(#aaaaaa));
-  background-image: -webkit-linear-gradient(top, #eaeaea, #aaaaaa);
-  background-image: -o-linear-gradient(top, #eaeaea, #aaaaaa);
-  background-image: linear-gradient(top, #eaeaea, #aaaaaa);
-}
-.dashdash-chat-bubble.chat-grey:after {
-  border-color: #aaaaaa transparent;
-}
-.dashdash-chat-bubble.chat-orange {
-  background-color: #ffa500;
-  background-image: -moz-linear-gradient(top, #ffd280, #ffa500);
-  background-image: -ms-linear-gradient(top, #ffd280, #ffa500);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffd280), to(#ffa500));
-  background-image: -webkit-linear-gradient(top, #ffd280, #ffa500);
-  background-image: -o-linear-gradient(top, #ffd280, #ffa500);
-  background-image: linear-gradient(top, #ffd280, #ffa500);
-}
-.dashdash-chat-bubble.chat-orange:after {
-  border-color: #ffa500 transparent;
+.dashdash-chat-bubble.chat-magenta:after {
+  border-color: #ee4089 transparent;
 }
 .flash-container {
   color: rgba(0, 0, 0, 0.5);
@@ -4649,7 +4630,7 @@ footer .footer-links > ul {
   -o-transition: opacity 1s;
   /* Opera */
 
-  width: 420px;
+  width: 400px;
 }
 #who-we-are .photo:hover img {
   opacity: 1;
@@ -4688,10 +4669,6 @@ footer .footer-links > ul {
 .questions {
   padding-bottom: 2px;
   font-size: 14px;
-}
-body {
-  background: #50a646;
-  background: -webkit-linear-gradient(0deg, #ffffff, #50a646);
 }
 h1,
 h2,
@@ -4763,9 +4740,9 @@ p.centered {
   float: left;
   font-size: 25px;
   font-weight: 100;
-  padding-left: 55px;
-  background: url('/static/img/bubble-right-orange.png') no-repeat 0 1px;
-  background-size: 45px;
+  padding-left: 35px;
+  background: url('/static/img/bubble-square-magenta.png') no-repeat 0 1px;
+  background-size: 25px 25px;
 }
 .page-header {
   margin-top: 0px;
