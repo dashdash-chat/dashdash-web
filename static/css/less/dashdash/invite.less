@@ -1,16 +1,35 @@
-.invite-error-message {
-    font-size: 18px;
-}
-
 .invite-container {
-    form {
-        display: inline;
+    h3 {
+        color: @brandTertiaryColor;
     }
-    input {
-        font-size: 1.5em;
-        height: 30px;
-        line-height: 30px;
-        width: 120px;
-        margin-top: 2px;
+    p {
+        color: @brandTertiaryColor;
+        line-height: 20px;
+        font-size: 1.1em;
+    }
+    .invite-form {
+        text-align: center;
+        form {
+            display: inline;
+        }
+        input {
+            .placeholder(@brandTertiaryColor);
+            color: @brandTertiaryColor;
+            height: 28px;
+            font-size: 1.1em;
+            width: 158px;
+            margin-top: 2px;
+        }    
+    }
+    .center-text {
+        .legal {
+            padding: 5px 0 12px 0;
+            line-height: 20px;
+            font-size: 13px;
+            width: 215px;
+            margin: auto;
+        }
+        text-align: center;
+        margin-bottom: 22px;
     }
 }

@@ -1,34 +1,28 @@
 {% extends "base.html" %}
 {% block left_column %}
+    <div class='screencast'></div>
+{% endblock %}
+{% block right_column %}
     <div class='invite-container'>
         {% if invite_error_messages or (sender and recipient) %}
-            <i class='invite-error-message'>{% 
+            <p class='invite-error-message'>{% 
                 if invite_error_messages 
                     %}{{ invite_error_messages[0] }}{% 
                 else
                     %}Are you <strong>{{ recipient }}</strong>? If not, you need another invite code:{%
-                endif %}</i>
-            <form class='invite-container' action='{{ url_for('check_invite') }}' method=post>
+                endif %}</p>
+            <form class='invite-form' action='{{ url_for('check_invite') }}' method=post>
                 {{ form.hidden_tag() }}
                 {{ form.code(placeholder='abcd1234') }}
                 {{ form.submit }}
             </form>
         {% endif %}
-        {% if not invite_error_messages and sender %}
-            <div class='dashdash-intro-convo'>
-                <div id='bubble-0' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h1><i>Hello!</i></h1></div>
-                <div id='bubble-1' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>Dashdash<span class="trademark">&trade;</span> is a cocktail party on the Internet</h3></div>
-                <div id='bubble-2' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h3>You can see that your friends are chatting</h3></div>
-                <div id='bubble-3' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>But not what they're saying</h3></div>
-                <div id='bubble-4' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h3>Unless you join their conversation</h3></div>
-                <div id='bubble-5' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>…just like you could at a party in real life!</h3></div>
-                <div id='bubble-6' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta">
-                    <h3>You've been invited by <strong>{{ sender }}!</strong></h3>
-                    <h5 class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</h5>
-                    <a href="{{ url_for('signup') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
-                </div>
+        {% if not invite_error_messages and sender %}                
+            <h3><strong>{{ sender }}</strong> invited you!</h3>
+            <div class='center-text'>
+                <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
+                <a class='dashdash-sign-in' href="{{ url_for('signup') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
             </div>
         {% endif %}
     </div>
 {% endblock %}
-{% block header_banner %}{% endblock %}

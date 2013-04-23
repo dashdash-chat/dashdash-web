@@ -28,121 +28,30 @@
         position: relative;
     }
     
-    .header-banner {
-        position: absolute;
-        right: 0;
-        background: @brandTertiaryColor;
-        line-height: 2em;
-        padding: 20px;
-        top: 0;
-        min-height: 75px;
-        text-align: justify;
-        //box-shadow: 6px 5px 10px #333;
-        width: 300px;
-        z-index: 20;
-        a {
-            text-shadow: 0px 0px 2px white;
-        }
-        p {
-            color: white;
-            line-height: 16px;
-            font-size: 1.1em;
-        }
-        input {
-            color: @brandTertiaryColor;
-            background: lighten(@brandTertiaryColor,80%);
-        }
-        h2 {
-            text-shadow: 0px -1px 3px black;
-        }
-        .btn-mini {
-            i {
-                background-position-y: 1px;
-            }
-            font-family: @sansFontFamily;
-            font-weight: 500;
-            line-height: 25px;
-            font-size: 13px;
-        }
-        .list-request-container a:link {
-            color: white;
-        }
-        .cancel-request {
-            .close {
-                color: white;
-                opacity: 0.8;
-            }
-            margin: 3px 0 0 5px;
-            position: absolute;
-        }
-        &:after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: 0px;
-            border-width: 15px 0 0 340px;
-            border-style: solid;
-            border-color: @brandTertiaryColor transparent;
-            display: block;
-            width: 0;
-            //-webkit-filter: drop-shadow( 6px 5px 10px #333);
-        }
-        .center-text {
-            text-align: center;
-        }
-        .list-request {
-            margin-bottom: 10px;
+    .dashdash-main-logo {
+        padding: 15px 0;
+        img {
+            width: 220px;
         }
     }
-    
     .user-greeting {
         text-align: right;
         position: absolute;
-        top: 76px;
+        top: 15px; 
         right: 0;
-        .username {
-            margin-bottom: 27px;
-            font-size: 5em;
-            font-weight: bold;
+        font-size: 1.25em;
+        .signed-in {
+            margin-bottom: 32px;
             color: @brandTertiaryColor;
-            opacity: 0.65;
+            .username {
+                font-weight: bold;
+            }
         }
         .actions {
-            font-size: 1.25em;
             a {
-                padding-right: 6px;
+                padding-right: 15px;
                 color: @brandPrimaryColor;
             }
-        }
-    }
-    
-    .dashdash-main-logo {
-        padding: 30px 0;
-    }
-    
-    .header-right-link-list {
-        float: right;
-        ul {
-            margin: 0;
-            list-style: none;
-            li {
-                float: left;
-                display: block;
-                margin-left: 10px;
-            }
-        }
-    }
-    
-    .list-request-container {
-        .hidden-form {
-            display: none;
-        }
-        input {
-            border-color: white;
-            .placeholder(@brandTertiaryColor);
-            color: @brandTertiaryColor;
-            height: 30px;
-            font-size: 1.2em;
         }
     }
 }

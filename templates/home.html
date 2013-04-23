@@ -55,15 +55,33 @@
                 {% endif %}
             </div>
         </div>
-    {% else %} 
-        <div class='dashdash-intro-convo'>
-            <div id='bubble-0' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h1><i>Hello!</i></h1></div>
-            <div id='bubble-1' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>Dashdash<span class="trademark">&trade;</span> is a cocktail party on the Internet</h3></div>
-            <div id='bubble-2' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h3>You can see that your friends are chatting</h3></div>
-            <div id='bubble-3' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>But not what they're saying</h3></div>
-            <div id='bubble-4' class="dashdash-chat-bubble dashdash-chat-bubble-right     chat-magenta"><h3>Unless you join their conversation</h3></div>
-            <div id='bubble-5' class="dashdash-chat-bubble dashdash-chat-bubble-left chat-blue"><h3>…just like you could at a party in real life!</h3></div>
+    {% else %}
+        <div class='screencast'></div>
+    {% endif %}
+{% endblock %}
+{% block right_column %}
+    {% if user %}
+        {{ super() }}
+    {% else %}
+        <div class='intro'>
+            <div class='description'>
+                <p>Dashdash™ is a cocktail party on the Internet.</p>
+                <p>You can see that your friends are chatting, but not what they're saying unless you join their conversation… just like you could at a party in real life!</p>
+                <p>It works with many XMMP/Jabber apps, such as <a href='http://adium.im' target='blank'>Adium (pictured left)</a>, <a href='https://www.apple.com/osx/apps/#messages'>iChat</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, and <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>.</p>
+            </div>
+            <div class='buttons'>
+                <p><i><b>Dashdash is in private alpha.</b></i></p>
+                <div class='list-request-container'>
+                    <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
+                    <div class='hidden-form'>
+                        <input id='list-request-email' type='text' placeholder='enter your email'/>
+                        <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
+                    </div>
+                </div>
+                <p><i><b>Already have an account?</b></i></p>
+                <a class='dashdash-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+           </div>
         </div>
     {% endif %}
 {% endblock %}
-{% block right_column %}{% endblock %}
+

@@ -1,75 +1,74 @@
-.dashdash-intro-convo {
-    width: 940px !important;
-    min-height: 350px;
-    padding: 10px 0;
-    height: 350px;
-    overflow: hidden;
-    position: relative;
+.right-col-section {
+    color: #888;
+    padding-bottom: 20px;
+    line-height: 2em;
+    text-align: justify;
     
-    .trademark {
-        font-size: 12px;
-        line-height: 0px;
-        vertical-align: baseline;
-        top: -7px;
-        position: relative;
+    .dashdash-sign-in {
+        text-align: center;
+    }
+    
+    .intro {
+        p {
+            color: @brandTertiaryColor;
+            line-height: 20px;
+            font-size: 1.1em;
+        }
+    
+        .description {
+            margin-bottom: 29px;
+        }
+    
+        .list-request-container {
+            margin-bottom: 36px;
+            .btn-mini {
+                i {
+                    background-position-y: 1px;
+                }
+                font-family: @sansFontFamily;
+                font-weight: 500;
+                line-height: 22px;
+                font-size: 13px;
+            }
+            .hidden-form {
+                display: none;
+                margin-top: 15px;
+            }
+            input {
+                .placeholder(@brandTertiaryColor);
+                color: @brandTertiaryColor;
+                height: 28px;
+                font-size: 1.1em;
+                margin-bottom: 0px
+            }
+            p {
+                margin-bottom: 44px;
+            }
+            .cancel-request {
+                .close {
+                    color: @brandTertiaryColor;
+                    opacity: 1.0;
+                }
+                margin: 3px 0 0 5px;
+                position: absolute;
+            }
+        }
+        .buttons {
+            text-align: center;
+            margin-bottom: 22px;
+        }
     }
 }
 
-.invite-container .dashdash-intro-convo {
-    min-height: 421px;
-    height: 421px;
-    overflow: visible;
-}
-
-#bubble-0,
-#bubble-1,
-#bubble-2,
-#bubble-3,
-#bubble-4,
-#bubble-5,
-#bubble-6 {
-    position: absolute
-}
-
-#bubble-0 {
-    top: 15px;
-    right: 520px;
-}
-#bubble-1 {
-    display: none;
-    top: 91px;
-    left: 430px;    
-}
-#bubble-2 {
-    display: none;
-    top: 138px;
-    right: 520px;
-}
-#bubble-3 {
-    display: none;
-    top: 185px;
-    left: 430px;    
-}
-#bubble-4 {
-    display: none;
-    top: 232px;
-    right: 520px;
-}
-#bubble-5 {
-    display: none;
-    top: 279px;
-    left: 430px;    
-}
-#bubble-6 {
-    display: none;
-    top: 326px;
-    right: 520px;
-    white-space: nowrap;
-    .legal {
-        padding-bottom: 8px;
-        a {
-            color: #333;
-            text-decoration: underline;
-        }
+.table {
+    font-size: 13px;
+    text-align: left;
+    th {
+        color: #777;
+        font-weight: normal;
+        padding-bottom: 13px;
+    }
+    td {
+        padding-right: 15px;
     }
 }
