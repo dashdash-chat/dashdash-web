@@ -151,7 +151,7 @@ def logout():
     session.pop('twitter_user', None)
     session.pop('invite_code', None)
     session.pop('terms_accepted', None)
-    flash('You were signed out', 'success')
+    flash('You signed out', 'success')
     return redirect(url_for('index'))
 
 @twitter.tokengetter
@@ -210,7 +210,7 @@ def oauth_authorized(resp):
             db.session.commit()  # commit before we kick off the celery task, just in case
         if found_user.email and found_user.is_active:
             session['dashdash_user'] = twitter_user
-            flash('You were signed in as %s' % twitter_user, 'success')
+            flash('You signed in as %s' % twitter_user, 'success')
             launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'])
             return redirect(url_for('index'))
         else:

@@ -1,14 +1,5 @@
 $(window).ready(function(){
     
-    var kids = $('.dashdash-intro-convo').children('.dashdash-chat-bubble');
-    //setTimeout(function(){ chatLeft(kids[0]); },1000);
-    setTimeout(function(){ puff(kids[1]); },1000);
-    setTimeout(function(){ puff(kids[2]); },2000);
-    setTimeout(function(){ puff(kids[3]); },2500);
-    setTimeout(function(){ puff(kids[4]); },3000);
-    setTimeout(function(){ puff(kids[5]); },3250);
-    setTimeout(function(){ puff(kids[6]); },3500);
-    
     // if a flash container is present then make it closable
     if( $('.flash-container').length )
     {
@@ -49,10 +40,6 @@ $(window).ready(function(){
     }
 
 });
-
-function puff(el) {
-    $(el).show('puff',{},500);
-}
 
 function isEmail(email)
 {

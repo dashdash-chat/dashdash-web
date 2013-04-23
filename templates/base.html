@@ -22,39 +22,20 @@
         <header>
             <div class='dashdash-header'>
                 <div class='container'>
-                <div class='dashdash-main-logo'>
-                    <a href="/"><img src='/static/img/logo.png' width='320px'/></a>
-                </div>
-                {% if user %}
-                    <div class='user-greeting'>
-                        <div class='username'>{{ user }}</div>
-                        <div class='actions'>
-                            <a href='{{ url_for('index') }}'>invites</a>
-                            <a href='{{ url_for('contacts') }}'>contacts</a>
-                            <a href='{{ url_for('settings') }}'>settings</a>
-                            <a href='{{ url_for('help') }}'>help</a>
-                            <a href='{{ url_for('logout') }}'>logout</a>
-                        </div>
+                    <div class='dashdash-main-logo'>
+                        <a href="/"><img src='/static/img/logo.png'/></a>
                     </div>
-                {% else %}
-                    {% block header_banner %}
-                        <div class='header-banner'>
-                            <p class='description'>Dashdash works with Adium, iChat, Pidgin, imo.im, and many other XMPP/Jabber clients.</p>
-                            <div class='center-text'>
-                                <p><i><b>Dashdash is in private alpha.</b></i></p>
-                                <div class='list-request-container'>
-                                    <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
-                                    <div class='hidden-form'>
-                                        <input id='list-request-email' type='text' placeholder='enter your email'/>
-                                        <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
-                                    </div>
-                                </div>
-                                <p><i><b>Already have an account?</b></i></p>
-                                <a class='dashdash-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+                    {% if user %}
+                        <div class='user-greeting'>
+                            <div class='signed-in'>You are signed in as <span class='username'>{{ user }}</span>. <a href='{{ url_for('logout') }}'>Logout?</a></div>
+                            <div class='actions'>
+                                <a href='{{ url_for('index') }}'>Invites</a>
+                                <a href='{{ url_for('contacts') }}'>Contacts</a>
+                                <a href='{{ url_for('settings') }}'>Settings</a>
+                                <a href='{{ url_for('help') }}'>Help</a>
                             </div>
                         </div>
-                    {% endblock %}
-                {% endif %}
+                    {% endif %}
                 </div> <!-- container -->
             </div>
         </header>
@@ -65,25 +46,25 @@
                 <div class='container'>
                     <div class='row'>
                         <div class='span8'>
-                            {% if success_messages or failure_messages %}
-                                <div class='flash-container container'>
-                                    <button class="close">&times;</button>
-                                    <ul class='unstyled'>
-                                        {% for message in success_messages %}
-                                            <li><b><i class="icon-ok-sign"></i> {{ message }}</b></li>
-                                        {% endfor -%}
-                                        {% for message in failure_messages %}
-                                            <li><b><i class="icon-exclamation-sign"></i> {{ message }}</b></li>
-                                        {% endfor -%}
-                                    </ul>
-                                </div>
-                            {% endif %}
                             {% block left_column scoped %}{% endblock %}
                         </div>
                         <div class='span4'>
-                            {% block right_column scoped %}
-                                {% if user %}
-                                    <div class='right-col-section'>
+                            <div class='right-col-section'>
+                                {% if success_messages or failure_messages %}
+                                    <div class='flash-container container'>
+                                        <button class="close">&times;</button>
+                                        <ul class='unstyled'>
+                                            {% for message in success_messages %}
+                                                <li><b><i class="icon-ok-sign"></i> {{ message }}</b></li>
+                                            {% endfor -%}
+                                            {% for message in failure_messages %}
+                                                <li><b><i class="icon-exclamation-sign"></i> {{ message }}</b></li>
+                                            {% endfor -%}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                {% block right_column scoped %}
+                                    {% if user %}
                                         <p>Dashdash works with existing XMPP/Jabber apps.<br/>If you're lost, <a href="mailto:lost-and-found@dashdashinc.com">email us</a>! Or visit <a href='{{ url_for('help') }}'>getting started</a>.</p>
                                         <ul class='client-logo-list'>
                                             <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'><img src='/static/img/client_logos/im-plus.png' /></a></li>  
@@ -99,9 +80,9 @@
                                             <li>Web: <a href='https://imo.im/' target='blank'>imo.im</a></li>
                                             <li>Windows: <a href='http://www.pidgin.im/' target='blank'>Pidgin</a></li>
                                         </ul>
-                                    </div>
-                                {% endif %}
-                            {% endblock %}
+                                    {% endif %}
+                                {% endblock %}
+                            </div>
                         </div>
                     </div>
                 </div>
