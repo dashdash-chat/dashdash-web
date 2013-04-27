@@ -1,0 +1,37 @@
+http://www.gutenberg.org/files/11/11-h/11-h.htm
+
+alice: adium
+cheshire_cat: swift
+mad_hatter: instabird
+dormouse: messages
+white_rabbit: imo
+march_hare: IM+
+jabberwocky: jabberb
+
+***alice starts conversation with cheshire cat***
+[alice] would you tell me, please, which way I ought to go from here?
+[cheshire_cat] that depends a good deal on where you want to get to
+[alice] I don't much care where
+[cheshire_cat] then it doesn't matter which way you go
+[alice] ...so long as I get *somewhere*
+[cheshire_cat] oh, you're sure to do that
+[cheshire_cat] if you only walk long enough :D
+[chesire_cat] disconnects
+
+***conversation with mad_hatter & march_hare***
+[alice] /join
+[mad_hatter] no room! no room!
+[alice] there's plenty of room!
+[mad_hatter] why is a raven like a writing desk?
+[alice] I believe I can guess that
+[mad_hatter] /invite white_rabbit
+[white_rabbit] /me takes a watch out of his waistcoat pocket
+[white_rabbit] I'm late, I'm late, for a very important date
+[white_rabbit] /leave
+[march_hare] do you mean that you think you can find out the answer to it?
+[alice] exactly so
+[march hare] then you should say what you mean
+[alice] /topic
+[alice] /leave
+[chesire_cat] connects
+MAKE IT LOOP so everything returns to previous state
