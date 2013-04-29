@@ -4618,6 +4618,23 @@ legend {
   margin-bottom: 4px;
   border: none;
 }
+.wonderland {
+  margin-top: 59px;
+  opacity: 0;
+}
+.wonderland:hover {
+  opacity: 0.8;
+  transition: opacity 3.5s;
+  -moz-transition: opacity 3.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 3.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 3.5s;
+  /* Opera */
+
+}
 input.btn.btn-success {
   margin-bottom: 10px;
 }

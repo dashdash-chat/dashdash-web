@@ -1,4 +1,5 @@
 import datetime
+from random import choice
 from flask import Flask, flash, render_template, redirect, request, session, url_for
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -7,6 +8,7 @@ from sqlalchemy import select, and_, desc, func
 from sqlalchemy.orm.exc import NoResultFound
 import xmlrpclib
 import constants
+import wonderland
 from celery import chain
 from celery_tasks import fetch_follows, score_edges
 
@@ -94,7 +96,7 @@ def index():
                                   users.c.is_active == True).\
                            order_by(desc(invitees.c.used))
             used_invites = q.all()
-    return render_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, multi_invites=multi_invites, used_invites=used_invites)
+    return render_wonderland_template('home.html', domain=constants.domain, user=user, unused_invites=unused_invites, multi_invites=multi_invites, used_invites=used_invites)
 
 @app.route('/login')
 def login():
@@ -113,7 +115,7 @@ def invite(code=None):
     form = InviteCodeForm()
     if not code:
         flash('Sorry, you need an invite code to sign up:', 'invite_error')
-        return render_template('invite.html', form=form)
+        return render_wonderland_template('invite.html', form=form)
     try:
         q = db.session.query(invites.c.id, users.c.name, invites.c.max_uses).\
                        filter(invites.c.sender == users.c.id,
@@ -121,19 +123,19 @@ def invite(code=None):
         invite_id, sender_name, max_uses = q.one()
     except NoResultFound:
         flash('Sorry, \'%s\' is not a valid invite code. Try another?' % code, 'invite_error')
-        return render_template('invite.html', form=form)
+        return render_wonderland_template('invite.html', form=form)
     q = db.session.query(users.c.name).\
                    outerjoin(invitees).\
                    filter(invitees.c.invite_id == invite_id)
     recipients = [r.name for r in q.all()]
     if len(recipients) == 1 and max_uses == 1:
-        return render_template('invite.html', form=form, sender=sender_name, recipient=recipients[0])
+        return render_wonderland_template('invite.html', form=form, sender=sender_name, recipient=recipients[0])
     elif len(recipients) >= max_uses:
         flash('Sorry, this invite can\'t be used again. Try another?', 'invite_error')
-        return render_template('invite.html', form=form)
+        return render_wonderland_template('invite.html', form=form)
     else:
         session['invite_code'] = code
-        return render_template('invite.html', sender=sender_name)
+        return render_wonderland_template('invite.html', sender=sender_name)
 
 @app.route('/check_invite', methods=['POST'])
 def check_invite():
@@ -281,14 +283,14 @@ def create_account():
             else:
                 form = CreateAccountForm()
             if user_used_invite:
-                return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
+                return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             if has_unused_invite:
                 db.session.execute(invitees.insert().\
                                    values(invite_id=has_unused_invite.id,
                                           invitee_id=found_user.id,
                                           used=datetime.datetime.now()))
                 db.session.commit()
-                return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
+                return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
         else:
             flash('Sorry, first you to sign in with Twitter!', 'failure')
@@ -348,7 +350,7 @@ def demo(token):
                     users.c.is_active == True))
     found_demo = db.session.execute(s).fetchone()
     if found_demo:
-        return render_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
+        return render_wonderland_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
 @app.route("/help")
@@ -356,7 +358,7 @@ def help():
     user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
-    return render_template('help.html', user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
+    return render_wonderland_template('help.html', user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
@@ -378,7 +380,7 @@ def settings():
                 flash('This email address has already been used - try another?', 'failure')
         else:    
             flash('Please enter a valid email address.', 'failure')
-    return render_template('settings.html', user=user, form=form)
+    return render_wonderland_template('settings.html', user=user, form=form)
 
 @app.route('/settings/change_password', methods=['GET', 'POST'])
 def change_password():
@@ -398,7 +400,7 @@ def change_password():
                 return redirect(url_for('change_password'))
         else:
             flash('Are you sure you entered the same valid password twice? Please try again.', 'failure')
-    return render_template('change_password.html', user=user, form=form)
+    return render_wonderland_template('change_password.html', user=user, form=form)
 
 @app.route("/contacts")
 def contacts():
@@ -424,7 +426,7 @@ def contacts():
                         blocks.c.to_user_id == users.c.id,
                         users.c.is_active == True))
         blockees = filter_admins(db.session.execute(s).fetchall())
-        return render_template('contacts.html', user=user,
+        return render_wonderland_template('contacts.html', user=user,
                                                 friends=friends,
                                                 incomings=incoming.difference(outgoing),
                                                 outgoings=outgoing.difference(incoming),
@@ -434,27 +436,31 @@ def contacts():
 @app.route("/about")
 def about():
     user = session.get('dashdash_user')
-    return render_template('about.html', user=user)
+    return render_wonderland_template('about.html', user=user)
 
 @app.route("/terms")
 def terms():
     user = session.get('dashdash_user')
-    return render_template('legal_terms.html', user=user)
+    return render_wonderland_template('legal_terms.html', user=user)
 
 @app.route("/privacy")
 def privacy():
     user = session.get('dashdash_user')
-    return render_template('legal_privacy.html', user=user)
+    return render_wonderland_template('legal_privacy.html', user=user)
 
 @app.errorhandler(404)
 def page_not_found(e=None):
-    return render_template('404.html'), 404
+    return render_wonderland_template('404.html'), 404
 
 @app.route("/50x.html")
 @app.errorhandler(500)
 def page_not_found(e=None):
-    return render_template('500.html'), 500
+    return render_wonderland_template('500.html'), 500
 
+def render_wonderland_template(template_name_or_list, **context):
+    context['wonderland_paragraphs'] = choice(wonderland.snippets)
+    return render_template(template_name_or_list, **context)
+    
 def _check_account(user):
     return _xmlrpc_command('check_account', {
         'user': user,
