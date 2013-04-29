@@ -4294,78 +4294,75 @@ footer .footer-links > ul {
   padding-right: 5px;
   margin-top: 1px;
 }
-.right-col-section {
+.intro {
   color: #888;
   padding-bottom: 20px;
   line-height: 2em;
   text-align: justify;
 }
-.right-col-section .dashdash-sign-in {
-  text-align: center;
-}
-.right-col-section .intro p {
+.intro p {
   color: #001c73;
   line-height: 20px;
   font-size: 1.1em;
 }
-.right-col-section .intro .description {
+.intro .description {
   margin-bottom: 29px;
 }
-.right-col-section .intro .list-request-container {
-  margin-bottom: 36px;
+.intro .list-request-container {
+  margin-bottom: 35px;
 }
-.right-col-section .intro .list-request-container .btn-mini {
+.intro .list-request-container .btn-mini {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 22px;
   font-size: 13px;
 }
-.right-col-section .intro .list-request-container .btn-mini i {
+.intro .list-request-container .btn-mini i {
   background-position-y: 1px;
 }
-.right-col-section .intro .list-request-container .hidden-form {
+.intro .list-request-container .hidden-form {
   display: none;
   margin-top: 15px;
 }
-.right-col-section .intro .list-request-container input {
+.intro .list-request-container input {
   color: #001c73;
   height: 28px;
   font-size: 1.1em;
   margin-bottom: 0px;
 }
-.right-col-section .intro .list-request-container input input::-webkit-input-placeholder {
+.intro .list-request-container input input::-webkit-input-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input input:-moz-placeholder {
+.intro .list-request-container input input:-moz-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input textarea::-webkit-input-placeholder {
+.intro .list-request-container input textarea::-webkit-input-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input textarea:-moz-placeholder {
+.intro .list-request-container input textarea:-moz-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input:-moz-placeholder {
+.intro .list-request-container input:-moz-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input:-ms-input-placeholder {
+.intro .list-request-container input:-ms-input-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container input::-webkit-input-placeholder {
+.intro .list-request-container input::-webkit-input-placeholder {
   color: #001c73;
 }
-.right-col-section .intro .list-request-container p {
+.intro .list-request-container p {
   margin-bottom: 44px;
 }
-.right-col-section .intro .list-request-container .cancel-request {
+.intro .list-request-container .cancel-request {
   margin: 3px 0 0 5px;
   position: absolute;
 }
-.right-col-section .intro .list-request-container .cancel-request .close {
+.intro .list-request-container .cancel-request .close {
   color: #001c73;
   opacity: 1.0;
 }
-.right-col-section .intro .buttons {
+.intro .buttons {
   text-align: center;
   margin-bottom: 22px;
 }
@@ -4380,9 +4377,6 @@ footer .footer-links > ul {
 }
 .table td {
   padding-right: 15px;
-}
-.invite-container h3 {
-  color: #001c73;
 }
 .invite-container p {
   color: #001c73;
@@ -4422,17 +4416,6 @@ footer .footer-links > ul {
 }
 .invite-container .invite-form input::-webkit-input-placeholder {
   color: #001c73;
-}
-.invite-container .center-text {
-  text-align: center;
-  margin-bottom: 22px;
-}
-.invite-container .center-text .legal {
-  padding: 5px 0 12px 0;
-  line-height: 20px;
-  font-size: 13px;
-  width: 215px;
-  margin: auto;
 }
 #who-we-are .photo {
   width: 200px;
@@ -4577,6 +4560,17 @@ p.centered {
 .page-header {
   margin-top: 0px;
   padding-bottom: 0px;
+}
+.center-text {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.center-text .legal {
+  padding: 0 0 12px 0;
+  line-height: 20px;
+  font-size: 12px;
+  width: 193px;
+  margin: auto;
 }
 input.create_account {
   height: 2em;

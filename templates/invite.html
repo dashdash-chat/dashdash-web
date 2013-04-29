@@ -4,12 +4,19 @@
 {% endblock %}
 {% block right_column %}
     <div class='invite-container'>
+        {% if not invite_error_messages and sender %}                
+            <p><strong>{{ sender }}</strong> invited you!</p>
+            <div class='center-text'>
+                <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
+                <a class='dashdash-sign-in' href="{{ url_for('signup') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+            </div>
+        {% endif %}
         {% if invite_error_messages or (sender and recipient) %}
             <p class='invite-error-message'>{% 
                 if invite_error_messages 
                     %}{{ invite_error_messages[0] }}{% 
                 else
-                    %}Are you <strong>{{ recipient }}</strong>? If not, you need another invite code:{%
+                    %}If you're not <strong>{{ recipient }}</strong> on Twitter, you'll need a different invite code:{%
                 endif %}</p>
             <form class='invite-form' action='{{ url_for('check_invite') }}' method=post>
                 {{ form.hidden_tag() }}
@@ -17,12 +24,6 @@
                 {{ form.submit }}
             </form>
         {% endif %}
-        {% if not invite_error_messages and sender %}                
-            <h3><strong>{{ sender }}</strong> invited you!</h3>
-            <div class='center-text'>
-                <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
-                <a class='dashdash-sign-in' href="{{ url_for('signup') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
-            </div>
-        {% endif %}
+        
     </div>
 {% endblock %}

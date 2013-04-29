@@ -102,7 +102,6 @@ def login():
 
 @app.route('/signup')
 def signup():
-    session['terms_accepted'] = True
     return twitter.authorize()
 
 @app.route('/invite/')
@@ -150,7 +149,6 @@ def logout():
     session.pop('dashdash_user', None)
     session.pop('twitter_user', None)
     session.pop('invite_code', None)
-    session.pop('terms_accepted', None)
     flash('You signed out', 'success')
     return redirect(url_for('index'))
 
@@ -219,21 +217,11 @@ def oauth_authorized(resp):
                                    where(users.c.name == twitter_user).\
                                    values(is_active=True))
                 db.session.commit()
-            if not session.get('terms_accepted'):
-                invite = db.session.query(invites.c.code).\
-                                    outerjoin(invitees).\
-                                    filter(invitees.c.invitee_id == found_user.id).\
-                                    one()
-                return redirect(url_for('invite', code=invite.code))
-            session.pop('terms_accepted', None)
             session['twitter_user'] = twitter_user
             launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
             return redirect(url_for('create_account'))
     else:
-        if session.get('invite_code'):
-            if not session.get('terms_accepted'):
-                return redirect(url_for('invite', code=session.get('invite_code')))
-            session.pop('terms_accepted', None)
+        if session.get('invite_code'):  # This session variable is only set if the invite code is usable, so we don't need to check again
             result = db.session.execute(users.insert().\
                                         values(name=twitter_user,
                                                twitter_id=resp['user_id'],
@@ -303,9 +291,9 @@ def create_account():
                 return render_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
         else:
-            flash('Sorry, first you\'ll need to sign in with Twitter and have a valid invite code!', 'failure')
+            flash('Sorry, first you to sign in with Twitter!', 'failure')
             return redirect(url_for('index'))
-    else:
+    else:  # request.method == 'POST':
         if found_user and (has_unused_invite or user_used_invite):
             if session.get('account_exists'):
                 form = AddEmailForm(request.form)
@@ -360,7 +348,7 @@ def demo(token):
                     users.c.is_active == True))
     found_demo = db.session.execute(s).fetchone()
     if found_demo:
-        return render_template('demo.html', server=constants.domain, username=found_demo['name'], password=found_demo['password'])
+        return render_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
 @app.route("/help")
@@ -368,7 +356,7 @@ def help():
     user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
-    return render_template('help.html', user=user)
+    return render_template('help.html', user=user, domain=constants.domain)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():

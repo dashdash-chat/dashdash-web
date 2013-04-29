@@ -70,7 +70,7 @@
                 <p>It works with many XMMP/Jabber apps, such as <a href='http://adium.im' target='blank'>Adium</a> (pictured left), <a href='https://www.apple.com/osx/apps/#messages'>iChat</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, and <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>.</p>
             </div>
             <div class='buttons'>
-                <p><i><b>Dashdash is in private alpha.</b></i></p>
+                <p><b>Dashdash is in private alpha.</b></p>
                 <div class='list-request-container'>
                     <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
                     <div class='hidden-form'>
@@ -78,8 +78,11 @@
                         <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
                     </div>
                 </div>
-                <p><i><b>Already have an account?</b></i></p>
-                <a class='dashdash-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+                <p><b>Already have an account?</b></p>
+                <div class='center-text'>
+                    <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
+                    <a class='dashdash-sign-in' href="{{ url_for('login') }}"><img src='/static/img/sign-in-with-twitter-gray.png' /></a>
+                </div>
            </div>
         </div>
     {% endif %}

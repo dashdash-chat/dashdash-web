@@ -1,62 +1,55 @@
-.right-col-section {
+.intro {
     color: #888;
     padding-bottom: 20px;
     line-height: 2em;
     text-align: justify;
-    
-    .dashdash-sign-in {
-        text-align: center;
+    p {
+        color: @brandTertiaryColor;
+        line-height: 20px;
+        font-size: 1.1em;
     }
-    
-    .intro {
-        p {
+
+    .description {
+        margin-bottom: 29px;
+    }
+
+    .list-request-container {
+        margin-bottom: 35px;
+        .btn-mini {
+            i {
+                background-position-y: 1px;
+            }
+            font-family: @sansFontFamily;
+            font-weight: 500;
+            line-height: 22px;
+            font-size: 13px;
+        }
+        .hidden-form {
+            display: none;
+            margin-top: 15px;
+        }
+        input {
+            .placeholder(@brandTertiaryColor);
             color: @brandTertiaryColor;
-            line-height: 20px;
+            height: 28px;
             font-size: 1.1em;
+            margin-bottom: 0px
         }
-    
-        .description {
-            margin-bottom: 29px;
+        p {
+            margin-bottom: 44px;
         }
-    
-        .list-request-container {
-            margin-bottom: 36px;
-            .btn-mini {
-                i {
-                    background-position-y: 1px;
-                }
-                font-family: @sansFontFamily;
-                font-weight: 500;
-                line-height: 22px;
-                font-size: 13px;
-            }
-            .hidden-form {
-                display: none;
-                margin-top: 15px;
-            }
-            input {
-                .placeholder(@brandTertiaryColor);
+        .cancel-request {
+            .close {
                 color: @brandTertiaryColor;
-                height: 28px;
-                font-size: 1.1em;
-                margin-bottom: 0px
+                opacity: 1.0;
             }
-            p {
-                margin-bottom: 44px;
-            }
-            .cancel-request {
-                .close {
-                    color: @brandTertiaryColor;
-                    opacity: 1.0;
-                }
-                margin: 3px 0 0 5px;
-                position: absolute;
-            }
+            margin: 3px 0 0 5px;
+            position: absolute;
         }
-        .buttons {
-            text-align: center;
-            margin-bottom: 22px;
-        }
+    }
+    .buttons {
+        text-align: center;
+        margin-bottom: 22px;
     }
 }
 
