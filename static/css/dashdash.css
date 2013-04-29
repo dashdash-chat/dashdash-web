@@ -4327,6 +4327,7 @@ footer .footer-links > ul {
 .intro .list-request-container input {
   color: #001c73;
   height: 28px;
+  width: 219px;
   font-size: 1.1em;
   margin-bottom: 0px;
 }
@@ -4545,24 +4546,21 @@ p.centered {
 .legal-body li li {
   list-style-type: lower-alpha;
 }
-.page-section-header,
-.page-header {
-  height: 45px;
+.page-section-header {
+  padding-bottom: 15px;
 }
-.page-section-header h1,
-.page-header h1 {
-  height: 25px;
+.page-section-header h1 {
+  height: 30px;
   line-height: 25px;
-  float: left;
   font-size: 25px;
   font-weight: 100;
   padding-left: 35px;
   background: url('/static/img/bubble-square-magenta.png') no-repeat 0 1px;
   background-size: 25px 25px;
 }
-.page-header {
-  margin-top: 0px;
-  padding-bottom: 0px;
+.page-section-header h3 {
+  padding-left: 35px;
+  font-size: 14px;
 }
 .center-text {
   text-align: center;

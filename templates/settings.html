@@ -1,15 +1,14 @@
 {% extends "base.html" %}
 {% block left_column %}
-    <div class="page-header">
-        <h1>settings</h1>
+    <div class="page-section-header">
+        <h1>settings - email address</h1>
+        <h3>
+            Or <a href='{{ url_for('change_password') }}'><b>change your XMPP/Jabber password?</b></a>
+        </h3>
     </div>
     <form action="{{ url_for('settings') }}" method=post class='dashdash-form'>
-        <legend>Email Address</legend>
         {{ form.hidden_tag() }}
         {{ form.email }}
         <input class='btn btn-success' type="submit" value="Save">
     </form>
-    <p>
-        Or <a href='{{ url_for('change_password') }}'><b>change your XMPP/Jabber password?</b></a>
-    </p>
 {% endblock %}

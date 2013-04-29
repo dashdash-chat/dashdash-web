@@ -18,7 +18,7 @@
                 {{ form.email(placeholder="email", class='create_account') }}<br/>
                 {% if not account_exists %}
                     {{ form.password(placeholder="password", class='create_account') }}<br/>
-                    {{ form.confirm (placeholder="confirm", class='create_account')}}<br/>
+                    {{ form.confirm (placeholder="confirm password", class='create_account')}}<br/>
                     <input class='btn btn-success create_account_go' type='submit' value='create account'>
                     <p class="centered">
                         <strong>or</strong>
@@ -28,7 +28,7 @@
                         This opens a new window, so have <strong>popups enabled</strong>.
                     </p>
                     <p>
-                        (<a href="https://github.com/lehrblogger/JWChat">JWChat</a> is an open source project that works out-of-the-box with XMPP services like Dashdash, so it was easy to get working. We'll build a proper web client soon!)
+                        (<a href="https://github.com/lehrblogger/JWChat">JWChat</a> is open source and works out-of-the-box with XMPP/Jabber services like Dashdash, so it was easy to get working. We'll build a proper web client soon!)
                     </p>
                 {% else %}
                     You already have an XMPP account. If you need to change your password, you can do so from the settings page after adding an email address.
