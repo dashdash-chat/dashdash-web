@@ -27,7 +27,7 @@
                     </div>
                     {% if user %}
                         <div class='user-greeting'>
-                            <div class='signed-in'>You are signed in as <span class='username'>{{ user }}</span>. <a href='{{ url_for('logout') }}'>Logout?</a></div>
+                            <div class='signed-in'>You are signed in as <span class='username'>{{ user }}</span>. <a href='{{ url_for('logout') }}'>Sign out?</a></div>
                             {% block top_nav %}
                                 <div class='actions'>
                                     <a href='{{ url_for('index') }}'>Invites</a>
