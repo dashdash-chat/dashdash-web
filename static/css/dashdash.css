@@ -4245,7 +4245,7 @@ a.badge:hover {
   font-weight: bold;
 }
 .dashdash-header .user-greeting .actions a {
-  padding-right: 15px;
+  padding-right: 20px;
   color: #00adee;
 }
 footer {
@@ -4417,6 +4417,28 @@ footer .footer-links > ul {
 }
 .invite-container .invite-form input::-webkit-input-placeholder {
   color: #001c73;
+}
+.help.screencast {
+  margin-top: 11px;
+}
+.instructions {
+  font-weight: bold;
+  color: #001c73;
+}
+.instructions ol > li {
+  margin-bottom: 18px;
+}
+.instructions ol > li p,
+.instructions ol > li ul li {
+  font-weight: normal;
+  color: #001c73;
+  line-height: 20px;
+  font-size: 1.1em;
+}
+.instructions img {
+  height: 16px;
+  margin: -5px 0 0 2px;
+  display: inline;
 }
 #who-we-are {
   min-height: 310px;

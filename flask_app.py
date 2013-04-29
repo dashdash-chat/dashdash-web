@@ -356,7 +356,7 @@ def help():
     user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
-    return render_template('help.html', user=user, domain=constants.domain)
+    return render_template('help.html', user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():

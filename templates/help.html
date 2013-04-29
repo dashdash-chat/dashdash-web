@@ -1,25 +1,13 @@
 {% extends "base.html" %}
 {% block left_column %}
-    <div class='page-header'>
-        <h1>getting started</h1>
+    <div class='page-section-header'>
+        <h1>help</h1>
     </div>
     <p>
-        To use Dashdash, sign in using one of the mobile/web/desktop apps listed on the right <i class="icon-hand-right"></i>
+        For an overview of the basic features, watch the below Adium screencast .gif or this (slightly out-of-date) <a href="https://www.youtube.com/watch?feature=player_embedded&v=JDsQEMaWjz8">screencast video</a>.
     </p>
-    <p>
-        by adding a new XMPP/Jabber account with <strong>{{ user }}@{{ domain }}</strong> and your password.
-    </p>
-    <p>
-        After connecting, you'll see a new group in your buddy list with your Dashdash contacts. Enjoy!
-    </p>
-    <p>
-        For an overview of the basic features, watch this screencast (best viewed at 720p in full screen mode).
-    </p>
-    <p>
-        <iframe width="620" height="349" src="https://www.youtube.com/embed/JDsQEMaWjz8?rel=0" frameborder="0" allowfullscreen></iframe>
-    </p>
-    <br>
-    <div class='page-header'>
+    <div class='help screencast'></div>
+    <div class='page-section-header'>
         <a name='adium'></a><h1>adium setup</h1>
     </div>
     <ol class=''>
@@ -41,7 +29,66 @@
             <img src='/static/img/setup/adium/account-ok.png'/>
         </li>
         <li>
-            <p>Close the Accounts window, look for the "{{ user }}@dashdash.com" group in your buddy list, and start chatting!</p>
+            <p>Close the Accounts window, look for the "Dashdash Contacts" and "Dashdash Conversations" groups in your buddy list, and start chatting!</p>
         </li>
     </ol>
 {% endblock %}
+{% block right_column %}
+<div class='page-section-header'>
+    <h1>getting started</h1>
+</div>
+<div class='instructions'>
+    <ol>
+        <li>
+            <p>
+                <strong>Download a chat client app</strong>
+            </p>
+            <ul class='client-logo-list'>
+                <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'></a></li>  
+                <li><a href='https://itunes.apple.com/us/app/imo-messenger/id336435697'></a></li>
+                <li><a href='http://adium.im/'></a></li>
+                <li><a href='https://www.apple.com/osx/apps/#messages'></a></li>
+                <li><a href='http://xmpp.org/xmpp-software/clients/'></a></li>
+                <li><a href='http://xmpp.org/xmpp-software/clients/'></a></li>
+            </ul>
+            <ul>
+                <li>Mac: <a href='http://adium.im/' target='blank'>Adium <img src='/static/img/client_logos/adium.png' /></a>, <a href='https://www.apple.com/osx/apps/#messages'>Messages/iChat <img src='/static/img/client_logos/messages.png' /></a></li>
+                <li>Windows: <a href='http://www.pidgin.im/' target='blank'>Pidgin <img src='/static/img/client_logos/pidgin.png' /></a></li>
+                <li>iOS: <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+ <img src='/static/img/client_logos/im-plus.png' /></a></li>
+                <li>Web: <a href='https://imo.im/' target='blank'>imo.im <img src='/static/img/client_logos/imo.png' /></a></li>
+            </ul>
+        </li>
+        <li>
+            <p>
+                <strong>Add your Dashdash account</strong>
+            </p>
+            <p>
+                Chat clients often support many different services, so look for either XMPP <img src='/static/img/client_logos/xmpp.png' /> or Jabber <img src='/static/img/client_logos/jabber.png' />.
+            </p>
+            <p>
+                Use {{ user }}@{{ domain }} as your username, and use the password you chose when you signed up for Dashdash.</li>
+            </p>
+        <li>
+            <p>
+                <strong>Sign in</strong>
+            </p>
+            <p>
+                Find the Dashdash groups in your contact list (they might be hidden if no one is online), and send someone a message!
+            </p>
+            <p>
+                If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>Enjoy!</strong>
+            </p>
+            <p>
+                Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
+            </p>
+        </li>
+    </ol>    
+</div>
+{% endblock %}
+
+
