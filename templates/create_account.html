@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block top_nav %}
+{% endblock %}
 {% block left_column %}
     {% if errors %}
         <p>Try a different invite code?
@@ -27,8 +29,7 @@
                     </p>
                     <p>
                         (<a href="https://github.com/lehrblogger/JWChat">JWChat</a> is an open source project that works out-of-the-box with XMPP services like Dashdash, so it was easy to get working. We'll build a proper web client soon!)
-                    </p
-                    
+                    </p>
                 {% else %}
                     You already have an XMPP account. If you need to change your password, you can do so from the settings page after adding an email address.
                     <input type="submit" class='btn btn-success create_account_go' value="create account">

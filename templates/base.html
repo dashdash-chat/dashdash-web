@@ -28,12 +28,14 @@
                     {% if user %}
                         <div class='user-greeting'>
                             <div class='signed-in'>You are signed in as <span class='username'>{{ user }}</span>. <a href='{{ url_for('logout') }}'>Logout?</a></div>
-                            <div class='actions'>
-                                <a href='{{ url_for('index') }}'>Invites</a>
-                                <a href='{{ url_for('contacts') }}'>Contacts</a>
-                                <a href='{{ url_for('settings') }}'>Settings</a>
-                                <a href='{{ url_for('help') }}'>Help</a>
-                            </div>
+                            {% block top_nav %}
+                                <div class='actions'>
+                                    <a href='{{ url_for('index') }}'>Invites</a>
+                                    <a href='{{ url_for('contacts') }}'>Contacts</a>
+                                    <a href='{{ url_for('settings') }}'>Settings</a>
+                                    <a href='{{ url_for('help') }}'>Help</a>
+                                </div>
+                            {% endblock %}
                         </div>
                     {% endif %}
                 </div> <!-- container -->

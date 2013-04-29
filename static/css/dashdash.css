@@ -4417,6 +4417,9 @@ footer .footer-links > ul {
 .invite-container .invite-form input::-webkit-input-placeholder {
   color: #001c73;
 }
+#who-we-are {
+  min-height: 310px;
+}
 #who-we-are .photo {
   width: 200px;
   float: left;
