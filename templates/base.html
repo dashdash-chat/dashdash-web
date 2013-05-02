@@ -84,7 +84,15 @@
                                                     <p>{{ paragraph }}</p>
                                                 {% endif %}
                                             {% endfor %}
-                                            
+                                        </div>
+                                    {% else %}
+                                        <div class='intro'>
+                                            <div class='description'>
+                                                <p><b>Dashdash</b> is a cocktail party on the Internet.</p>
+                                                <p>You can see that your friends are chatting, but not what they're saying unless you join their conversation, just like at a party in real life!</p>
+                                                <p>It works with many XMMP/Jabber apps, such as <a href='http://adium.im' target='blank'>Adium</a> (pictured left), <a href='https://www.apple.com/osx/apps/#messages'>iChat</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, and <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>.</p>
+                                            </div>
+                                            {% block right_column_signin scoped %}{% endblock %}
                                         </div>
                                     {% endif %}
                                 {% endblock %}

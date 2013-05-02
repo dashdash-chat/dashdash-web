@@ -4294,20 +4294,6 @@ footer .footer-links > ul {
   padding-right: 5px;
   margin-top: 1px;
 }
-.intro {
-  color: #888;
-  padding-bottom: 20px;
-  line-height: 2em;
-  text-align: justify;
-}
-.intro p {
-  color: #001c73;
-  line-height: 20px;
-  font-size: 1.1em;
-}
-.intro .description {
-  margin-bottom: 29px;
-}
 .intro .list-request-container {
   margin-bottom: 35px;
 }
@@ -4603,6 +4589,20 @@ input.create_account {
 }
 input.create_account_go {
   width: 321px;
+}
+.intro {
+  color: #888;
+  padding-bottom: 20px;
+  line-height: 2em;
+  text-align: justify;
+}
+.intro p {
+  color: #001c73;
+  line-height: 20px;
+  font-size: 1.1em;
+}
+.intro .description {
+  margin-bottom: 29px;
 }
 .dashdash-form {
   width: 321px;
