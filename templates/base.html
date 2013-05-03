@@ -79,7 +79,7 @@
                                         <div class='wonderland'>
                                             {% for paragraph in wonderland_paragraphs %}
                                                 {% if paragraph == '#video' %}
-                                                    <iframe width="300" height="225" src="http://www.youtube.com/embed/jt7AF2RCMhg?rel=0" frameborder="0" allowfullscreen></iframe>
+                                                    <iframe width="300" height="225" src="https://www.youtube.com/embed/jt7AF2RCMhg?rel=0" frameborder="0" allowfullscreen></iframe>
                                                 {% else %}
                                                     <p>{{ paragraph }}</p>
                                                 {% endif %}
@@ -108,6 +108,7 @@
             <div class='container footer-links'>
                 <ul class='footer-content-list'>
                     <li><a href='{{ url_for('about') }}'>about</a></li>
+                    <li><a href='http://blog.dashdash.com'>blog</a></li>
                     <li><a href='{{ url_for('terms') }}'>terms of service</a></li>
                     <li><a href='{{ url_for('privacy') }}'>privacy policy</a></li>
                     <li>&copy; 2013 Dashdash, Inc.</li>
