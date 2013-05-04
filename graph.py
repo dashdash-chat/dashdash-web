@@ -139,7 +139,7 @@ class EdgeCalculator(ClientXMPP):
         # *** Sorry, %s and %s already have a directed edge between them.
         # *** Sorry, %s and %s do not have a directed edge between them.
         # *** %s and %s no longer have a directed edge between them.
-        m = re.match(r'\*\*\* (?P<sorry>Sorry\, )?(?P<sender>\w+) and (?P<recipient>\w+) (?P<result>.*)\.', msg['body'])
+        m = re.match(r'\/\*\* (?P<sorry>Sorry\, )?(?P<sender>\w+) and (?P<recipient>\w+) (?P<result>.*)\.', msg['body'])
         if m:
             sorry     = m.groupdict()['sorry']
             sender    = m.groupdict()['sender']
