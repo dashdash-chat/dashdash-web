@@ -41,3 +41,5 @@ client_port = <%= node.run_state['config']['xmpp_users']['port'] %>
 
 protected_users = <%= node.run_state['config']['xmpp_users']['admins'] %> + [web_xmlrpc_user, leaves_xmlrpc_user, helpbot_xmlrpc_user, leaves_jid_user, graph_jid_user]
 admin_jids = ['%s@%s' % (user, domain) for user in <%= node.run_state['config']['xmpp_users']['admins'] %>]
+
+mailchimp_api_key = '<%= node.run_state['config']['mailchimp']['api_key'] %>'

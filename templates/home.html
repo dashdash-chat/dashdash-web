@@ -28,7 +28,7 @@
                     {% if used_invites %}
                         <h3>Used invite codes:</h3>
                         <p>
-                            <table class='table'>
+                            <table class='invites'>
                                 <thead>
                                     <tr>
                                         <th><i>Invite URL</i></th>
@@ -61,13 +61,27 @@
 {% endblock %}
 {% block right_column_signin %}
     <div class='buttons'>
-        <p><b>Dashdash is in private beta.</b></p>
-        <div class='list-request-container'>
-            <a href='#' class='list-request btn btn-mini'><i class="icon-envelope"></i> Want to know when we launch?</a>
-            <div class='hidden-form'>
-                <input id='list-request-email' type='text' placeholder='enter your email'/>
-                <a href='#' class='cancel-request'><button class="close">&times;</button></a>                            
-            </div>
+        <p><b>Dashdash is in private beta. Want an invite?</b></p>
+        <div class='subscribe'>
+            {% with subscribe_success = get_flashed_messages(category_filter=['subscribe_success']) %}
+            {% with subscribe_error = get_flashed_messages(category_filter=['subscribe_error']) %}
+            {% if subscribe_success %}
+                <p class='success'>{{ subscribe_success[0] }}</p>
+                <p class='success'>{{ subscribe_success[1] }}</p>
+            {% else %}
+                <form action="{{ url_for('subscribe') }}" {% if subscribe_error %}class='error'{% endif %} method=post>
+                    {{ subscribe_form.hidden_tag() }}
+                    {% if subscribe_error %}
+                        {{ subscribe_form.email(placeholder=subscribe_error[0]) }}
+                    {% else %}
+                        {{ subscribe_form.email(placeholder="enter your email address") }}
+                    {% endif %}
+                    <br/>
+                    <input class='btn btn-success' type="submit" value="Subscribe">
+                </form>
+            {% endif %}
+            {% endwith %}
+            {% endwith %}
         </div>
         <p><b>Already have an account?</b></p>
         <div class='center-text'>

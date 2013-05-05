@@ -19,7 +19,7 @@ python_virtualenv web_env_dir do
 end
 ["mysql-python", "sqlalchemy",
  "dnspython", "pyasn1", "pyasn1_modules",
- "gunicorn", "boto", "celery", "sleekxmpp",
+ "gunicorn", "boto", "celery", "sleekxmpp", "mailsnake",
  "flask", "Flask-OAuth", "Flask-WTF", "Flask-SQLAlchemy"
 ].each do |library|
   python_pip library do

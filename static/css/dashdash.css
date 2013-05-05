@@ -4294,75 +4294,91 @@ footer .footer-links > ul {
   padding-right: 5px;
   margin-top: 1px;
 }
-.intro .list-request-container {
-  margin-bottom: 35px;
-}
-.intro .list-request-container .btn-mini {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 500;
-  line-height: 22px;
-  font-size: 13px;
-}
-.intro .list-request-container .btn-mini i {
-  background-position-y: 1px;
-}
-.intro .list-request-container .hidden-form {
-  display: none;
-  margin-top: 15px;
-}
-.intro .list-request-container input {
-  color: #001c73;
-  height: 28px;
-  width: 219px;
-  font-size: 1.1em;
-  margin-bottom: 0px;
-}
-.intro .list-request-container input input::-webkit-input-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input input:-moz-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input textarea::-webkit-input-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input textarea:-moz-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input:-moz-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input:-ms-input-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container input::-webkit-input-placeholder {
-  color: #001c73;
-}
-.intro .list-request-container p {
-  margin-bottom: 44px;
-}
-.intro .list-request-container .cancel-request {
-  margin: 3px 0 0 5px;
-  position: absolute;
-}
-.intro .list-request-container .cancel-request .close {
-  color: #001c73;
-  opacity: 1.0;
-}
 .intro .buttons {
-  text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 17px;
 }
-.table {
+.intro .buttons .subscribe {
+  min-height: 80px;
+  margin-bottom: 19px;
+}
+.intro .buttons .subscribe .success {
+  text-align: center;
+  color: #001c73;
+  line-height: 28px;
+}
+.intro .buttons .subscribe form {
+  text-align: center;
+  margin: 0;
+}
+.intro .buttons .subscribe form input {
+  height: 28px;
+  font-size: 1.1em;
+}
+.intro .buttons .subscribe form input#email {
+  margin: 2px 0 11px 0;
+  width: 193px;
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email input::-webkit-input-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email input:-moz-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email textarea::-webkit-input-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email textarea:-moz-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email:-moz-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email:-ms-input-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input#email::-webkit-input-placeholder {
+  color: #001c73;
+}
+.intro .buttons .subscribe form input.btn {
+  font-weight: 500;
+  width: 160px;
+}
+.intro .buttons .subscribe form.error input#email {
+  border-color: #ec297b;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #fbcde0;
+}
+.intro .buttons .subscribe form.error input#email input::-webkit-input-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email input:-moz-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email textarea::-webkit-input-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email textarea:-moz-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email:-moz-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email:-ms-input-placeholder {
+  color: #ec297b;
+}
+.intro .buttons .subscribe form.error input#email::-webkit-input-placeholder {
+  color: #ec297b;
+}
+.invites {
   font-size: 13px;
   text-align: left;
 }
-.table th {
+.invites th {
   color: #777;
   font-weight: normal;
   padding-bottom: 13px;
 }
-.table td {
+.invites td {
   padding-right: 15px;
 }
 .invite-container p {
@@ -4577,11 +4593,10 @@ p.centered {
   margin-bottom: 30px;
 }
 .center-text .legal {
-  padding: 0 0 12px 0;
-  line-height: 20px;
+  line-height: 16px;
   font-size: 12px;
   width: 193px;
-  margin: auto;
+  margin: -2px auto 10px auto;
 }
 input.create_account {
   height: 2em;
@@ -4602,9 +4617,10 @@ input.create_account_go {
   color: #001c73;
   line-height: 20px;
   font-size: 1.1em;
+  margin: 0 0 7px 0;
 }
 .intro .description {
-  margin-bottom: 29px;
+  margin-bottom: 24px;
 }
 .dashdash-form {
   width: 321px;
