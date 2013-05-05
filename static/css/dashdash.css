@@ -4312,7 +4312,7 @@ footer .footer-links > ul {
 }
 .intro .buttons .subscribe form input {
   height: 28px;
-  font-size: 1.1em;
+  font-size: 13px;
 }
 .intro .buttons .subscribe form input#email {
   margin: 2px 0 11px 0;
@@ -4339,10 +4339,6 @@ footer .footer-links > ul {
 }
 .intro .buttons .subscribe form input#email::-webkit-input-placeholder {
   color: #001c73;
-}
-.intro .buttons .subscribe form input.btn {
-  font-weight: 500;
-  width: 160px;
 }
 .intro .buttons .subscribe form.error input#email {
   border-color: #ec297b;
@@ -4621,6 +4617,19 @@ input.create_account_go {
 }
 .intro .description {
   margin-bottom: 24px;
+}
+.intro .btn {
+  font-weight: 500;
+  width: 156px;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.intro .btn.dashdash-sign-in {
+  background-image: url('/static/img/sign-in-with-twitter-bird.png');
+  background-repeat: no-repeat;
+  background-position: 8px 6px;
+  text-align: justify;
+  text-indent: 34px;
 }
 .dashdash-form {
   width: 321px;
