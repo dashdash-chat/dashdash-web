@@ -4413,6 +4413,26 @@ footer .footer-links > ul {
 .instructions .page-section-header {
   padding-bottom: 30px;
 }
+.instructions .page-section-header ul {
+  margin-left: 0px;
+}
+.instructions .page-section-header ul li {
+  display: inline;
+  list-style-type: none;
+}
+.instructions .page-section-header ul li.ui-state-focus a {
+  outline-style: none;
+}
+.instructions .page-section-header ul li.ui-state-active a {
+  color: #ec297b;
+  cursor: text;
+}
+.instructions ol {
+  padding-top: 198px;
+  margin-top: -198px;
+  -webkit-background-clip: content-box;
+  background-clip: content-box;
+}
 .instructions ol > li {
   font-size: 22px;
   color: #001c73;
@@ -4465,16 +4485,6 @@ footer .footer-links > ul {
   display: block;
   height: 0;
   clear: both;
-}
-.instructions h1 a.selected {
-  color: #ec297b;
-  cursor: text;
-}
-.instructions ol {
-  display: none;
-}
-.instructions ol.selected {
-  display: block;
 }
 #who-we-are {
   min-height: 310px;

@@ -1,10 +1,35 @@
 {% extends "base.html" %}
+{% block script %}
+    <script>
+        $(document).ready(function() {
+            $('.instructions').tabs({
+                activate: function( event, ui ) { 
+                    if (history.pushState) {
+                        history.pushState(null, null, ui.newPanel.selector);
+                    }
+                    else {
+                       window.location.hash = ui.newPanel.selector;
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
 {% block one_column %}
     <div class='instructions clearfix'>
         <div class='page-section-header'>
-            <h1>set up <a href='#' name='adium' class='selected'>Adium</a> or <a href='#' name='messages'>Messages/iChat</a> or <a href='#' name='other'>something else</a></h1>
+            <h1>
+                <ul>
+                    <li>set up</li>
+                    <li><a href='#adium'>Adium</a></li>
+                    <li>or</li>
+                    <li><a href='#messages'>Messages/iChat</a></li>
+                    <li>or</li>
+                    <li><a href='#other'>something else</a></li>
+                </ul>
+            </h1>
         </div>
-        <ol class='selected span12 last' name='adium'>
+        <ol class='span12 last' id='adium'>
             <li class='row'>
                 <div class='span4'>
                     <p>
@@ -134,7 +159,7 @@
                 </div>
             </li>
         </ol>
-        <ol class='span12 last' name='messages'>
+        <ol class='span12 last' id='messages'>
             <li class='row'>
                 <div class='span4'>
                     <p>
@@ -171,7 +196,6 @@
                      <img src='/static/img/setup/messages/messages_3_preferences.png'>
                 </div>
             </li>
-            
             <li class='row'>
                 <div class='span4'>
                     <p>
@@ -208,7 +232,6 @@
                      <img src='/static/img/setup/messages/messages_6_account.png'>
                 </div>
             </li>
-            
             <li class='row'>
                 <div class='span4'>
                     <p>
@@ -270,7 +293,7 @@
                 </div>
             </li>
         </ol>
-        <ol class='span12 last' name='other'>
+        <ol class='span12 last' id='other'>
             <li class='row'>
                 <div class='span4 last'>
                     <p>

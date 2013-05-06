@@ -1,5 +1,26 @@
 .instructions .page-section-header {
     padding-bottom: 30px;
+    ul {
+        margin-left: 0px;
+        li {
+            display: inline;
+            list-style-type: none;
+            &.ui-state-focus a {
+                outline-style: none;
+            }
+            &.ui-state-active a {
+                color: @brandSecondaryColor;
+                cursor: text;
+            }
+        }
+    }
+}
+
+.instructions ol {
+    padding-top: 198px;
+    margin-top:-198px;
+    -webkit-background-clip: content-box;
+    background-clip: content-box;
 }
 
 .instructions ol > li {
@@ -51,17 +72,4 @@
     display: block; 
     height: 0; 
     clear: both;
-}
-
-.instructions h1 a {
-    &.selected {
-        color: @brandSecondaryColor;
-        cursor: text;
-    }
-}
-.instructions ol {
-    display: none;
-    &.selected {
-        display: block;
-    }
 }
