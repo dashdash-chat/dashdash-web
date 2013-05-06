@@ -4246,16 +4246,10 @@ a.badge:hover {
 }
 .dashdash-header .user-greeting .actions a {
   padding-right: 20px;
-  color: #00adee;
 }
 footer {
   min-height: 50px;
   padding: 20px 0;
-}
-footer a:link,
-footer a:visited,
-footer a:active {
-  color: #00adee;
 }
 footer .footer-content-list {
   list-style: none;
@@ -4416,27 +4410,71 @@ footer .footer-links > ul {
 .invite-container .invite-form input::-webkit-input-placeholder {
   color: #001c73;
 }
-.help.screencast {
-  margin-top: 11px;
-}
-.instructions {
-  font-weight: bold;
-  color: #001c73;
+.instructions .page-section-header {
+  padding-bottom: 30px;
 }
 .instructions ol > li {
-  margin-bottom: 18px;
+  font-size: 22px;
+  color: #001c73;
+  margin: 0 0 40px 15px;
 }
 .instructions ol > li p,
-.instructions ol > li ul li {
-  font-weight: normal;
+.instructions ol > li ul {
+  font-size: 14px;
   color: #001c73;
-  line-height: 20px;
-  font-size: 1.1em;
 }
-.instructions img {
-  height: 16px;
-  margin: -5px 0 0 2px;
+.instructions ol > li p span.ui-name,
+.instructions ol > li ul span.ui-name {
+  font-weight: 500;
+}
+.instructions ol > li .span4 {
+  margin-top: -21px;
+  width: 290px;
+  margin-left: -5px;
+}
+.instructions ol > li .span4 .inline-images img {
+  height: 18px;
+  margin: -5px 0 0 1px;
   display: inline;
+}
+.instructions ol > li .span8 {
+  overflow: visible;
+  margin-top: -18px;
+  text-align: center;
+  text-size: 22px;
+}
+.instructions ol > li .span8 img {
+  float: left;
+  -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.instructions ol > li .span8 img + span + img {
+  float: right;
+}
+.instructions ol > li .span8 span {
+  display: inline-block;
+  padding-top: 36%;
+}
+.instructions ol > li .span8 .screencast {
+  width: 640px;
+}
+.clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+}
+.instructions h1 a.selected {
+  color: #ec297b;
+  cursor: text;
+}
+.instructions ol {
+  display: none;
+}
+.instructions ol.selected {
+  display: block;
 }
 #who-we-are {
   min-height: 310px;
@@ -4526,6 +4564,15 @@ h5,
 h6 {
   font-family: 'Helvetica', sans-serif;
   font-weight: 100;
+}
+a:link,
+a:visited {
+  color: #00adee;
+}
+a:hover,
+a:active {
+  color: #ec297b;
+  text-decoration: none;
 }
 p {
   color: #777;
@@ -4625,6 +4672,7 @@ input.create_account_go {
   padding: 4px 0;
 }
 .intro .btn.dashdash-sign-in {
+  color: white;
   background-image: url('/static/img/sign-in-with-twitter-bird.png');
   background-repeat: no-repeat;
   background-position: 8px 6px;

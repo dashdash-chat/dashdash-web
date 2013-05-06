@@ -1,23 +1,67 @@
-.help.screencast {
-    margin-top: 11px;
+.instructions .page-section-header {
+    padding-bottom: 30px;
 }
 
-.instructions {
-    font-weight: bold;
+.instructions ol > li {
+    font-size: 22px;
     color: @brandTertiaryColor;
-    ol > li {
-        margin-bottom: 18px;
-    }
-    ol > li p,
-    ol > li ul li {
-        font-weight: normal;
+    margin: 0 0 40px 15px;
+    p, ul {
+        font-size: 14px;
         color: @brandTertiaryColor;
-        line-height: 20px;
-        font-size: 1.1em;
+        span.ui-name {
+            font-weight: 500;
+        }
     }
-    img {
-        height: 16px;
-        margin: -5px 0 0 2px;
-        display: inline;
+    .span4 {
+        margin-top: -21px;
+        width: 290px;
+        margin-left: -5px;
+        .inline-images img {
+            height: 18px;
+            margin: -5px 0 0 1px;
+            display: inline;
+        }
+    }
+    .span8 {
+        overflow: visible;
+        margin-top: -18px;
+        text-align: center;
+        text-size: 22px;
+        img {
+            float: left;
+            .box-shadow(0 0 16px rgba(0,0,0,.5));
+            background-color: rgba(0,0,0,.15);
+        }
+        img + span + img {
+            float: right;
+        }
+        span {
+            display: inline-block;
+            padding-top: 36%;
+        }
+        .screencast {
+            width: 640px;
+        }
+    }
+}
+
+.clearfix:after { 
+    content: " ";
+    display: block; 
+    height: 0; 
+    clear: both;
+}
+
+.instructions h1 a {
+    &.selected {
+        color: @brandSecondaryColor;
+        cursor: text;
+    }
+}
+.instructions ol {
+    display: none;
+    &.selected {
+        display: block;
     }
 }

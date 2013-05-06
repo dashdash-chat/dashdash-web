@@ -46,59 +46,61 @@
             {% with failure_messages = get_flashed_messages(category_filter=['failure']) %}
             {% with invite_error_messages = get_flashed_messages(category_filter=['invite_error']) %}
                 <div class='container'>
-                    <div class='row'>
-                        <div class='span8'>
-                            {% block left_column scoped %}{% endblock %}
-                        </div>
-                        <div class='span4'>
-                            <div class='right-col-section'>
-                                {% if success_messages or failure_messages %}
-                                    <div class='flash-container container'>
-                                        <button class="close">&times;</button>
-                                        <ul class='unstyled'>
-                                            {% for message in success_messages %}
-                                                <li><b><i class="icon-ok-sign"></i> {{ message }}</b></li>
-                                            {% endfor -%}
-                                            {% for message in failure_messages %}
-                                                <li><b><i class="icon-exclamation-sign"></i> {{ message }}</b></li>
-                                            {% endfor -%}
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                                {% block right_column scoped %}
-                                    {% if user %}
-                                        <p>Dashdash works with existing XMPP/Jabber apps.<br/>If you're lost, <a href="mailto:lost-and-found@dashdashinc.com">email us</a>! Or visit <a href='{{ url_for('help') }}'>getting started</a>.</p>
-                                        <ul class='client-logo-list'>
-                                            <li><a href='http://adium.im/'><img src='/static/img/client_logos/adium.png' /></a></li>
-                                            <li><a href='https://www.apple.com/osx/apps/#messages'><img src='/static/img/client_logos/messages.png' /></a></li>
-                                            <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'><img src='/static/img/client_logos/im-plus.png' /></a></li>  
-                                            <li><a href='https://itunes.apple.com/us/app/imo-messenger/id336435697'><img src='/static/img/client_logos/imo.png' /></a></li>
-                                            <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/xmpp.png' /></a></li>
-                                            <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/jabber.png' /></a></li>
-                                        </ul>
-                                        <div class='wonderland'>
-                                            {% for paragraph in wonderland_paragraphs %}
-                                                {% if paragraph == '#video' %}
-                                                    <iframe width="300" height="225" src="https://www.youtube.com/embed/jt7AF2RCMhg?rel=0" frameborder="0" allowfullscreen></iframe>
-                                                {% else %}
-                                                    <p>{{ paragraph }}</p>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class='intro'>
-                                            <div class='description'>
-                                                <p><b>Dashdash</b> is a cocktail party on the Internet.</p>
-                                                <p>You can see that your friends are chatting, but not what they're saying unless you join their conversation, just like at a party in real life!</p>
-                                                <p>It works with many XMMP/Jabber apps, such as <a href='http://adium.im' target='blank'>Adium</a> (pictured left), <a href='https://www.apple.com/osx/apps/#messages'>iChat</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, and <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>.</p>
-                                            </div>
-                                            {% block right_column_signin scoped %}{% endblock %}
+                    {% block one_column scoped %}
+                        <div class='row'>
+                            <div class='span8'>
+                                {% block left_column scoped %}{% endblock %}
+                            </div>
+                            <div class='span4'>
+                                <div class='right-col-section'>
+                                    {% if success_messages or failure_messages %}
+                                        <div class='flash-container container'>
+                                            <button class="close">&times;</button>
+                                            <ul class='unstyled'>
+                                                {% for message in success_messages %}
+                                                    <li><b><i class="icon-ok-sign"></i> {{ message }}</b></li>
+                                                {% endfor -%}
+                                                {% for message in failure_messages %}
+                                                    <li><b><i class="icon-exclamation-sign"></i> {{ message }}</b></li>
+                                                {% endfor -%}
+                                            </ul>
                                         </div>
                                     {% endif %}
-                                {% endblock %}
+                                    {% block right_column scoped %}
+                                        {% if user %}
+                                            <p>Dashdash works with existing XMPP/Jabber apps.<br/>If you're lost, <a href="mailto:lost-and-found@dashdashinc.com">email us</a>! Or visit <a href='{{ url_for('help') }}'>getting started</a>.</p>
+                                            <ul class='client-logo-list'>
+                                                <li><a href='http://adium.im/'><img src='/static/img/client_logos/adium.png' /></a></li>
+                                                <li><a href='https://www.apple.com/osx/apps/#messages'><img src='/static/img/client_logos/messages.png' /></a></li>
+                                                <li><a href='https://itunes.apple.com/us/app/im+-instant-messenger/id285688934"'><img src='/static/img/client_logos/im-plus.png' /></a></li>  
+                                                <li><a href='https://itunes.apple.com/us/app/imo-messenger/id336435697'><img src='/static/img/client_logos/imo.png' /></a></li>
+                                                <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/xmpp.png' /></a></li>
+                                                <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/jabber.png' /></a></li>
+                                            </ul>
+                                            <div class='wonderland'>
+                                                {% for paragraph in wonderland_paragraphs %}
+                                                    {% if paragraph == '#video' %}
+                                                        <iframe width="300" height="225" src="https://www.youtube.com/embed/jt7AF2RCMhg?rel=0" frameborder="0" allowfullscreen></iframe>
+                                                    {% else %}
+                                                        <p>{{ paragraph }}</p>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <div class='intro'>
+                                                <div class='description'>
+                                                    <p><b>Dashdash</b> is a cocktail party on the Internet.</p>
+                                                    <p>You can see that your friends are chatting, but not what they're saying unless you join their conversation, just like at a party in real life!</p>
+                                                    <p>It works with many XMMP/Jabber apps, such as <a href='http://adium.im' target='blank'>Adium</a> (pictured left), <a href='https://www.apple.com/osx/apps/#messages'>iChat</a>, <a href='http://www.pidgin.im/' target='blank'>Pidgin</a>, and <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+</a>.</p>
+                                                </div>
+                                                {% block right_column_signin scoped %}{% endblock %}
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endblock %}
                 </div>
             {% endwith %}
             {% endwith %}
@@ -118,6 +120,7 @@
         <script type="text/javascript" src="/static/js/jquery.js" ></script>
         <script type="text/javascript" src="/static/js/jquery-ui.js" ></script>
         <script type="text/javascript" src="/static/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="/static/js/help.js" ></script>
         {% block script scoped %}{% endblock %}
         <script type="text/javascript">
             if (document.domain != 'dev.vine.im') {

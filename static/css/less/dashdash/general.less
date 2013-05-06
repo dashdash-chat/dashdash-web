@@ -12,6 +12,16 @@ h6 {
     font-weight: 100;
 }
 
+a:link,
+a:visited {
+    color: @brandPrimaryColor;
+}
+a:hover,
+a:active {
+    color: @brandSecondaryColor;
+    text-decoration: none;
+}
+
 p {
     color: #777;
     text-align: justify;
@@ -118,6 +128,7 @@ input.create_account_go {
         font-size: 13px;
         padding: 4px 0;
         &.dashdash-sign-in {
+            color: white;
             background-image: url('/static/img/sign-in-with-twitter-bird.png');
             background-repeat: no-repeat;
             background-position: 8px 6px;
