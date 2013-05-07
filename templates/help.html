@@ -3,7 +3,7 @@
     <script>
         $(document).ready(function() {
             $('.instructions').tabs({
-                activate: function( event, ui ) { 
+                activate: function(event, ui) {
                     if (history.pushState) {
                         history.pushState(null, null, ui.newPanel.selector);
                     }
@@ -12,7 +12,22 @@
                     }
                 }
             });
+            $('.instructions ol').each(function() {
+                $(this).attr('id', $(this).attr('id') + '-setup');
+            });
+            $('.instructions .page-section-header .tab-anchor').each(function() {
+                $(this).attr('href', $(this).attr('href') + '-setup');
+            });
         });
+        $(window).load(function() {
+            $('.instructions ol').each(function() {
+                $(this).attr('id', $(this).attr('id').replace(/-setup/g, ''));
+            });
+            $('.instructions .page-section-header .tab-anchor').each(function() {
+                $(this).attr('href', $(this).attr('href').replace(/-setup/g, ''));
+            });
+            $('.instructions').tabs('refresh');
+        })
     </script>
 {% endblock %}
 {% block one_column %}
@@ -21,11 +36,11 @@
             <h1>
                 <ul>
                     <li>set up</li>
-                    <li><a href='#adium'>Adium</a></li>
+                    <li><a href='#adium' class='tab-anchor'>Adium</a></li>
                     <li>or</li>
-                    <li><a href='#messages'>Messages/iChat</a></li>
+                    <li><a href='#messages' class='tab-anchor'>Messages/iChat</a></li>
                     <li>or</li>
-                    <li><a href='#other'>something else</a></li>
+                    <li><a href='#other' class='tab-anchor'>something else</a></li>
                 </ul>
             </h1>
         </div>
