@@ -15,16 +15,10 @@
             $('.instructions ol').each(function() {
                 $(this).attr('id', $(this).attr('id') + '-setup');
             });
-            $('.instructions .page-section-header .tab-anchor').each(function() {
-                $(this).attr('href', $(this).attr('href') + '-setup');
-            });
         });
         $(window).load(function() {
             $('.instructions ol').each(function() {
                 $(this).attr('id', $(this).attr('id').replace(/-setup/g, ''));
-            });
-            $('.instructions .page-section-header .tab-anchor').each(function() {
-                $(this).attr('href', $(this).attr('href').replace(/-setup/g, ''));
             });
             $('.instructions').tabs('refresh');
         })
