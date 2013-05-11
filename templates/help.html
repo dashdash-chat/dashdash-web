@@ -2,7 +2,7 @@
 {% block script %}
     <script>
         $(document).ready(function() {
-            $('.instructions').tabs({
+            $('.instructions .setup').tabs({
                 activate: function(event, ui) {
                     if (history.pushState) {
                         history.pushState(null, null, ui.newPanel.selector);
@@ -12,349 +12,375 @@
                     }
                 }
             });
-            $('.instructions ol').each(function() {
+            $('.instructions .setup ol').each(function() {
                 $(this).attr('id', $(this).attr('id') + '-setup');
             });
         });
         $(window).load(function() {
-            $('.instructions ol').each(function() {
+            $('.instructions .setup ol').each(function() {
                 $(this).attr('id', $(this).attr('id').replace(/-setup/g, ''));
             });
-            $('.instructions').tabs('refresh');
         })
     </script>
 {% endblock %}
 {% block one_column %}
     <div class='instructions clearfix'>
-        <div class='page-section-header'>
-            <h1>
-                <ul>
-                    <li>set up</li>
-                    <li><a href='#adium' class='tab-anchor'>Adium</a></li>
-                    <li>or</li>
-                    <li><a href='#messages' class='tab-anchor'>Messages/iChat</a></li>
-                    <li>or</li>
-                    <li><a href='#other' class='tab-anchor'>something else</a></li>
-                </ul>
-            </h1>
+        <div class='welcome'>
+            <div class='page-section-header'>
+                <h1>
+                    welcome to Dashdash!
+                </h1>
+            </div>
+            <div class='row'>
+                <div class='span8 last'>
+                    <p>
+                        Dashdash is similar to chat services like Gchat and AIM, but manages your contact list for you:
+                    </p>
+                    <ol>
+                        <li>
+                            People you've talked with before, that signed up using the same invitation, or that you follow on Twitter will automatically appear in your <span class='ui-name'>Dashdash Contacts</span> group in your contact list.
+                        </li>
+                        <li>
+                            If you and a friend both appear in each other's contact list, then their active conversations will appear in your <span class='ui-name'>Dashdash Conversations</span> group. You can join these conversations by sending a message to them, just like you might walk up to a group of friends in real life.
+                        </li>
+                    </ol>
+                    <p>
+                        Dashdash works with existing XMPP/Jabber chat client apps – pick one below to get started!
+                    </p>
+                </div>
+            </div>
         </div>
-        <ol class='span12 last' id='adium'>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Download Adium from <a href='http://adium.im/' target='blank'>http://adium.im/</a>
-                    </p>
-                    <p>
-                        Open the .dmg and drag Adium into your <span class='ui-name'>Applications</span> folder.
-                    </p>
-                    <p>
-                        Open the <span class='ui-name'>Applications</span> folder, and launch Adium from there.
-                    </p>
-                    <p>
-                        (Adium may ask for access to your contacts – this can be handy, but it's fine to click <span class='ui-name'>Don't Allow</span> if you prefer.)
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_1_dmg.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        The first time you open Adium you'll see a <span class='ui-name'>Setup Assistant</span>. We're going to assume you closed it, but you can <span class='ui-name'>Continue</span> through if you prefer.
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_2_assistant.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Instead, open the <span class='ui-name'>Preferences</span> panel either by pressing <span class='ui-name'>⌘,</span> or by selecting it from the <span class='ui-name'>Adium</span> menu.
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_3_preferences.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Click the <span class='ui-name'>+</span> button in the lower left corner of the <span class='ui-name'>Accounts</span> pane in the <span class='ui-name'>Preferences</span> window, and select <span class='ui-name'>XMPP</span>.
-                    </p>
-                    <p>
-                        (XMPP is the new name for Jabber, and they are used interchangeably.)
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_6_xmpp.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Enter {{ user }}@{{ domain }} as your username, enter the password you chose when you signed up for Dashdash, and then click <span class='ui-name'>OK</span>.
-                    </p>
-                    <p>
-                        WHATEVER YOU DO, do not click the <span class='ui-name'>Register New Account</span> button – <a href="https://youtu.be/dddAi8FF3F4">it's a trap!</a> Click <span class='ui-name'>OK</span> instead.
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_7_account.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Your Dashdash account will connect automatically, and you can close the <span class='ui-name'>Preferences</span> window.
-                    </p>
-                    <p>
-                        Then find your <span class='ui-name'>Contacts List</span> window, which should already be open.
-                    </p>
-                </div>
-                <div class='span8'>
-                    <img src='/static/img/setup/adium/adium_8_online.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Look for the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> buddy list groups.
-                    </p>
-                    <p>
-                        Adium hides empty contact groups by default, so if they're not there it's only because no one is online or chatting. You can customize what Adium hides from the <span class='ui-name'>View</span> menu.
-                    </p>
-                    <p>
-                        If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/adium/adium_9a_contacts.png'>
-                     <span>or</span>
-                     <img src='/static/img/setup/adium/adium_9b_contacts.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        For an overview of the basic features, watch this screencast .gif. You can also watch this slightly out-of-date <a href="https://youtu.be/JDsQEMaWjz8">screencast video</a>.
-                    </p>
-                    <p>
-                        Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                    <div class='help screencast'></div>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Adium-only pro tip: you can get a Growl notification whenever there's a new conversations that you can see!
-                    </p>
-                    <p>
-                        First, right click on the group header bar for <span class='ui-name'>Dashdash Conversations</span> in your contact list.
-                    </p>
-                    <p>
-                        Then, select the third tab (with the alarm bell icon), and double-click on the event titled <span class='ui-name'>Contact is seen</span>.
-                    </p>
-                    <p>
-                        Select the notification type you want, and you're done!
-                    </p>
-                </div>
-                <div class='span8 last'>
-                    <img src='/static/img/setup/adium/adium_10_protip.png'>
-                </div>
-            </li>
-        </ol>
-        <ol class='span12 last' id='messages'>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Messages, which used to be called iChat, comes with OS X and should already be installed on your computer.
-                     </p>
-                     <p>
-                        Look in your <span class='ui-name'>Applications</span> folder for something that looks like this <i class="icon-hand-right"></i>
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_1_finder.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        If this is the first time you've used Messages, you'll be prompted to set up iMessage.
-                    </p>
-                    <p>
-                        It's fine to <span class='ui-name'>Skip</span> that for now, and it will send you next to the account creation screen.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_2_imessage.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        If you've used Messages before, then open the <span class='ui-name'>Preferences</span> panel either by pressing <span class='ui-name'>⌘,</span> or by selecting it from the <span class='ui-name'>Messages</span> menu.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_3_preferences.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Select the <span class='ui-name'>Accounts</span> tab, and then click the <span class='ui-name'>+</span> button in the lower left corner of the window.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_4_preferences.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Select <span class='ui-name'>Jabber</span> as the <span class='ui-name'>Account Type</span> from the dropdown list.
-                    </p>
-                    <p>
-                        (Jabber is the old name for XMPP, and they are used interchangeably.)
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_5_jabber.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Enter {{ user }}@{{ domain }} as your username, enter the password you chose when you signed up for Dashdash, and then click <span class='ui-name'>Sign In</span>.
-                    </p>
-                    <p>
-                        (You can leave the <span class='ui-name'>Server Options</span> as their defaults.)
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_6_account.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        You might get a <span class='ui-name'>Non-secure Jabber Login</span> error message, and you can just click <span class='ui-name'>Continue</span>.
-                    </p>
-                    <p>
-                        (I think this happens because the password itself is not separately encrypted, but all the connections use SSL so it should be sufficiently secure.)
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_7_login.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Now that you're signed in, look for a second Messages window that says <span class='ui-name'>Buddies</span> at the top.
-                    </p>
-                    <p>
-                        If you don't see it, open it either by pressing <span class='ui-name'>⌘1</span> or by selecting it from the <span class='ui-name'>Window</span> menu.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_8_buddies.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        Look for the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> buddy list groups.
-                    </p>
-                    <p>
-                        Messages hides empty buddy groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
-                    </p>
-                    <p>
-                        If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                     <img src='/static/img/setup/messages/messages_9a_contacts.png'>
-                     <span>or</span>
-                     <img src='/static/img/setup/messages/messages_9b_contacts.png'>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        For an overview of the basic features, watch this Adium screencast .gif from Adium – Messages looks different, but works in the same way. 
-                    </p>
-                    <p>
-                        You can also watch this slightly out-of-date <a href="https://www.youtube.com/watch?feature=player_embedded&v=JDsQEMaWjz8">screencast video</a>.
-                    </p>
-                    <p>
-                        Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                    <div class='help screencast'></div>
-                </div>
-            </li>
-        </ol>
-        <ol class='span12 last' id='other'>
-            <li class='row'>
-                <div class='span4 last'>
-                    <p>
-                        Download, install, and launch one of the following chat client apps.
-                    </p>
-                    <ul class='inline-images'>
-                        <li>Mac: <a href='http://adium.im/' target='blank'>Adium <img src='/static/img/client_logos/adium.png'></a>, <a href='https://www.apple.com/osx/apps/#messages'>Messages/iChat <img src='/static/img/client_logos/messages.png'></a></li>
-                        <li>Windows: <a href='http://www.pidgin.im/' target='blank'>Pidgin <img src='/static/img/client_logos/pidgin.png'></a></li>
-                        <li>iOS: <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+ <img src='/static/img/client_logos/im-plus.png'></a></li>
-                        <li>Web: <a href='https://imo.im/' target='blank'>imo.im <img src='/static/img/client_logos/imo.png'></a></li>
+        <div class='setup'>    
+            <div class='page-section-header'>
+                <h1>
+                    <ul>
+                        <li>set up</li>
+                        <li><a href='#adium' class='tab-anchor'>Adium</a></li>
+                        <li>or</li>
+                        <li><a href='#messages' class='tab-anchor'>Messages/iChat</a></li>
+                        <li>or</li>
+                        <li><a href='#other' class='tab-anchor'>something else</a></li>
                     </ul>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4 last'>
-                    <p>
-                        Add your Dashdash account, and sign in!
-                    </p>
-                    <p class='inline-images'>
-                        Chat clients often support many different services, so look for either XMPP <img src='/static/img/client_logos/xmpp.png'> or Jabber <img src='/static/img/client_logos/jabber.png'>.
-                    </p>
-                    <p>
-                        Enter {{ user }}@{{ domain }} as your username, and then enter the password you chose when you signed up for Dashdash.
-                    </p>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4 last'>
-                    <p>
-                        Find the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> groups in your contact list and send someone a message!
-                    </p>
-                    <p>
-                        Many clients hide empty contact list groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
-                    </p>
-                    <p>
-                        If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
-                    </p>
-                </div>
-            </li>
-            <li class='row'>
-                <div class='span4'>
-                    <p>
-                        For an overview of the basic features, watch the below Adium screencast .gif or this (slightly out-of-date) <a href="https://www.youtube.com/watch?feature=player_embedded&v=JDsQEMaWjz8">screencast video</a>.
-                    </p>
-                    <p>
-                        Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
-                    </p>
-                </div>
-                <div class='span8 last'>
-                    <div class='help screencast'></div>
-                </div>
-            </li>
-        </ol>
+                </h1>
+            </div>
+            <ol class='span12 last' id='adium'>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            If you have a Mac, download Adium from <a href='http://adium.im/' target='blank'>http://adium.im/</a>.
+                        </p>
+                        <p>
+                            Open the .dmg and drag Adium into your <span class='ui-name'>Applications</span> folder.
+                        </p>
+                        <p>
+                            Open the <span class='ui-name'>Applications</span> folder, and launch Adium from there.
+                        </p>
+                        <p>
+                            (Adium may ask for access to your contacts – this can be handy, but it's fine to click <span class='ui-name'>Don't Allow</span> if you prefer.)
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_1_dmg.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            The first time you open Adium you'll see a <span class='ui-name'>Setup Assistant</span>. We're going to assume you closed it, but you can <span class='ui-name'>Continue</span> through if you prefer.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_2_assistant.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Instead, open the <span class='ui-name'>Preferences</span> panel either by pressing <span class='ui-name'>⌘,</span> or by selecting it from the <span class='ui-name'>Adium</span> menu.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_3_preferences.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Click the <span class='ui-name'>+</span> button in the lower left corner of the <span class='ui-name'>Accounts</span> pane in the <span class='ui-name'>Preferences</span> window, and select <span class='ui-name'>XMPP</span>.
+                        </p>
+                        <p>
+                            (XMPP is the new name for Jabber, and they are used interchangeably.)
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_6_xmpp.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Enter {{ user }}@{{ domain }} as your username, enter the password you chose when you signed up for Dashdash, and then click <span class='ui-name'>OK</span>.
+                        </p>
+                        <p>
+                            WHATEVER YOU DO, do not click the <span class='ui-name'>Register New Account</span> button – <a href="https://youtu.be/dddAi8FF3F4">it's a trap!</a> Click <span class='ui-name'>OK</span> instead.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_7_account.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Your Dashdash account will connect automatically, and you can close the <span class='ui-name'>Preferences</span> window.
+                        </p>
+                        <p>
+                            Then find your <span class='ui-name'>Contacts List</span> window, which should already be open.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/adium/adium_8_online.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Look for the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> buddy list groups.
+                        </p>
+                        <p>
+                            Adium hides empty contact groups by default, so if they're not there it's only because no one is online or chatting. You can customize what Adium hides from the <span class='ui-name'>View</span> menu.
+                        </p>
+                        <p>
+                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/adium/adium_9a_contacts.png'>
+                         <span>or</span>
+                         <img src='/static/img/setup/adium/adium_9b_contacts.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            For an overview of the basic features, watch this screencast .gif. You can also watch this slightly out-of-date <a href="https://youtu.be/JDsQEMaWjz8">screencast video</a>.
+                        </p>
+                        <p>
+                            Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <div class='help screencast'></div>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Adium-only pro tip: you can get a Growl notification whenever there's a new conversations that you can see!
+                        </p>
+                        <p>
+                            First, right click on the group header bar for <span class='ui-name'>Dashdash Conversations</span> in your contact list.
+                        </p>
+                        <p>
+                            Then, select the third tab (with the alarm bell icon), and double-click on the event titled <span class='ui-name'>Contact is seen</span>.
+                        </p>
+                        <p>
+                            Select the notification type you want, and you're done!
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <img src='/static/img/setup/adium/adium_10_protip.png'>
+                    </div>
+                </li>
+            </ol>
+            <ol class='span12 last' id='messages'>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Messages, which used to be called iChat, comes with Mac OS X and should already be installed on your computer.
+                         </p>
+                         <p>
+                            Look in your <span class='ui-name'>Applications</span> folder for something that looks like this <i class="icon-hand-right"></i>
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_1_finder.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            If this is the first time you've used Messages, you'll be prompted to set up iMessage.
+                        </p>
+                        <p>
+                            It's fine to <span class='ui-name'>Skip</span> that for now, and it will send you next to the account creation screen.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_2_imessage.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            If you've used Messages before, then open the <span class='ui-name'>Preferences</span> panel either by pressing <span class='ui-name'>⌘,</span> or by selecting it from the <span class='ui-name'>Messages</span> menu.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_3_preferences.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Select the <span class='ui-name'>Accounts</span> tab, and then click the <span class='ui-name'>+</span> button in the lower left corner of the window.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_4_preferences.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Select <span class='ui-name'>Jabber</span> as the <span class='ui-name'>Account Type</span> from the dropdown list.
+                        </p>
+                        <p>
+                            (Jabber is the old name for XMPP, and they are used interchangeably.)
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_5_jabber.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Enter {{ user }}@{{ domain }} as your username, enter the password you chose when you signed up for Dashdash, and then click <span class='ui-name'>Sign In</span>.
+                        </p>
+                        <p>
+                            (You can leave the <span class='ui-name'>Server Options</span> as their defaults.)
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_6_account.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            You might get a <span class='ui-name'>Non-secure Jabber Login</span> error message, and you can just click <span class='ui-name'>Continue</span>.
+                        </p>
+                        <p>
+                            (I think this happens because the password itself is not separately encrypted, but all the connections use SSL so it should be sufficiently secure.)
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_7_login.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Now that you're signed in, look for a second Messages window that says <span class='ui-name'>Buddies</span> at the top.
+                        </p>
+                        <p>
+                            If you don't see it, open it either by pressing <span class='ui-name'>⌘1</span> or by selecting it from the <span class='ui-name'>Window</span> menu.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_8_buddies.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Look for the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> buddy list groups.
+                        </p>
+                        <p>
+                            Messages hides empty buddy groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
+                        </p>
+                        <p>
+                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/messages/messages_9a_contacts.png'>
+                         <span>or</span>
+                         <img src='/static/img/setup/messages/messages_9b_contacts.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            For an overview of the basic features, watch this Adium screencast .gif from Adium – Messages looks different, but works in the same way. 
+                        </p>
+                        <p>
+                            You can also watch this slightly out-of-date <a href="https://www.youtube.com/watch?feature=player_embedded&v=JDsQEMaWjz8">screencast video</a>.
+                        </p>
+                        <p>
+                            Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <div class='help screencast'></div>
+                    </div>
+                </li>
+            </ol>
+            <ol class='span12 last' id='other'>
+                <li class='row'>
+                    <div class='span4 last'>
+                        <p>
+                            Download, install, and launch one of the following chat client apps.
+                        </p>
+                        <ul class='inline-images'>
+                            <li>Mac: <a href='http://adium.im/' target='blank'>Adium <img src='/static/img/client_logos/adium.png'></a>, <a href='https://www.apple.com/osx/apps/#messages'>Messages/iChat <img src='/static/img/client_logos/messages.png'></a></li>
+                            <li>Windows: <a href='http://www.pidgin.im/' target='blank'>Pidgin <img src='/static/img/client_logos/pidgin.png'></a></li>
+                            <li>iOS: <a href="https://itunes.apple.com/us/app/im+-instant-messenger/id285688934">IM+ <img src='/static/img/client_logos/im-plus.png'></a></li>
+                            <li>Web: <a href='https://imo.im/' target='blank'>imo.im <img src='/static/img/client_logos/imo.png'></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4 last'>
+                        <p>
+                            Add your Dashdash account, and sign in!
+                        </p>
+                        <p class='inline-images'>
+                            Chat clients often support many different services, so look for either XMPP <img src='/static/img/client_logos/xmpp.png'> or Jabber <img src='/static/img/client_logos/jabber.png'>.
+                        </p>
+                        <p>
+                            Enter {{ user }}@{{ domain }} as your username, and then enter the password you chose when you signed up for Dashdash.
+                        </p>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4 last'>
+                        <p>
+                            Find the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> groups in your contact list and send someone a message!
+                        </p>
+                        <p>
+                            Many clients hide empty contact list groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
+                        </p>
+                        <p>
+                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
+                        </p>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            For an overview of the basic features, watch the below Adium screencast .gif or this (slightly out-of-date) <a href="https://www.youtube.com/watch?feature=player_embedded&v=JDsQEMaWjz8">screencast video</a>.
+                        </p>
+                        <p>
+                            Feel free to <a href="mailto:lost-and-found@dashdashinc.com">email us</a>, or ping @lehrblogger if you need help.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <div class='help screencast'></div>
+                    </div>
+                </li>
+            </ol>
+        </div>
     </div>
 {% endblock %}

@@ -4410,7 +4410,7 @@ footer .footer-links > ul {
   color: #001c73;
 }
 .instructions .page-section-header {
-  padding-bottom: 30px;
+  padding-bottom: 28px;
 }
 .instructions .page-section-header ul {
   margin-left: 0px;
@@ -4426,51 +4426,65 @@ footer .footer-links > ul {
   color: #ec297b;
   cursor: text;
 }
-.instructions ol > li {
-  font-size: 22px;
-  color: #001c73;
-  margin: 0 0 40px 15px;
-}
-.instructions ol > li p,
-.instructions ol > li ul {
+.instructions p,
+.instructions .welcome ol > li,
+.instructions .setup ol li ul {
   font-size: 14px;
   color: #001c73;
+  margin: 0 0 9px;
 }
-.instructions ol > li p span.ui-name,
-.instructions ol > li ul span.ui-name {
+.instructions p span.ui-name,
+.instructions .welcome ol > li span.ui-name,
+.instructions .setup ol li ul span.ui-name {
   font-weight: 500;
 }
-.instructions ol > li .span4 {
+.instructions p li,
+.instructions .welcome ol > li li,
+.instructions .setup ol li ul li {
+  margin-left: 17px;
+}
+.instructions .welcome {
+  padding-bottom: 20px;
+}
+.instructions .welcome ol > li {
+  margin-left: 4px;
+}
+.instructions .setup ol > li {
+  font-size: 22px;
+  color: #001c73;
+  margin: 2px 0 30px 15px;
+}
+.instructions .setup ol > li .span4 {
   margin-top: -21px;
   width: 290px;
   margin-left: -5px;
 }
-.instructions ol > li .span4 .inline-images img {
+.instructions .setup ol > li .span4 .inline-images img {
   height: 18px;
   margin: -5px 0 0 1px;
   display: inline;
 }
-.instructions ol > li .span8 {
+.instructions .setup ol > li .span8 {
   overflow: visible;
   margin-top: -18px;
   text-align: center;
   text-size: 22px;
 }
-.instructions ol > li .span8 img {
+.instructions .setup ol > li .span8 img {
   float: left;
   -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   background-color: rgba(0, 0, 0, 0.15);
 }
-.instructions ol > li .span8 img + span + img {
+.instructions .setup ol > li .span8 img + span + img {
   float: right;
 }
-.instructions ol > li .span8 span {
+.instructions .setup ol > li .span8 span {
   display: inline-block;
   padding-top: 36%;
 }
-.instructions ol > li .span8 .screencast {
+.instructions .setup ol > li .span8 .screencast {
   width: 640px;
 }
 .clearfix:after {
