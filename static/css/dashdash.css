@@ -4480,12 +4480,16 @@ footer .footer-links > ul {
 .instructions .setup ol > li .span8 img + span + img {
   float: right;
 }
-.instructions .setup ol > li .span8 span {
+.instructions .setup ol > li .span8 .screencast {
+  width: 640px;
+}
+.instructions .setup ol#adium > li .span8 span {
   display: inline-block;
   padding-top: 36%;
 }
-.instructions .setup ol > li .span8 .screencast {
-  width: 640px;
+.instructions .setup ol#pidgin > li .span8 span {
+  display: inline-block;
+  padding-top: 29.5%;
 }
 .clearfix:after {
   content: " ";

@@ -59,6 +59,8 @@
                         <li>or</li>
                         <li><a href='#messages' class='tab-anchor'>Messages/iChat</a></li>
                         <li>or</li>
+                        <li><a href='#pidgin' class='tab-anchor'>Pidgin</a></li>
+                        <li>or</li>
                         <li><a href='#other' class='tab-anchor'>something else</a></li>
                     </ul>
                 </h1>
@@ -126,7 +128,7 @@
                         </p>
                     </div>
                     <div class='span8'>
-                        <img src='/static/img/setup/adium/adium_7_account.png'>
+                        <img src='/static/img/setup/adium/adium_7_credentials.png'>
                     </div>
                 </li>
                 <li class='row'>
@@ -139,7 +141,7 @@
                         </p>
                     </div>
                     <div class='span8'>
-                        <img src='/static/img/setup/adium/adium_8_online.png'>
+                        <img src='/static/img/setup/adium/adium_8_accounts.png'>
                     </div>
                 </li>
                 <li class='row'>
@@ -151,7 +153,7 @@
                             Adium hides empty contact groups by default, so if they're not there it's only because no one is online or chatting. You can customize what Adium hides from the <span class='ui-name'>View</span> menu.
                         </p>
                         <p>
-                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
+                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello. Otherwise, send someone a message!
                         </p>
                     </div>
                     <div class='span8 last'>
@@ -327,6 +329,133 @@
                     </div>
                 </li>
             </ol>
+            <ol class='span12 last' id='pidgin'>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            If you use Windows, download Pidgin from <a href='http://pidgin.im/' target='_blank'>http://pidgin.im/</a>.
+                        </p>
+                        <p>
+                            Find the installer in your <span class='ui-name'>Downloads</span> folder (or wherever you decided to save it), and launch it to start the <span class='ui-name inline-images'>Setup Wizard <img src='/static/img/setup/pidgin/pidgin_1a_wizard.ico'></span>.
+                        </p>
+                        <p>
+                            (You may need to give Pidgin permission to make changes to your computer. Pidgin is an established open-source project, so if you prefer you can read and compile <a href='http://hg.pidgin.im/pidgin/main/file/ad7e7fb98db3' target='_blank'>the source</a> yourself...)
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_1b_wizard.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            The <span class='ui-name inline-images'>Setup Wizard</span> defaults will work fine, so keep clicking <span class='ui-name inline-images'>Next ></span> until the installation is complete.
+                        </p>
+                        <p>
+                            After Pidgin is installed, launch the application from the <span class='ui-name'>Start Menu</span>.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_2_launch.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            The first time you launch Pidgin, you'll see the <span class='ui-name'>Accounts</span> window. Click <span class='ui-name'>Add...</span> to add a new account, but if you accidentally close this window, then...
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_3_add.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            ... you can always open it again by clicking <span class='ui-name'>Accounts</span> -> <span class='ui-name'>Manage Accounts</span> in your <span class='ui-name'>Buddy List</span> window, or by pressing <span class='ui-name'>Ctrl+A</span>.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_4_manage.png'>
+                    </div>
+                </li>
+                
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Select <span class='ui-name'>XMPP</span> from the dropdown list as the <span class='ui-name'>Protocol</span> for your Dashdash account.
+                        </p>
+                        <p>
+                            (XMPP is the new name for Jabber, and they are used interchangeably.)
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_5_xmpp.png'>
+                    </div>
+                </li>
+                
+                
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Enter {{ user }}@{{ domain }} as your username, enter the password you chose when you signed up for Dashdash, and then click <span class='ui-name'>Add</span>.
+                        </p>
+                        <p>
+                            You can optionally specify a <span class='ui-name'>Resource</span> for this connection, and you can leave all of the other settings as their defaults. 
+                        </p>
+                        <p>
+                            You may also want to have Pidgin <span class='ui-name'>Remember password</span>, but do not <span class='ui-name'>Create this new account on the server</span> – your Dashdash account was created when you signed up on this website, and now you're just using it to sign in.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_6_credentials.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Your Dashdash account will connect automatically, and you can <span class='ui-name'>Close</span> the <span class='ui-name'>Accounts</span> window.
+                        </p>
+                        <p>
+                            Then find your <span class='ui-name'>Buddy List</span> window again, which should still be open.
+                        </p>
+                    </div>
+                    <div class='span8'>
+                        <img src='/static/img/setup/pidgin/pidgin_7_accounts.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Look for the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> buddy groups.
+                        </p>
+                        <p>
+                            Pidgin hides empty buddy groups by default, so if they're not there it's only because no one is online or chatting. You can see these groups by clicking the <span class='ui-name'>Buddies</span> menu and then selecting <span class='ui-name'>Show</span> -> <span class='ui-name'>Empty Groups</span>.
+                        </p>
+                        <p>
+                            If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello. Otherwise, send someone a message!
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                         <img src='/static/img/setup/pidgin/pidgin_8a_contacts.png'>
+                         <span>or</span>
+                         <img src='/static/img/setup/pidgin/pidgin_8b_contacts.png'>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            For an overview of the basic features, watch this screencast .gif from the Adium chat client app. You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
+                        </p>
+                        <p>
+                            Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <div class='help screencast'></div>
+                    </div>
+                </li>
+            </ol>
             <ol class='span12 last' id='other'>
                 <li class='row'>
                     <div class='span4 last'>
@@ -360,7 +489,7 @@
                             Find the <span class='ui-name'>Dashdash Contacts</span> and <span class='ui-name'>Dashdash Conversations</span> groups in your contact list and send someone a message!
                         </p>
                         <p>
-                            Many clients hide empty contact list groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
+                            Many clients hide empty contact groups, so if they're not there it's only because no one is online or chatting. Don't worry and check back later!
                         </p>
                         <p>
                             If you're lucky, the first time you sign in a friendly chat bot named @{{ helpbot }} will say hello.
