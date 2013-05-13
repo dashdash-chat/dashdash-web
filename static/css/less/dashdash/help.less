@@ -56,8 +56,24 @@
             text-size: 22px;
             img {
                 float: left;
+                display: inline-block;
                 .box-shadow(0 0 16px rgba(0,0,0,.5));
                 background-color: rgba(0,0,0,.15);
+            }
+            img.iphone {
+                height: 271px;
+                background-image: url('/static/img/iphone-border.png');
+                background-repeat: no-repeat;
+                background-size: 624px;
+                margin: -4px 0 0 -4px;
+                padding: 23px 105px 25px 108px;
+                .box-shadow(none);
+                background-color: transparent;
+            }
+            img + div {
+                float: left;
+                width: 100%;
+                margin: 12px auto 15px auto;
             }
             img + span + img {
                 float: right;
@@ -66,13 +82,17 @@
                 width: 640px;
             }
         }
-    }    
+    }
     .setup {
+        ol#messages > li .span8 span {
+            display: inline-block;
+            padding-top: 34%;
+        }
         ol#adium > li .span8 span {
             display: inline-block;
             padding-top: 36%;
         }
-        ol#pidgin > li .span8 span{
+        ol#pidgin > li .span8 span {
             display: inline-block;
             padding-top: 29.5%;
         }

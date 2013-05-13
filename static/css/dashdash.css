@@ -4472,16 +4472,38 @@ footer .footer-links > ul {
 }
 .instructions .setup ol > li .span8 img {
   float: left;
+  display: inline-block;
   -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
   background-color: rgba(0, 0, 0, 0.15);
+}
+.instructions .setup ol > li .span8 img.iphone {
+  height: 271px;
+  background-image: url('/static/img/iphone-border.png');
+  background-repeat: no-repeat;
+  background-size: 624px;
+  margin: -4px 0 0 -4px;
+  padding: 23px 105px 25px 108px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  background-color: transparent;
+}
+.instructions .setup ol > li .span8 img + div {
+  float: left;
+  width: 100%;
+  margin: 12px auto 15px auto;
 }
 .instructions .setup ol > li .span8 img + span + img {
   float: right;
 }
 .instructions .setup ol > li .span8 .screencast {
   width: 640px;
+}
+.instructions .setup ol#messages > li .span8 span {
+  display: inline-block;
+  padding-top: 34%;
 }
 .instructions .setup ol#adium > li .span8 span {
   display: inline-block;
