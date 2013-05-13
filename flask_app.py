@@ -392,6 +392,7 @@ def demo(token):
         return render_wonderland_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
+@app.route('/help/')
 @app.route("/help")
 def help():
     user = session.get('dashdash_user')
