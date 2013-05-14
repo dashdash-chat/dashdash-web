@@ -4412,19 +4412,8 @@ footer .footer-links > ul {
 .instructions .page-section-header {
   padding-bottom: 28px;
 }
-.instructions .page-section-header ul {
-  margin-left: 0px;
-}
-.instructions .page-section-header ul li {
-  display: inline;
-  list-style-type: none;
-}
-.instructions .page-section-header ul li.ui-state-focus a {
-  outline-style: none;
-}
-.instructions .page-section-header ul li.ui-state-active a {
+.instructions .page-section-header span.selected {
   color: #ec297b;
-  cursor: text;
 }
 .instructions p,
 .instructions .welcome ol > li,

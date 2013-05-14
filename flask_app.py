@@ -392,13 +392,14 @@ def demo(token):
         return render_wonderland_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
-@app.route('/help/')
+@app.route("/help/")
 @app.route("/help")
-def help():
+@app.route("/help/<client>")
+def help(client='adium'):
     user = session.get('dashdash_user')
     if not user:
         return redirect(url_for('index'))
-    return render_wonderland_template('help.html', user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
+    return render_wonderland_template('help.html', client=client, user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
