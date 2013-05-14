@@ -1,0 +1,22 @@
+<p><b>Dashdash is in private beta. Want an invite?</b></p>
+<div class='subscribe'>
+    {% with subscribe_success = get_flashed_messages(category_filter=['subscribe_success']) %}
+    {% with subscribe_error = get_flashed_messages(category_filter=['subscribe_error']) %}
+    {% if subscribe_success %}
+        <p class='success'>{{ subscribe_success[0] }}</p>
+        <p class='success'>{{ subscribe_success[1] }}</p>
+    {% else %}
+        <form action="{{ url_for('subscribe') }}" {% if subscribe_error %}class='error'{% endif %} method=post>
+            {{ subscribe_form.hidden_tag() }}
+            {% if subscribe_error %}
+                {{ subscribe_form.email(placeholder=subscribe_error[0]) }}
+            {% else %}
+                {{ subscribe_form.email(placeholder="enter your email address") }}
+            {% endif %}
+            <br/>
+            <input class='btn btn-success' type="submit" value="Subscribe">
+        </form>
+    {% endif %}
+    {% endwith %}
+    {% endwith %}
+</div>
