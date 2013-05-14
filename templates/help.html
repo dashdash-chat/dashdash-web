@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class='setup'>    
+        <div class='setup'>
             <div class='page-section-header'>
                 <h1>
                     set up {% if client == 'adium'    %}<span class='selected'>Adium</span>{%          else %}<a href='{{ url_for('help', client='adium')    }}'>Adium</a>{%          endif
@@ -138,19 +138,6 @@
                     <li class='row'>
                         <div class='span4'>
                             <p>
-                                For an overview of the basic features, watch this screencast .gif. You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
-                            </p>
-                            <p>
-                                Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
-                            </p>
-                        </div>
-                        <div class='span8 last'>
-                            <div class='help screencast'></div>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
                                 Adium-only pro tip: you can get a Growl notification whenever there's a new conversations that you can see!
                             </p>
                             <p>
@@ -165,13 +152,6 @@
                         </div>
                         <div class='span8 last'>
                             <img src='/static/img/setup/adium/adium_10_protip.png'>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                Adium supports many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
-                            </p>
                         </div>
                     </li>
                 {% elif client == 'messages' %}
@@ -291,29 +271,6 @@
                              <img src='/static/img/setup/messages/messages_9b_contacts.png'>
                         </div>
                     </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                For an overview of the basic features, watch this screencast .gif from Adium – Messages looks different, but works in the same way. 
-                            </p>
-                            <p>
-                                You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
-                            </p>
-                            <p>
-                                Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
-                            </p>
-                        </div>
-                        <div class='span8 last'>
-                            <div class='help screencast'></div>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                Messages supports many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
-                            </p>
-                        </div>
-                    </li>
                 {% elif client == 'pidgin' %}
                     <li class='row'>
                         <div class='span4'>
@@ -424,26 +381,6 @@
                              <img src='/static/img/setup/pidgin/pidgin_8b_contacts.png'>
                         </div>
                     </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                For an overview of the basic features, watch this screencast .gif from Adium. You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
-                            </p>
-                            <p>
-                                Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
-                            </p>
-                        </div>
-                        <div class='span8 last'>
-                            <div class='help screencast'></div>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                Pidgin supports many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
-                            </p>
-                        </div>
-                    </li>
                 {% elif client == 'implus' %}
                     <li class='row'>
                         <div class='span4'>
@@ -537,26 +474,6 @@
                              <img class='iphone' src='/static/img/setup/implus/implus_7b_contacts.png'>
                         </div>
                     </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                For an overview of the basic features, watch this screencast .gif from Adium, a desktop client for Mac OS X. You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
-                            </p>
-                            <p>
-                                Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
-                            </p>
-                        </div>
-                        <div class='span8 last'>
-                            <div class='help screencast'></div>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                IM+ supports many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
-                            </p>
-                        </div>
-                    </li>
                 {% else %}
                     <li class='row'>
                         <div class='span4 last'>
@@ -597,27 +514,30 @@
                             </p>
                         </div>
                     </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                For an overview of the basic features, watch this screencast .gif from Adium or this (slightly out-of-date) <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
-                            </p>
-                            <p>
-                                Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
-                            </p>
-                        </div>
-                        <div class='span8 last'>
-                            <div class='help screencast'></div>
-                        </div>
-                    </li>
-                    <li class='row'>
-                        <div class='span4'>
-                            <p>
-                                Most clients support many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
-                            </p>
-                        </div>
-                    </li>
                 {% endif %}
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            For an overview of the basic features, watch this screencast .gif{% if not client == 'adium' %} from <a href='http://adium.im/' target='_blank'>Adium</a>, a desktop client for Mac OS X{% endif %}.
+                        </p>
+                        <p>    
+                            You can also watch this slightly out-of-date <a href='http://youtu.be/JDsQEMaWjz8' target='_blank'>screencast video</a>.
+                        </p>
+                        <p>
+                            Feel free to <a href='mailto:lost-and-found@dashdashinc.com'>email us</a>, or ping @lehrblogger if you need help.
+                        </p>
+                    </div>
+                    <div class='span8 last'>
+                        <div class='help screencast'></div>
+                    </div>
+                </li>
+                <li class='row'>
+                    <div class='span4'>
+                        <p>
+                            Most clients support many different chat services, so feel free to also add your Gchat, AIM, and other instant messaging accounts. You can use Dashdash right alongside them.
+                        </p>
+                    </div>
+                </li>
             </ol>
         </div>
     </div>
