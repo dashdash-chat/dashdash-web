@@ -137,6 +137,15 @@ def subscribe():
         flash('enter a *valid* email address', 'subscribe_error')
     return redirect(request.referrer or url_for('index'))
 
+@app.route('/signin')
+def signin():
+    user = session.get('dashdash_user')
+    if user:
+        flash('You were already signed in', 'success')
+        return redirect(url_for('index'))
+    subscribe_form = SubscribeForm()
+    return render_template('signin.html', subscribe_form=subscribe_form)
+
 @app.route('/login')
 def login():
     return twitter.authorize()
@@ -232,7 +241,7 @@ def oauth_authorized(resp):
         db.session.commit()
     if resp is None:
         flash(u'You cancelled the Twitter authorization flow.', 'failure')
-        return redirect(url_for('index'))
+        return redirect(url_for('signin'))
     twitter_user = resp['screen_name'].lower()
     s = select([users.c.id, users.c.email, users.c.twitter_id, users.c.twitter_token, users.c.twitter_secret, users.c.is_active],
                and_(users.c.name == twitter_user))
@@ -332,8 +341,8 @@ def create_account():
                 return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
         else:
-            flash('Sorry, first you to sign in with Twitter!', 'failure')
-            return redirect(url_for('index'))
+            flash('Sorry, first you need to sign in with Twitter!', 'failure')
+            return redirect(url_for('signin'))
     else:  # request.method == 'POST':
         if found_user and (has_unused_invite or user_used_invite):
             if session.get('account_exists'):
@@ -375,7 +384,7 @@ def create_account():
                 return redirect(url_for('create_account'))
         else:        
             flash('Sorry, that POST request was invalid.', 'failure')
-            return redirect(url_for('index'))
+            return redirect(url_for('signin'))
 
 @app.route("/demo/")
 def no_demo():
@@ -389,7 +398,7 @@ def demo(token):
                     users.c.is_active == True))
     found_demo = db.session.execute(s).fetchone()
     if found_demo:
-        return render_wonderland_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
+        return render_template('demo.html', domain=constants.domain, username=found_demo['name'], password=found_demo['password'])
     return redirect(url_for('index'))
 
 @app.route("/help/")
@@ -398,14 +407,14 @@ def demo(token):
 def help(client='adium'):
     user = session.get('dashdash_user')
     if not user:
-        return redirect(url_for('index'))
-    return render_wonderland_template('help.html', client=client, user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
+        return redirect(url_for('signin'))
+    return render_template('help.html', client=client, user=user, domain=constants.domain, helpbot=constants.helpbot_jid_user)
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
     user = session.get('dashdash_user')
     if not user:
-        return redirect(url_for('index'))
+        return redirect(url_for('signin'))
     if request.method == 'GET':
         user_email = db.session.execute(select([users.c.email], users.c.name == user)).fetchone()
         form = ChangeEmailForm()
@@ -427,7 +436,7 @@ def settings():
 def change_password():
     user = session.get('dashdash_user')
     if not user:
-        return redirect(url_for('index'))
+        return redirect(url_for('signin'))
     if request.method == 'GET':
         form = ChangePasswordForm()
     else:
@@ -445,33 +454,34 @@ def change_password():
 
 @app.route("/contacts")
 def contacts():
+    user = session.get('dashdash_user')
+    if not user:
+        return redirect(url_for('signin'))        
     def filter_admins(user_rows):
         users = [user_row.name for user_row in user_rows]
         return set(users).difference(constants.protected_users)
-    user = session.get('dashdash_user')
-    if user:
-        user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']
-        s = select([users.c.name],
-                   and_(edges.c.from_id == user_id,
-                        edges.c.to_id == users.c.id,
-                        users.c.is_active == True))
-        outgoing = filter_admins(db.session.execute(s).fetchall())
-        s = select([users.c.name],
-                   and_(edges.c.to_id == user_id,
-                        edges.c.from_id == users.c.id,
-                        users.c.is_active == True))
-        incoming = filter_admins(db.session.execute(s).fetchall())
-        friends = outgoing.intersection(incoming)
-        s = select([users.c.name],
-                   and_(blocks.c.from_user_id == user_id,
-                        blocks.c.to_user_id == users.c.id,
-                        users.c.is_active == True))
-        blockees = filter_admins(db.session.execute(s).fetchall())
-        return render_wonderland_template('contacts.html', user=user,
-                                                friends=friends,
-                                                incomings=incoming.difference(outgoing),
-                                                outgoings=outgoing.difference(incoming),
-                                                blockees=blockees)
+    user_id = db.session.execute(select([users.c.id], users.c.name == user)).fetchone()['id']
+    s = select([users.c.name],
+               and_(edges.c.from_id == user_id,
+                    edges.c.to_id == users.c.id,
+                    users.c.is_active == True))
+    outgoing = filter_admins(db.session.execute(s).fetchall())
+    s = select([users.c.name],
+               and_(edges.c.to_id == user_id,
+                    edges.c.from_id == users.c.id,
+                    users.c.is_active == True))
+    incoming = filter_admins(db.session.execute(s).fetchall())
+    friends = outgoing.intersection(incoming)
+    s = select([users.c.name],
+               and_(blocks.c.from_user_id == user_id,
+                    blocks.c.to_user_id == users.c.id,
+                    users.c.is_active == True))
+    blockees = filter_admins(db.session.execute(s).fetchall())
+    return render_wonderland_template('contacts.html', user=user,
+                                            friends=friends,
+                                            incomings=incoming.difference(outgoing),
+                                            outgoings=outgoing.difference(incoming),
+                                            blockees=blockees)
     return redirect(url_for('index'))
 
 @app.route("/about")

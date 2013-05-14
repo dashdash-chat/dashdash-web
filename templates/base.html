@@ -77,15 +77,7 @@
                                                 <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/xmpp.png' /></a></li>
                                                 <li><a href='http://xmpp.org/xmpp-software/clients/'><img src='/static/img/client_logos/jabber.png' /></a></li>
                                             </ul>
-                                            <div class='wonderland'>
-                                                {% for paragraph in wonderland_paragraphs %}
-                                                    {% if paragraph == '#video' %}
-                                                        <iframe width="300" height="225" src="https://www.youtube.com/embed/jt7AF2RCMhg?rel=0" frameborder="0" allowfullscreen></iframe>
-                                                    {% else %}
-                                                        <p>{{ paragraph }}</p>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </div>
+                                            {% include "snippets/wonderland.html" %}
                                         {% else %}
                                             <div class='intro'>
                                                 <div class='description'>

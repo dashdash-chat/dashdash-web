@@ -4613,9 +4613,6 @@ p {
 p.centered {
   text-align: center;
 }
-.hero-unit {
-  background: transparent;
-}
 .primary-container {
   background: white;
   width: 100%;
@@ -4647,14 +4644,16 @@ p.centered {
 .legal-body li li {
   list-style-type: lower-alpha;
 }
-.page-section-header {
-  padding-bottom: 15px;
-}
-.page-section-header h1 {
+h1 {
   height: 30px;
   line-height: 25px;
   font-size: 25px;
   font-weight: 100;
+}
+.page-section-header {
+  padding-bottom: 15px;
+}
+.page-section-header h1 {
   padding-left: 35px;
   background: url('/static/img/bubble-square-magenta.png') no-repeat 0 1px;
   background-size: 25px 25px;

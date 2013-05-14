@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block left_column %}
-    <div class="page-section-header hero-unit">
-        <h1>ZOMG something went wrong!!1! <small>500</small></h1>
+    <div class="page-section-header">
+        <h1>curiouser and curiouser!</h1>
     </div>
+{% endblock %}
+{% block right_column %}
+    <h1>500 error</h1>
+    {% include "snippets/wonderland.html" %}
 {% endblock %}
