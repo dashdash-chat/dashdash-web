@@ -6,10 +6,7 @@
     <div class='intro'>
         <div class='buttons'>
             <p><b>You must sign in to visit this page!</b></p>
-            <div class='center-text'>
-                <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
-                <a class='dashdash-sign-in btn btn-success' href="{{ url_for('login') }}">Sign in with Twitter</a>
-            </div>
+            {% include "snippets/twitter.html" %}
             {% include "snippets/subscribe.html" %}
         </div>
    </div>

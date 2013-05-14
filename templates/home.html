@@ -63,10 +63,7 @@
     <div class='buttons'>
         {% include "snippets/subscribe.html" %}
         <p><b>Already have an account?</b></p>
-        <div class='center-text'>
-            <p class="legal">By signing in, you agree to the <a href='{{ url_for('terms') }}'>Terms of Service</a> and <a href='{{ url_for('privacy') }}'>Privacy Policy</a>.</p>
-            <a class='dashdash-sign-in btn btn-success' href="{{ url_for('login') }}">Sign in with Twitter</a>
-        </div>
+        {% include "snippets/twitter.html" %}
    </div>
 {% endblock %}
 
