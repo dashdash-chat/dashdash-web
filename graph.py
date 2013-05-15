@@ -72,7 +72,7 @@ class EdgeCalculator(ClientXMPP):
         self.update_next_old_edge()
     
     def process_logs(self):
-        def process_log_type(db_query_fn, multiplier_fn):
+        def process_log_type(db_query_fn, weight):
             self.logger.info('Processing logs from %s' % db_query_fn.__name__)
             offset = 0
             rows = True
@@ -80,18 +80,18 @@ class EdgeCalculator(ClientXMPP):
                 rows = db_query_fn(offset)
                 offset += PAGESIZE
                 for row in rows:
-                    sender, recipient, content = row
-                    self.scores.adjust_score(sender, recipient, multiplier_fn(content))
-        process_log_type(self.db_fetch_edges_for_new_users,     lambda s: 20000)
-        process_log_type(self.db_fetch_artificial_follows,      lambda s: 10000)
-        process_log_type(self.db_fetch_account_invites,         lambda s: 10000)
-        process_log_type(self.db_fetch_multiuse_invite_signups, lambda s: 1000)
-        process_log_type(self.db_fetch_twitter_follows,         lambda s: 300)
-        process_log_type(self.db_fetch_messages, lambda s: len(s))
-        process_log_type(self.db_fetch_topics,   lambda s: len(s))
-        process_log_type(self.db_fetch_whispers, lambda s: 2 * len(s))
-        process_log_type(self.db_fetch_invites,  lambda s: 100)
-        process_log_type(self.db_fetch_kicks,    lambda s: -100)
+                    sender, recipient, score = row
+                    self.scores.adjust_score(sender, recipient, score * weight if type(score) == int else weight)
+        process_log_type(self.db_fetch_edges_for_new_users,     20000)
+        process_log_type(self.db_fetch_artificial_follows,      10000)
+        process_log_type(self.db_fetch_account_invites,         10000)
+        process_log_type(self.db_fetch_multiuse_invite_signups, 1000)
+        process_log_type(self.db_fetch_twitter_follows,         300)
+        process_log_type(self.db_fetch_messages,                1)
+        process_log_type(self.db_fetch_topics,                  1)
+        process_log_type(self.db_fetch_whispers,                2)
+        process_log_type(self.db_fetch_invites,                 100)
+        process_log_type(self.db_fetch_kicks,                   -100)
     
     def process_blocks(self):
         self.logger.info('Processing blocks')
@@ -262,7 +262,7 @@ class EdgeCalculator(ClientXMPP):
                                             })
     
     def db_fetch_messages(self, offset):
-        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
+        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, CHAR_LENGTH(messages.body)
                                                FROM messages, recipients, users AS sender, users AS recipient
                                                WHERE messages.id = recipients.message_id
                                                AND messages.parent_command_id IS NULL
@@ -281,7 +281,7 @@ class EdgeCalculator(ClientXMPP):
                                             })
     
     def db_fetch_topics(self, offset):
-        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, commands.string
+        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, CHAR_LENGTH(commands.string)
                                                FROM commands, messages, recipients, users AS sender, users AS recipient
                                                WHERE commands.command_name = 'topic'
                                                AND commands.sender_id = sender.id
@@ -302,7 +302,7 @@ class EdgeCalculator(ClientXMPP):
                                             })
     
     def db_fetch_whispers(self, offset):
-        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, messages.body
+        return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, CHAR_LENGTH(messages.body)
                                                FROM commands, messages, recipients, users AS sender, users AS recipient
                                                WHERE commands.command_name = 'whisper'
                                                AND messages.id = recipients.message_id
