@@ -264,13 +264,13 @@ class EdgeCalculator(ClientXMPP):
     
     def db_fetch_messages(self, offset):
         return self.db_execute_and_fetchall("""SELECT sender.name, recipient.name, CHAR_LENGTH(messages.body)
-                                               FROM messages, recipients, users AS sender, users AS recipient
-                                               WHERE messages.id = recipients.message_id
+                                               FROM messages
+                                               INNER JOIN recipients ON recipients.message_id = messages.id
+                                               INNER JOIN users sender ON sender.id = messages.sender_id
+                                               INNER JOIN users recipient ON recipient.id = recipients.recipient_id
+                                               WHERE messages.sent_on > %(startdate)s
                                                AND messages.parent_command_id IS NULL
                                                AND messages.sender_id IS NOT NULL
-                                               AND sender.id = messages.sender_id
-                                               AND recipient.id = recipients.recipient_id
-                                               AND messages.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                ORDER BY messages.sent_on
                                                LIMIT %(offset)s, %(pagesize)s
