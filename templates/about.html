@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 {% block left_column %}
+
     <div class="page-section-header">
         <h1>team</h1>
     </div>
     <div id='who-we-are'>
         <div class='photos clearfix'>
             <div class='photo'>
-                <img src='/static/img/steven.jpg' width='200px'/>
-                <p class='bio'><a href="https://twitter.com/lehrblogger">Steven Lehrburger</a> walks very quickly through the grid of New York, and always carries his m[]leskine notebook. He thinks the Internet should be more like the real world, and the real world more like the Internet.</p>
+                <img src='/static/img/steven.jpg'/>
+                <p class='bio span8'><a href="https://twitter.com/lehrblogger">Steven Lehrburger</a> walks very quickly through the grid of New York, and always carries his m[]leskine notebook. He thinks the Internet should be more like the real world, and the real world more like the Internet.</p>
             </div>
             <div class='photo'>
-                <img src='/static/img/joseph.jpeg' width='200px'/>
-                <p class='bio'><a href="https://twitter.com/jbergen">Joseph Bergen</a> is a creative technologist currently based in Cambridge, Massachussets. When he's not looking at a computer he's riding a motorcycle or pwning n00bs on XBox Live.</p>
+                <img src='/static/img/joseph.jpeg'/>
+                <p class='bio span8'><a href="https://twitter.com/jbergen">Joseph Bergen</a> is a creative technologist currently based in San Francisco. When he's not looking at a computer he's riding a motorcycle or pwning n00bs on XBox Live.</p>
+            </div>
+            <div class='photo'>
+                <img src='/static/img/hiring.png'/>
+                <p class='bio span8'>
+                    <b>Come work with us!</b> There are lots of exciting things to build, so we're looking for software engineers who want to live in New York. Upcoming projects include: a distributed XMPP server with custom group functionality, mobile/web/desktop chat clients, better integration with other social services, and an open-source browser extension for adding XMPP accounts to Gchat.
+                </p>
             </div>
         </div>
     </div>
@@ -21,12 +28,11 @@
         <h1>about</h1>
     </div>
     <p>
-        Dashdash<span class="trademark">&trade;</span> aims to help users socialize online more like they do in the real world. We're starting with a cross-platform instant messaging product that feels half like mingling at a cocktail party, and half like chatting with your friends at your favorite coffeeshop. If you're passionate about the future of communication, get in touch!
+        Dashdash<span class="trademark">&trade;</span> helps us socialize online more like we do in the real world. We're starting with a cross-platform instant messaging product that feels like mingling at a cocktail party, brainstorming with colleagues around the office water cooler, or chatting with your friends at your favorite local coffee shop... but we have plans for much more.
     </p>
     <p>
-        Special thanks to <a href="http://xmpp.org/" target="_blank">XMPP.org</a> and <a href="http://www.gutenberg.org/files/11/11-h/11-h.htm" target="_blank">Lewis Carrol</a>.
+        If you're as passionate as we are about the future of communication, get in touch!
     </p>
-    <br/>
     <div class="page-section-header">
         <h1>contact</h1>
     </div>
@@ -34,7 +40,7 @@
         <div class="span1">
             <img src='/static/img/logo-square.png'> 
         </div>
-        <div class="span3">
+        <div class="span3 last">
             <p class="questions">
                 <a href='mailto:info@dashdashinc.com' target='blank'>info@dashdashinc.com</a>
             </p>
@@ -44,6 +50,14 @@
             <p>
                 <a href="https://twitter.com/DashdashInc" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @DashdashInc</a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </p>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="span4 last">
+            <p>
+                Special thanks to <a href="http://xmpp.org/" target="_blank">XMPP.org</a> and <a href="http://www.gutenberg.org/files/11/11-h/11-h.htm" target="_blank">Lewis Carrol</a>.
             </p>
         </div>
     </div>
