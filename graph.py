@@ -174,7 +174,7 @@ class EdgeCalculator(ClientXMPP):
         self.logger.debug("SENT %s" % body)
     
     def db_fetch_edges_for_new_users(self, offset):
-        # Fetch all users that haven't sent a message to a group conversation
+        # Fetch edges for the user(s) that haven't sent a message to a group conversation
         usernames = self.db_execute_and_fetchall("""SELECT users.name
                                                     FROM users
                                                     WHERE (SELECT COUNT(*)
@@ -185,6 +185,7 @@ class EdgeCalculator(ClientXMPP):
                                                                 WHERE messages.id = recipients.message_id
                                                                ) >= 2
                                                           ) = 0
+                                                    AND users.id LIKE %(user_id)s
                                                     GROUP BY users.name
                                                     ORDER BY users.created DESC
                                                     LIMIT %(pagesize)s
