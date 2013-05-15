@@ -63,8 +63,13 @@ class EdgeCalculator(ClientXMPP):
         self.db_connect()
         self.scores = RelationshipScores()
         self.start_time = datetime.now()
+        self.register_plugin('xep_0030') # Service Discovery
+        self.register_plugin('xep_0004') # Data Forms
+        self.register_plugin('xep_0060') # PubSub
+        self.register_plugin('xep_0199') # XMPP Ping
     
-    def handle_start(self, event):
+    def handle_start(self, event):    
+        self.logger.info('Starting EdgeCalculator for user.id=%s' % self.user_id)
         self.send_presence()
         self.process_logs()
         self.process_blocks()

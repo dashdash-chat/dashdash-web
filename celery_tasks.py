@@ -94,10 +94,6 @@ def split_twitter_token_pair(token_pair):
 @celery.task(name='celery_tasks.score_edges')
 def score_edges(user_id=None):
     calculator = EdgeCalculator(logger, user_id)
-    calculator.register_plugin('xep_0030') # Service Discovery
-    calculator.register_plugin('xep_0004') # Data Forms
-    calculator.register_plugin('xep_0060') # PubSub
-    calculator.register_plugin('xep_0199') # XMPP Ping
     if calculator.connect((constants.server_ip, constants.client_port), reattempt=False):# caused a weird _der_cert error
         calculator.process(block=True)
         logger.info("Done")
