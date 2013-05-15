@@ -269,9 +269,9 @@ class EdgeCalculator(ClientXMPP):
                                                INNER JOIN users sender ON sender.id = messages.sender_id
                                                INNER JOIN users recipient ON recipient.id = recipients.recipient_id
                                                WHERE messages.sent_on > %(startdate)s
-                                               AND messages.parent_command_id IS NULL
+                                               AND (messages.sender_id LIKE %(user_id)s OR recipients.recipient_id LIKE %(user_id)s)
                                                AND messages.sender_id IS NOT NULL
-                                               AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
+                                               AND messages.parent_command_id IS NULL
                                                ORDER BY messages.sent_on
                                                LIMIT %(offset)s, %(pagesize)s
                                             """, {
