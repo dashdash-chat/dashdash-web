@@ -10,7 +10,7 @@ from sleekxmpp import ClientXMPP
 import sys
 import constants
 
-PAGESIZE = 100
+PAGESIZE = 5000
 NUM_DAYS = 365
 sys.setrecursionlimit(5000)
 
