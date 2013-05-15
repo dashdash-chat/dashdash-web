@@ -27,7 +27,7 @@ class RelationshipScores(object):
                 del self._scores[sender]
     
     def adjust_score(self, sender, recipient, amount):
-        if sender not in constants.protected_users and recipient not in constants.protected_users:
+        if sender != recipient and sender not in constants.protected_users and recipient not in constants.protected_users:
             # Don't update relationships for admins! It would be more efficient to not even fetch these results from the database, but also much more verbose.
             self._scores[sender][recipient] += amount
     
