@@ -277,6 +277,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND recipient.id = recipients.recipient_id
                                                AND messages.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
+                                               ORDER BY messages.sent_on
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -298,6 +299,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND commands.string IS NOT NULL
                                                AND commands.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
+                                               ORDER BY commands.sent_on
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -318,6 +320,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND commands.id = messages.parent_command_id
                                                AND commands.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
+                                               ORDER BY commands.sent_on
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -345,6 +348,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND recipients.recipient_id = sender.id
                                                AND target.name = commands.token
                                                AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
+                                               ORDER BY commands.sent_on
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
@@ -370,6 +374,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND recipients.recipient_id = sender.id
                                                AND target.name = commands.token
                                                AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
+                                               ORDER BY commands.sent_on
                                                LIMIT %(pagesize)s
                                                OFFSET %(offset)s
                                             """, {
