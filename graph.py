@@ -188,8 +188,7 @@ class EdgeCalculator(ClientXMPP):
                                                     AND users.id LIKE %(user_id)s
                                                     GROUP BY users.name
                                                     ORDER BY users.created DESC
-                                                    LIMIT %(pagesize)s
-                                                    OFFSET %(offset)s
+                                                    LIMIT %(offset)s, %(pagesize)s
                                                  """, {
                                                     'user_id': self.user_id if self.user_id else '%',
                                                     'pagesize': PAGESIZE,
@@ -205,8 +204,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND from_user.id = artificial_follows.from_user_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY artificial_follows.created DESC
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
@@ -222,8 +220,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND (invitees.invitee_id LIKE %(user_id)s OR invites.sender LIKE %(user_id)s)
                                                AND invitees.used > %(startdate)s
                                                ORDER BY invites.created DESC
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -243,8 +240,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND first_invitees.used > %(startdate)s
                                                AND second_invitees.used > %(startdate)s
                                                ORDER BY invites.created DESC
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -259,8 +255,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND from_user.twitter_id = twitter_follows.from_twitter_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY twitter_follows.last_updated_on DESC
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
@@ -278,8 +273,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND messages.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                ORDER BY messages.sent_on
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -300,8 +294,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND commands.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                ORDER BY commands.sent_on
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -321,8 +314,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND commands.sent_on > %(startdate)s
                                                AND (sender.id LIKE %(user_id)s OR recipient.id LIKE %(user_id)s)
                                                ORDER BY commands.sent_on
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -349,8 +341,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND target.name = commands.token
                                                AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
                                                ORDER BY commands.sent_on
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -375,8 +366,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND target.name = commands.token
                                                AND (sender.id LIKE %(user_id)s OR target.id LIKE %(user_id)s)
                                                ORDER BY commands.sent_on
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'startdate': self.start_time - timedelta(days=NUM_DAYS),
                                                'user_id': self.user_id if self.user_id else '%',
@@ -391,8 +381,7 @@ class EdgeCalculator(ClientXMPP):
                                                AND from_user.id = blocks.from_user_id
                                                AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                ORDER BY blocks.created DESC
-                                               LIMIT %(pagesize)s
-                                               OFFSET %(offset)s
+                                               LIMIT %(offset)s, %(pagesize)s
                                             """, {
                                                'user_id': self.user_id if self.user_id else '%',
                                                'pagesize': PAGESIZE,
@@ -407,8 +396,7 @@ class EdgeCalculator(ClientXMPP):
                                                    AND from_user.id = edges.from_id
                                                    AND (from_user.id LIKE %(user_id)s OR to_user.id LIKE %(user_id)s)
                                                    ORDER BY edges.id DESC
-                                                   LIMIT 1
-                                                   OFFSET %(old_edge_offset)s
+                                                   LIMIT %(old_edge_offset)s, 1
                                                 """, {
                                                    'user_id': self.user_id if self.user_id else '%',
                                                    'old_edge_offset': self.old_edge_offset
