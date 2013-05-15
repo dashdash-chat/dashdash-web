@@ -11,7 +11,7 @@ import sys
 import constants
 
 PAGESIZE = 100
-NUM_DAYS = 180
+NUM_DAYS = 365
 sys.setrecursionlimit(5000)
 
 class RelationshipScores(object):
@@ -55,8 +55,8 @@ class EdgeCalculator(ClientXMPP):
         self.logger = logger
         self.user_id = user_id
         ClientXMPP.__init__(self, constants.graph_jid, constants.graph_xmpp_password)
-        self.add_event_handler("session_start", self.start)
-        self.add_event_handler("message", self.message)
+        self.add_event_handler("session_start", self.handle_start)
+        self.add_event_handler("message", self.handle_message)
         self.old_edge_offset = 0
         self.db = None
         self.cursor = None
@@ -64,7 +64,7 @@ class EdgeCalculator(ClientXMPP):
         self.scores = RelationshipScores()
         self.start_time = datetime.now()
     
-    def start(self, event):
+    def handle_start(self, event):
         self.send_presence()
         self.process_logs()
         self.process_blocks()
@@ -73,6 +73,7 @@ class EdgeCalculator(ClientXMPP):
     
     def process_logs(self):
         def process_log_type(db_query_fn, multiplier_fn):
+            self.logger.info('Processing logs from %s' % db_query_fn.__name__)
             offset = 0
             rows = True
             while rows:
@@ -93,6 +94,7 @@ class EdgeCalculator(ClientXMPP):
         process_log_type(self.db_fetch_kicks,    lambda s: -100)
     
     def process_blocks(self):
+        self.logger.info('Processing blocks')
         offset = 0
         blocks = True
         while blocks:
@@ -134,7 +136,7 @@ class EdgeCalculator(ClientXMPP):
         else:
             self.cleanup()  # to disconnect when finished
     
-    def message(self, msg):
+    def handle_message(self, msg):
         # *** %s and %s now have a directed edge between them.
         # *** Sorry, %s and %s already have a directed edge between them.
         # *** Sorry, %s and %s do not have a directed edge between them.
@@ -147,12 +149,12 @@ class EdgeCalculator(ClientXMPP):
             result    = m.groupdict()['result']
             if result in ['no longer have a directed edge between them', 'do not have a directed edge between them']:
                 if sorry:
-                    self.logger.warning('Tried to delete edge for %s and %s, but it didn\'t exist.' % (sender, recipient))
+                    self.logger.debug('Tried to delete edge for %s and %s, but it didn\'t exist.' % (sender, recipient))
                 self.update_next_old_edge()
                 return
             elif result in ['now have a directed edge between them', 'already have a directed edge between them']:
                 if sorry:
-                    self.logger.warning('Tried to create edge for %s and %s, but it already existed.' % (sender, recipient))
+                    self.logger.debug('Tried to create edge for %s and %s, but it already existed.' % (sender, recipient))
                 self.update_next_new_edge()
                 return
         self.logger.error('Received unexpected response from %s: %s' % (msg['from'], msg['body']))
@@ -164,7 +166,7 @@ class EdgeCalculator(ClientXMPP):
         msg['to'] = constants.leaves_jid
         msg['body'] = body
         msg.send()
-        self.logger.info("SENT %s" % body)
+        self.logger.debug("SENT %s" % body)
     
     def db_fetch_edges_for_new_users(self, offset):
         # Fetch all users that haven't sent a message to a group conversation
