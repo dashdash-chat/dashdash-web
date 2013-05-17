@@ -4596,6 +4596,14 @@ footer .footer-links > ul {
   margin-bottom: 6px;
   font-weight: 600;
   color: #333;
+  background-image: none;
+}
+.btn.follow:visited {
+  color: #888;
+  background-color: #eee;
+}
+input.btn.btn-success {
+  margin-bottom: 10px;
 }
 html {
   overflow-y: scroll;
@@ -4755,9 +4763,6 @@ legend {
   -o-transition: opacity 3.5s;
   /* Opera */
 
-}
-input.btn.btn-success {
-  margin-bottom: 10px;
 }
 .pull-right {
   float: right;
