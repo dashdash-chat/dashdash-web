@@ -6,7 +6,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.1"
 
 depends "cpan", "= 0.0.24"
-depends "deploy_wrapper", "= 0.0.2"
+depends "deploy_wrapper", "= 0.0.4"
 depends "vine_shared", ">= 1.0.0"
 depends "vine_ejabberd", ">= 1.0.0"
 recommends "vine_xmpp", ">= 1.0.0"
