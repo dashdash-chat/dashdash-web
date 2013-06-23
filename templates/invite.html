@@ -6,6 +6,7 @@
     <div class='invite-container'>
         {% if not invite_error_messages and sender %}                
             <p><strong>{{ sender }}</strong> invited you!</p>
+            <p>Don't worry, Dashdash won't tweet from your account unless you ask us to, we hate that too.</p>
             {% include "snippets/twitter.html" %}
         {% endif %}
         {% if invite_error_messages or (sender and recipient) %}
