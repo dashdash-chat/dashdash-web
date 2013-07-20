@@ -226,8 +226,8 @@ def clear_bad_oauth_cookies(fn):
 @twitter.authorized_handler
 def oauth_authorized(resp):
     def launch_celery_tasks(user_id, user_twitter_id, token, secret, future_scorings=[]):
-        result = chain(fetch_follows.s(user_id, user_twitter_id, token, secret),
-                       score_edges.s())()
+        result = chain(fetch_follows.si(user_id, user_twitter_id, token, secret),
+                       score_edges.si(user_id))()
         db.session.execute(user_tasks.insert().\
                            values(user_id=user_id,
                                   celery_task_id=result,
@@ -268,7 +268,7 @@ def oauth_authorized(resp):
                                    values(is_active=True))
                 db.session.commit()
             session['twitter_user'] = twitter_user
-            launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
+            launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180])
             return redirect(url_for('create_account'))
     else:
         if session.get('invite_code'):  # This session variable is only set if the invite code is usable, so we don't need to check again
@@ -280,7 +280,7 @@ def oauth_authorized(resp):
                                                stage='welcome'))
             db.session.commit()
             session['twitter_user'] = twitter_user
-            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180, 360])
+            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180])
             return redirect(url_for('create_account'))
         else:
             return redirect(url_for('invite'))

@@ -68,7 +68,7 @@ class EdgeCalculator(ClientXMPP):
         self.register_plugin('xep_0060') # PubSub
         self.register_plugin('xep_0199') # XMPP Ping
     
-    def handle_start(self, event):    
+    def handle_start(self, event):
         self.logger.info('Starting EdgeCalculator for user.id=%s' % self.user_id)
         self.send_presence()
         self.process_logs()
