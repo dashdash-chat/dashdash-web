@@ -331,6 +331,11 @@ def create_account():
             else:
                 form = CreateAccountForm()
             if user_used_invite:
+                db.session.execute(invitees.update().\
+                                   where(and_(invitees.c.invitee_id == found_user.id,
+                                         invitees.c.used == '0000-00-00 00:00:00')).\
+                                   values(used=datetime.datetime.now()))
+                db.session.commit()
                 return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
             if has_unused_invite:
                 db.session.execute(invitees.insert().\
