@@ -4,7 +4,9 @@ from random import choice
 from flask import Flask, flash, render_template, redirect, request, session, url_for
 from flask.ext.oauth import OAuth, OAuthException
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.wtf import Form, TextField, PasswordField, Required, Email, EqualTo
+from flask.ext.wtf import Form
+from wtforms import TextField, PasswordField
+from wtforms.validators import Required, Email, EqualTo
 from mailsnake import MailSnake
 from mailsnake.exceptions import *
 from sqlalchemy import select, and_, desc, func
