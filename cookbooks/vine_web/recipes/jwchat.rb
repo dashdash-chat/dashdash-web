@@ -41,7 +41,9 @@ end
 end
 
 execute "make JWChat" do
-  command "make"
+  user 'root'
+  group 'root'
+  command "export PERL5LIB=/root/perl5/lib/perl5 && make"
   cwd jwchat_repo_dir
   action :run
 end
