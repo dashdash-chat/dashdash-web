@@ -80,7 +80,7 @@ supervisor_service "gunicorn" do
   stdout_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
   stderr_logfile "#{node['supervisor']['log_dir']}/gunicorn.log"
   numprocs 1
-  autostart true
+  autostart false
   autorestart true
   priority 1
   action :enable
