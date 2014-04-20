@@ -86,7 +86,7 @@ supervisor_service "gunicorn" do
   action :enable
 end
 supervisor_service "celeryd" do
-  command "#{web_env_dir}/bin/celeryd --app=celery_tasks --loglevel=INFO"
+  command "#{web_env_dir}/bin/celeryd --app=celery_tasks --pidfile=#{node['dirs']['other']}/celeryd.pid --loglevel=INFO"
   directory web_repo_dir
   user node.run_state['config']['user']
   stdout_logfile "#{node['supervisor']['log_dir']}/celery.log"
@@ -95,6 +95,7 @@ supervisor_service "celeryd" do
   autostart false
   autorestart true
   priority 20
+  startsecs 10
   stopwaitsecs 300
   action :enable
 end
