@@ -45,7 +45,7 @@ twitter = oauth.remote_app('twitter',
     consumer_key=constants.twitter_consumer_key,
     consumer_secret=constants.twitter_consumer_secret
 )
-xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.xmlrpc_server, constants.xmlrpc_port))
+xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server_ip, constants.xmlrpc_port))
 
 class SubscribeForm(Form):
     email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
