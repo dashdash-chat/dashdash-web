@@ -4,17 +4,15 @@
 {% endblock %}
 {% block right_column_signin %}
     <div class='invite-container'>
-        {% if not invite_error_messages and sender %}                
+        {% if not invite_error_messages and sender %}
             <p><strong>{{ sender }}</strong> invited you!</p>
-            <p>Don't worry, Dashdash won't tweet from your account unless you ask us to, we hate that too.</p>
-            {% include "snippets/twitter.html" %}
         {% endif %}
         {% if invite_error_messages or (sender and recipient) %}
             <p class='invite-error-message'>{% 
                 if invite_error_messages 
                     %}{{ invite_error_messages[0] }}{% 
                 else
-                    %}If you're not <strong>{{ recipient }}</strong> on Twitter, you'll need a different invite code:{%
+                    %}If you're not <strong>{{ recipient }}</strong> on Twitter, you'll need a different invite code, or you can sign up without one below:{%
                 endif %}</p>
             <form class='invite-form' action='{{ url_for('check_invite') }}' method=post>
                 {{ form.hidden_tag() }}
@@ -22,5 +20,6 @@
                 {{ form.submit }}
             </form>
         {% endif %}
+        {% include "snippets/twitter.html" %}
     </div>
 {% endblock %}

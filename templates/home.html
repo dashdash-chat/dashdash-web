@@ -12,7 +12,7 @@
                     <div class='well'>
                         {% if unused_invites or multi_invites %}
                             <h3>Unused invite codes:</h3>
-                            <p><i>Each invite code only works once, so send them privately to the friends you chat with most on IM.</i></p>
+                            <p><i>Your friends no longer need an invite to sign up for Dashdash, but if they do use one of the codes below, then you'll automagically be friends.{% if multi_invites %} Try sending one of the multiple-use invites to a mailing list!{% endif %}</i></p>
                             <ul class='unstyled'>
                                 {% for invite in unused_invites %}
                                     <li><b>http://{{ domain }}{{ url_for('invite', code=invite.code) }}</b></li>

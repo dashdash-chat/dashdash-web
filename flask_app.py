@@ -131,7 +131,7 @@ def invite(code=None):
         return redirect(url_for('index'))
     form = InviteCodeForm()
     if not code:
-        flash('Sorry, you need an invite code to sign up:', 'invite_error')
+        flash('Enter an invite code if you have one, or sign up without one below:', 'invite_error')
         return render_wonderland_template('invite.html', form=form)
     try:
         q = db.session.query(invites.c.id, users.c.name, invites.c.max_uses).\
@@ -139,7 +139,7 @@ def invite(code=None):
                               invites.c.code == code)
         invite_id, sender_name, max_uses = q.one()
     except NoResultFound:
-        flash('Sorry, \'%s\' is not a valid invite code. Try another?' % code, 'invite_error')
+        flash('Sorry, \"%s\" isn\'t a valid invite code. Try another, or sign up without one below:' % code, 'invite_error')
         return render_wonderland_template('invite.html', form=form)
     q = db.session.query(users.c.name).\
                    outerjoin(invitees).\
@@ -148,7 +148,7 @@ def invite(code=None):
     if len(recipients) == 1 and max_uses == 1:
         return render_wonderland_template('invite.html', form=form, sender=sender_name, recipient=recipients[0])
     elif len(recipients) >= max_uses:
-        flash('Sorry, this invite can\'t be used again. Try another?', 'invite_error')
+        flash('Sorry, this invite code has been used. Try another, or sign up without one below:', 'invite_error')
         return render_wonderland_template('invite.html', form=form)
     else:
         session['invite_code'] = code
@@ -160,7 +160,7 @@ def check_invite():
     if form.validate():
         code = form.code.data
         return redirect(url_for('invite', code=code))
-    flash('Please enter an invite code below.', 'invite_error')
+    flash('Please enter a valid invite code, or sign up without one below:', 'invite_error')
     return redirect(request.referrer or url_for('index'))
 
 @app.route('/logout')
@@ -240,19 +240,16 @@ def oauth_authorized(resp):
             launch_celery_tasks(found_user.id, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180])
             return redirect(url_for('create_account'))
     else:
-        if session.get('invite_code'):  # This session variable is only set if the invite code is usable, so we don't need to check again
-            result = db.session.execute(users.insert().\
-                                        values(name=twitter_user,
-                                               twitter_id=resp['user_id'],
-                                               twitter_token=resp['oauth_token'],
-                                               twitter_secret=resp['oauth_token_secret'],
-                                               stage='welcome'))
-            db.session.commit()
-            session['twitter_user'] = twitter_user
-            launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180])
-            return redirect(url_for('create_account'))
-        else:
-            return redirect(url_for('invite'))
+        result = db.session.execute(users.insert().\
+                                    values(name=twitter_user,
+                                           twitter_id=resp['user_id'],
+                                           twitter_token=resp['oauth_token'],
+                                           twitter_secret=resp['oauth_token_secret'],
+                                           stage='welcome'))
+        db.session.commit()
+        session['twitter_user'] = twitter_user
+        launch_celery_tasks(result.lastrowid, resp['user_id'], resp['oauth_token'], resp['oauth_token_secret'], future_scorings=[10, 30, 90, 180])
+        return redirect(url_for('create_account'))
 
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():    
@@ -312,13 +309,12 @@ def create_account():
                                           invitee_id=found_user.id,
                                           used=datetime.datetime.now()))
                 db.session.commit()
-                return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
-            return redirect('%s%s' % (url_for('invite'), invite_code if invite_code else ''))
+            return render_wonderland_template('create_account.html', user=found_user.name, form=form, account_exists=session.get('account_exists'))
         else:
             flash('Sorry, first you need to sign in with Twitter!', 'failure')
             return redirect(url_for('signin'))
     else:  # request.method == 'POST':
-        if found_user and (has_unused_invite or user_used_invite):
+        if found_user:
             if session.get('account_exists'):
                 form = AddEmailForm(request.form)
             else:
@@ -356,7 +352,7 @@ def create_account():
             else:
                 flash('Please be sure to enter a valid email address and matching passwords.', 'failure')
                 return redirect(url_for('create_account'))
-        else:        
+        else:
             flash('Sorry, that POST request was invalid.', 'failure')
             return redirect(url_for('signin'))
 
