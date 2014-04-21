@@ -4275,13 +4275,6 @@ footer .footer-links > ul {
   color: rgba(0, 0, 0, 0.5);
   padding-bottom: 7px;
 }
-.flash-container .close {
-  float: left;
-  margin-top: -3px;
-}
-.flash-container ul {
-  padding-left: 32px;
-}
 .flash-container ul li i {
   opacity: 0.5;
   padding-right: 5px;
