@@ -47,8 +47,6 @@ twitter = oauth.remote_app('twitter',
 )
 xmlrpc_server = xmlrpclib.ServerProxy('http://%s:%s' % (constants.server_ip, constants.xmlrpc_port))
 
-class SubscribeForm(Form):
-    email = TextField('Email', [Required(), Email(message='Please enter a valid email address.')])
 class InviteCodeForm(Form):
     code = TextField('code', validators=[Required()])
 class CreateAccountForm(Form):
@@ -71,7 +69,6 @@ def index():
     multi_invites = None
     used_invites = None
     user_id = None
-    subscribe_form = None
     if user:
         s = select([users.c.id],
                    and_(users.c.name == user,
@@ -104,40 +101,11 @@ def index():
                                   users.c.is_active == True).\
                            order_by(desc(invitees.c.used))
             used_invites = q.all()
-    else:
-        subscribe_form = SubscribeForm()
     return render_wonderland_template('home.html', domain=constants.domain,
                                                    user=user,
                                                    unused_invites=unused_invites,
                                                    multi_invites=multi_invites,
-                                                   used_invites=used_invites,
-                                                   subscribe_form=subscribe_form)
-
-@app.route('/subscribe', methods=['GET', 'POST'])
-def subscribe():
-    if request.method == 'GET':
-        return redirect(request.referrer or url_for('index'))
-    form = SubscribeForm(request.form)
-    if form.validate():
-        email = form.email.data
-        ms = MailSnake(constants.mailchimp_api_key)
-        try:
-            ms.ping()
-            ms.listSubscribe(
-                id = 'c00b18f50c',
-                email_address = email,
-                double_optin = False,
-            )
-            flash('Thanks, %s!' % email, 'subscribe_success')
-            flash('We\'ll be in touch soon.', 'subscribe_success')
-        except ListAlreadySubscribedException:
-            flash('Thanks, but you\'ve already subscribed!', 'subscribe_success')
-        except InvalidApiKeyException:
-            print "MailChimp InvalidApiKeyException"
-            flash('there was an error – try again?', 'subscribe_error')
-    else:
-        flash('enter a *valid* email address', 'subscribe_error')
-    return redirect(request.referrer or url_for('index'))
+                                                   used_invites=used_invites)
 
 @app.route('/signin')
 def signin():
@@ -145,8 +113,7 @@ def signin():
     if user:
         flash('You were already signed in', 'success')
         return redirect(url_for('index'))
-    subscribe_form = SubscribeForm()
-    return render_template('signin.html', subscribe_form=subscribe_form)
+    return render_template('signin.html')
 
 @app.route('/login')
 def login():
