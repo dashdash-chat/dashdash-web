@@ -26,15 +26,16 @@ if node.chef_environment == 'dev'
   end
 end
 
-["Regexp-Common-2011121001.tar.gz",
- "Locale-Maketext-Lexicon-0.92.tar.gz",
- "Locale-Maketext-Fuzzy-0.11.tar.gz"
+[["Regexp-Common-2011121001.tar.gz", "Regexp::Common"],
+ ["Locale-Maketext-Lexicon-0.92.tar.gz", "Locale::Maketext::Lexicon"],
+ ["Locale-Maketext-Fuzzy-0.11.tar.gz", "Locale::Maketext::Fuzzy"]
 ].each do |perl_module|
-  cpan_client perl_module do
+  cpan_client perl_module[0] do
       user 'root'
       group 'root'
       version '0'
       from_cookbook 'vine_web'
+      module_name perl_module[1]
       install_type 'cpan_module'
       action :install
   end
