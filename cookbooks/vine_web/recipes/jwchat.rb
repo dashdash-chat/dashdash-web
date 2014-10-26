@@ -2,7 +2,7 @@
 # Cookbook Name:: vine_web
 # Recipe:: jwchat
 #
-# Copyright 2013, Dashdash, Inc.
+# Copyright 2014, Dashdash, Inc.
 #
 # All rights reserved - Do Not Redistribute
 #
