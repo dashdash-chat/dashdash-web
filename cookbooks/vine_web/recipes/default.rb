@@ -83,7 +83,7 @@ supervisor_service "gunicorn" do
   autostart false
   autorestart true
   priority 1
-  action :enable
+  action [:enable, :start]
 end
 supervisor_service "celeryd" do
   command "#{web_env_dir}/bin/celeryd --app=celery_tasks --pidfile=#{node['dirs']['other']}/celeryd.pid --loglevel=INFO"
@@ -97,7 +97,7 @@ supervisor_service "celeryd" do
   priority 20
   startsecs 10
   stopwaitsecs 300
-  action :enable
+  action [:enable, :start]
 end
 supervisor_service "celerybeat" do
   command "#{web_env_dir}/bin/celerybeat --app=celery_tasks --schedule=#{node['dirs']['other']}/celerybeat-schedule --pidfile=#{node['dirs']['other']}/celerybeat.pid --loglevel=INFO"
@@ -111,7 +111,7 @@ supervisor_service "celerybeat" do
   priority 30
   startsecs 10
   stopwaitsecs 300
-  action :enable
+  action [:enable, :start]
 end
 
 # Send the Gunicorn and Celery logs to Papertrail
